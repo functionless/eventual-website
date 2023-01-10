@@ -4,5 +4,5 @@ title: Preface
 
 # Eventual Tutorial
 
-:::caution Documentation Coming Soon
+:::caution Tutorial Coming Soon
 :::
