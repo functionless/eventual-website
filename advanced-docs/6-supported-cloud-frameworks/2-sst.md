@@ -1,7 +1,4 @@
----
----
-
-# Workflow Orchestration
+# SST for AWS
 
 :::caution Documentation Coming Soon
 :::

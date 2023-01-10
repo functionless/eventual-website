@@ -1,7 +1,4 @@
----
----
-
-# Workflow Orchestration
+# AWS System Architecture
 
 :::caution Documentation Coming Soon
 :::
