@@ -13,11 +13,15 @@ Stay tuned for an introductory video
 
 ## Service
 
-Eventual is all about building and connecting microservices that expose useful capabilities as APIs and Event streams all orchestrated by a durable Workflow engine.
+Eventual is all about building and connecting microservices that expose useful capabilities as APIs and Event streams - all orchestrated by a durable Workflow engine.
+
+### Infrastructure
+
+An Eventual Service is distributed as Infrastructure-as-Code and deploys to your own infrastructure.
 
 ### Service Construct
 
-For example, you can use the [`Service`](../reference/service.md) Construct to deploy an fully functional service.
+For example, you can use the [`Service`](../reference/service.md) Construct to deploy a fully functional service to AWS using the AWS CDK.
 
 ```ts
 new Service(this, "invoice-service", {
@@ -25,7 +29,7 @@ new Service(this, "invoice-service", {
 });
 ```
 
-This includes an API Gateway, Event Bus and Workflow engine, all running within your own AWS account.
+This includes an API Gateway, Event Bus and Workflow engine, all running within your own account.
 
 ### Composing and Evolving Services
 
@@ -48,7 +52,7 @@ The business logic of a Service is built with plug-and-play primitives that are 
 
 ### API
 
-For example, you can declare a route on a Service's REST API with the [`api`](../reference/api.md) primitive:
+For example, you can register a route on your Service's REST API with the [`api`](../reference/api.md) primitive:
 
 ```ts
 api.post("/invoice", async (request) => {
@@ -58,12 +62,12 @@ api.post("/invoice", async (request) => {
 ```
 
 :::info How it works
-Eventual analyzes your code to detect this route and automatically register it on the API Gateway. Eventual does similar work for all primitives.
+Eventual analyzes your code to detect this route and automatically attach it to the API Gateway. Eventual does similar work for all primitives.
 :::
 
 ### Event
 
-Events are records of something that has occurred within a Service that other components and services listen and react to.
+Events are records of something that has occurred (for example a change in the state of data within a Service) that other components and services listen to.
 
 They can be easily created with the [`event`](../reference/event.md) primitive:
 
@@ -101,7 +105,7 @@ invoiceService.subscribeTo({
 You can publish an event from APIs, Event Handlers, Workflows, Activities or even from outside Eventual.
 :::
 
-:::tip
+:::tip Designed for end-to-end type safety
 
 The schema for an Event can be defined in code to catch errors at compile time, improve IDE auto-completion and generate documentation.
 
@@ -122,7 +126,7 @@ orderEvent.onEvent((event) => {
 
 ### Workflows
 
-Workflows are the powerhouse of Eventual Services. With them, you can build long-running, durable processes with the expressivity and flexibility of ordinary imperative code.
+Workflows are the powerhouse of Eventual. With them, you can build long-running, fault tolerant processes with the expressivity and flexibility of ordinary imperative code.
 
 ```ts
 const processOrderWorkflow = workflow("order", async (order: Order) => {
@@ -137,7 +141,7 @@ const processOrderWorkflow = workflow("order", async (order: Order) => {
 ```
 
 :::caution More than meets the eye
-This may look like a typical function but it's actually a long-running durable workflow that can span days, months or even years without failure.
+This may look like a typical function but it's actually a workflow that can span days, months or even years without failure.
 :::
 
 :::tip
@@ -146,9 +150,9 @@ Workflows provide runtime guarantees that can't be ordinarily achieved within AP
 
 ### Activity
 
-An [Activity](../reference//activity.md) is a logical unit of work that can be called from a workflow. Workflows do the orchestration while Activities perform the actual work!
+An [Activity](../reference//activity.md) is a logical unit of work that can be called from a workflow. Workflows do the orchestration while Activities perform the actual work.
 
-For example, a function to integrate with teh Stripe API to charge Credit Cards.
+For example, a function to integrate with Stripe to charge Credit Cards:
 
 ```ts
 const chargeCreditCard = activity(
@@ -165,7 +169,7 @@ const chargeCreditCard = activity(
 
 ### Signal
 
-Services live in the real world where information is constantly changing and flowing. You can use Signals to send information into a running workflow and change its course, for example to cancel an order that is inflight.
+Services live in the real world where information is constantly flowing and changing. You can use Signals to send information into a running workflow and change its course, for example to cancel an order that is inflight.
 
 ```ts
 const cancelSignal = signal("cancel");
@@ -206,8 +210,8 @@ api.post("/user", async (request) => {
 });
 ```
 
-:::note
-Integrations go far beyond just AWS Resources though. For example, perhaps you want to register a webhook in Slack:
+:::info
+Integrations go far beyond just AWS Resources - for example, perhaps you want to register a webhook in Slack:
 
 ```ts
 const slack = new Slack("my-slack-connection", { credentials });
@@ -221,4 +225,30 @@ slack.command("/hello", (request) => {
 
 ## Local Simulation and Testing
 
+Eventual's [Unit Testing](../reference/unit-testing.md) library enables you to iterate on your application locally without wasting cycles waiting for deployments.
+
+```ts
+// advance the simulation's time
+await env.tick();
+
+// check the status of a running workflow has changed to SUCCESS
+expect(await execution.getStatus()).toMatchObject({
+  status: ExecutionStatus.SUCCESS,
+});
+```
+
+## Time Machine Debugging
+
+Debugging distributed systems in the cloud is a near impossible task. Eventual's Time Machine Debugging feature allows you to replay a workflow execution that has already run (or is still running) locally within your IDE and debugger.
+
+:::info Time travel like a boss 😎
+Step through time and observe what actually happened, identify and fix the bug, add a test and push for victory!
+:::
+
+![](./debug-1.gif)
+
 ## CLI
+
+:::caution Documentation coming soon
+
+:::
