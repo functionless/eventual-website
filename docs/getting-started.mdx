@@ -1,7 +1,11 @@
 ---
-title: Getting Started
-sidebar_position: 2
+title: Quick Start
+sidebar_position: 0
 ---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
 
 # Getting Started
 
@@ -19,18 +23,14 @@ Before getting started with Eventual, you'll need:
 
 To create a new Eventual project, run:
 
-import Tabs from "@theme/Tabs";
-import TabItem from "@theme/TabItem";
-import CodeBlock from "@theme/CodeBlock";
-
 <Tabs groupId="npm">
-  <TabItem value="apple" label="npm" default>
+  <TabItem value="npm" label="npm" default>
     <CodeBlock>npm create eventual@latest</CodeBlock>
   </TabItem>
-  <TabItem value="orange" label="yarn">
+  <TabItem value="yarn" label="yarn">
     <CodeBlock>yarn create eventual@latest</CodeBlock>
   </TabItem>
-  <TabItem value="banana" label="pnpm">
+  <TabItem value="pnpm" label="pnpm">
     <CodeBlock>pnpm create eventual@latest</CodeBlock>
   </TabItem>
 </Tabs>
@@ -39,28 +39,36 @@ import CodeBlock from "@theme/CodeBlock";
 
 Eventual currently supports two IaC platforms: AWS CDK and AWS SST. You'll be prompted to choose between them when you create a new project. Select [`aws-cdk`](https://docs.aws.amazon.com/cdk/v2/guide/home.html) or [`aws-sst`](https://docs.sst.dev) as appropriate.
 
-```
-? target: (Use arrow keys)
+<Tabs groupId="platform">
+  <TabItem value="aws-cdk" label="aws-cdk" default>
+    <CodeBlock>
+      {`? target: (Use arrow keys)
 ❯ aws-cdk
   aws-sst
-```
+`}
+    </CodeBlock>
+  </TabItem>
+  <TabItem value="sst" label="sst">
+    <CodeBlock>
+      {`? target: (Use arrow keys)
+  aws-cdk
+❯ aws-sst`}
+    </CodeBlock>
+  </TabItem>
+</Tabs>
 
 ## 3. Deploy the application
 
 Use the `deploy` script to deploy your application to AWS.
 
-```
-npm run deploy
-```
-
 <Tabs groupId="npm">
-  <TabItem value="apple" label="npm" default>
+  <TabItem value="npm" label="npm" default>
     <CodeBlock>npm run deploy</CodeBlock>
   </TabItem>
-  <TabItem value="orange" label="yarn">
+  <TabItem value="yarn" label="yarn">
     <CodeBlock>yarn deploy</CodeBlock>
   </TabItem>
-  <TabItem value="banana" label="pnpm">
+  <TabItem value="pnpm" label="pnpm">
     <CodeBlock>pnpm run deploy</CodeBlock>
   </TabItem>
 </Tabs>
@@ -84,8 +92,6 @@ To list the workflows available in our new service, use the `eventual list workf
 > npx eventual list workflows
 myWorkflow
 ```
-
-> If you have multiple services deployed, use the `--service` flag to select a service. `npx eventual list workflows --service my-service`
 
 ## 6. List the endpoints
 

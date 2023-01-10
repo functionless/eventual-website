@@ -1,0 +1,68 @@
+---
+sidebar_position: 1
+slug: /
+---
+
+# Introduction
+
+Eventual makes building and operating resilient event-driven applications easy at any scale.
+
+- **Powerful orchestration and choreography** - build durable, long-running Workflows, scale APIs, publish and subscribe to Events, and connect to SaaS via Integrations.
+- **Event-driven** - build asynchronous systems that are more resilient, scalable and evolvable.
+- **Serverless** - fully serverless, load-based pricing that scales to $0 and minimal operational complexity.
+- **Composable and Evolvable** - loosely coupled architectures makes it easy to add new services and evolve your system over time.
+- **Code-first** - end-to-end type safety that spans across service boundaries, from APIs to Events to long-running Workflows.
+- **Your cloud, your security boundaries** - runs on your cloud infrastructure, with transparent billing and total control over data and security.
+- **Distributed as IaC** - integrates with your favorite Infrastructure-as-Code (IaC) frameworks such as the AWS CDK and SST.
+
+:::tip Learn More
+
+To learn more about Eventual, checkout out our **[What is Eventual](./learn/1-what-is-eventual.md)** guide that walks through each of the concepts!
+
+:::
+
+:::info Quick Start
+
+To get started immediately, see our **[Quick Start](./getting-started.mdx)** guide to set up a new project, deploy it to the cloud and test it out.
+
+:::
+
+## Important Eventual Concepts
+
+Eventual provides plug-and-play primitives for building and orchestrating event-driven micro-services.
+
+import { Card } from "@site/src/components/Card";
+
+<div className="row">
+  <Card
+    name="🤝 Service"
+    url="reference/service"
+    description="A collection of APIs, Events, Workflows, and Activities for a business domain. Can be composed via APIs and Events."
+  />
+  <Card
+    name="⚙️ Workflow"
+    url="reference/workflow"
+    description="Orchestrate business logic with asynchronous, durable long-running processes."
+  />
+  <Card
+    name="🌐 REST API"
+    url="reference/api"
+    description="Create and your own REST APIs and serve them over HTTPs via a managed API Gateway."
+  />
+  <Card
+    name="📣 Event"
+    url="reference/event"
+    description="Publish and subscribe Events to and from your Service. Process events internally or route them to other Services."
+  />
+
+  <Card
+    name="🔌 Activity"
+    url="reference/activity"
+    description="Functions that encapsulate a single unit of work in a workflow. Integrate with cloud resources and SaaS."
+  />
+  <Card
+    name="🚥 Signal"
+    url="reference/signal"
+    description="A message that can be sent to a workflow execution. Workflows can wait for external input as a Signal"
+  />
+</div>

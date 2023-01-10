@@ -37,7 +37,7 @@ const config = {
           routeBasePath: "/",
           sidebarPath: require.resolve("./sidebars.js"),
           sidebarCollapsed: false,
-          sidebarCollapsible: true,
+          sidebarCollapsible: false,
         },
         blog: false,
         // blog: {

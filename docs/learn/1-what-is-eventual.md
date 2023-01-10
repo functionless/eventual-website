@@ -1,22 +1,15 @@
 ---
-slug: /
+title: What is Eventual?
 sidebar_position: 1
 ---
 
-# Introduction
+# What is Eventual?
 
-Welcome to Eventual!
-
-Eventual is a code-first service and software development kit (SDK) that helps developers create event-driven systems using modern infrastructure-as-code. Its composable service model is designed for building and evolving microservice architectures, providing a set of libraries and APIs that abstract away the complexities of distributed systems, allowing developers to focus on the business logic of their services.
-
-## Getting Started
-
-- [Getting Started](./getting-started.mdx) - set up a new project, deploy it to the cloud and test it out.
+Eventual makes building and operating resilient event-driven applications easy at any scale. Its code-first workflow engine and event-driven primitives simplify and standardize how teams solve complex business orchestration problems and evolve system architectures over time. Leverages Serverless to scale from 0 to any sized workload and your favorite Infrastructure-as-Code framework to drop directly in to your stack without getting in your way.
 
 ## Building Blocks
 
 - [Service](./reference/service.md) - a collection of APIs, Events, Workflows, and Activities that represent a business domain or capability. Can be composed with other services via APIs and Event subscriptions.
-  ![Service Building Blocks](./service-diagram.png)
 - [REST API](./reference/api.md) - create and your own REST APIs and serve them over HTTPS via a managed API Gateway. Each Service also includes internal API routes (see: [Eventual Service Client](./reference/service-client.md)).
 - [Event](./reference/event.md) - publish and subscribe Events to your Service's Event Bus. Process events internally or route them to other Services.
 - [Workflow](./reference/workflow.md) - a set of orchestrated Activities that implements business logic with asynchronous, durable long-running processes.
