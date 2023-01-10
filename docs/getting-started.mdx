@@ -11,7 +11,7 @@ import CodeBlock from "@theme/CodeBlock";
 
 Eventual is a set of NPM packages and a CDK Construct that helps you build microservices and provision corresponding AWS resources.
 
-## 0. Pre-requisites
+## Install Node and set up AWS
 
 Before getting started with Eventual, you'll need:
 
@@ -19,7 +19,7 @@ Before getting started with Eventual, you'll need:
 - NPM 7+ or Yarn 1+ or PNPM
 - An [AWS Account](https://aws.amazon.com/)
 
-## 1. Create a new project
+## Create a new project
 
 To create a new Eventual project, run:
 
@@ -35,7 +35,7 @@ To create a new Eventual project, run:
   </TabItem>
 </Tabs>
 
-## 2. Choose your preferred IaC platform
+## Choose your preferred IaC platform
 
 Eventual currently supports two IaC platforms: AWS CDK and AWS SST. You'll be prompted to choose between them when you create a new project. Select [`aws-cdk`](https://docs.aws.amazon.com/cdk/v2/guide/home.html) or [`aws-sst`](https://docs.sst.dev) as appropriate.
 
@@ -57,7 +57,7 @@ Eventual currently supports two IaC platforms: AWS CDK and AWS SST. You'll be pr
   </TabItem>
 </Tabs>
 
-## 3. Deploy the application
+## Deploy the application
 
 Use the `deploy` script to deploy your application to AWS.
 
@@ -73,7 +73,7 @@ Use the `deploy` script to deploy your application to AWS.
   </TabItem>
 </Tabs>
 
-## 4. List services in your AWS account
+## List services in your AWS account
 
 After deploying, let's now list the Eventual services we just deployed to our AWS account:
 
@@ -84,7 +84,7 @@ my-service
 
 As you can see, we have a single service, `my-service` that was just deployed.
 
-## 5. List workflows
+## List workflows
 
 To list the workflows available in our new service, use the `eventual list workflows` command. For example:
 
@@ -93,7 +93,7 @@ To list the workflows available in our new service, use the `eventual list workf
 myWorkflow
 ```
 
-## 6. List the endpoints
+## List the endpoints
 
 To view the API Gateway URL and Event Bus ARN for a service, use the `eventual get service` command:
 
@@ -103,7 +103,7 @@ API Gateway: 	  https://<uuid>.execute-api.us-west-2.amazonaws.com
 Event Bus ARN:  arn:aws:events:us-west-2:<account-id>:event-bus/my-service
 ```
 
-## 7. Make an API HTTP request
+## Make an API HTTP request
 
 Use a tool like `curl` to make an HTTP request to the API Gateway endpoint for the `/work` API. This will trigger a workflow execution:
 
@@ -119,7 +119,7 @@ This will return a JSON object containing the execution ID for the triggered wor
 { "executionId": "<execution-id>" }
 ```
 
-## 8. Get the logs for the execution
+## Get the logs for the execution
 
 To view the logs for the workflow execution we just started, use the `eventual get logs` command followed by the `--execution` flag and the execution ID:
 
