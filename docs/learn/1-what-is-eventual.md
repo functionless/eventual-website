@@ -237,6 +237,10 @@ expect(await execution.getStatus()).toMatchObject({
 });
 ```
 
+:::info
+The `env` variable points to a [`TestEnvironment`](../reference/unit-testing.md#testenvironment) which supports mocking components of a service such as Activities and Events, as well as controlling how time progresses.
+:::
+
 ## Time Machine Debugging
 
 Debugging distributed systems in the cloud is a near impossible task. Eventual's Time Machine Debugging feature allows you to replay a workflow execution that has already run (or is still running) locally within your IDE and debugger.
