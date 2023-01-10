@@ -5,25 +5,122 @@ sidebar_position: 1
 
 # What is Eventual?
 
-Eventual makes building and operating resilient event-driven applications easy at any scale. Its code-first workflow engine and event-driven primitives simplify and standardize how teams solve complex business orchestration problems and evolve system architectures over time. Leverages Serverless to scale from 0 to any sized workload and your favorite Infrastructure-as-Code framework to drop directly in to your stack without getting in your way.
+(2 minute video)
 
-## Building Blocks
+## Overview
 
-- [Service](../reference/service.md) - a collection of APIs, Events, Workflows, and Activities that represent a business domain or capability. Can be composed with other services via APIs and Event subscriptions.
-- [REST API](../reference/api.md) - create and your own REST APIs and serve them over HTTPS via a managed API Gateway. Each Service also includes internal API routes (see: [Eventual Service Client](../reference/service-client.md)).
-- [Event](../reference/event.md) - publish and subscribe Events to your Service's Event Bus. Process events internally or route them to other Services.
-- [Workflow](../reference/workflow.md) - a set of orchestrated Activities that implements business logic with asynchronous, durable long-running processes.
-- [Activity](../reference/activity.md) - functions that encapsulate a single unit of work in a workflow. Integrate with cloud resources and SaaS.
-- [Signal](../reference/signal.md) - a message that can be sent to a workflow execution. Workflows can wait for external input as a Signal and modify its behavior. Signals are communicated point-to-point in contrast to Events which are broadcast to all subscribers.
+Eventual is a code-first service and software development kit (SDK) that helps developers build event-driven systems using modern infrastructure-as-code. Eventual provides Plug-and-Play primitives that includes a powerful workflow engine that helps orchestrate APIs and choreograph events. Its composable service model is designed for building and evolving microservice architectures.
 
-## Helpful Resources
+### Turing complete, imperative workflows
 
-- [Eventual Service Client](../reference/service-client.md) - a client for interacting with an Eventual Service, such as listing and starting workflows, viewing logs, etc.
-- [CLI Guide](../reference/cli.md) - the Eventual command-line interface (CLI) provides tools for interacting with your service from the terminal.
-- [Unit Testing](../reference/unit-testing.md) - API reference, guidelines and best practices for writing unit tests for your Eventual service.
-- [Cheatsheet](../cheatsheet.md) - a list of helpful patterns for solving common problems using Eventual
-- [Service Limits](../reference/service-scaling-limits.md) - the AWS Limits and Quotas to be aware of when scaling a Service.
+Eventual allows you to use the full power of TypeScript to build long-running, durable workflows with unlimited complexity - including operators, for-loops, try-catch, if-else, while, do-while, etc.
 
-## Tutorials
+```ts
+export const myWorkflow = workflow("myWorkflow", async (items: string[]) => {
+  try {
+    await Promise.all(
+      items.map(async (item) => {
+        if (isConditionTrue(item)) {
+          await downStreamService(`hello ${item}`);
+        }
+      })
+    );
+  } catch (err) {
+    console.error(err);
+  }
+});
+```
 
-- [Bank Account Part 1](../tutorial/bank-account.md) - build a reliable bank account service for depositing and transferring money
+### Serverless REST APIs
+
+Easily create scalable, event-driven APIs with code-first routes.
+
+```ts
+import { api } from "@eventual/core";
+
+api.post("/echo", async (request) => {
+  return new Response(await request.text());
+});
+```
+
+### Publish and Subscribe to Events
+
+```ts
+import { event } from "@eventual/core";
+
+interface MyEvent {
+  key: string;
+}
+
+export const myEvent = event<MyEvent>("MyEvent");
+
+myEvent.onEvent((e) => {
+  console.log(e.key);
+});
+```
+
+### Unit test and simulate distributed systems
+
+Easily unit test your service's business logic, including APIs, workflows, and event handlers, using your preferred testing practices and frameworks. Run tests locally or within your CI/CD pipeline to ensure your service is reliable and maintainable.
+
+```ts
+import { myWorkflow } from "../src/my-workflow";
+
+const env = new TestEnvironment({
+  entry: path.join(__dirname, "..", "src", "my-workflow.ts")
+})
+
+test("workflow should be OK", async () => {
+  const execution = await env.startExecution(myWorkflow, ({
+    hello: "world",
+  });
+
+  // advance time
+  await env.tick(1);
+
+  expect(await execution.getStatus()).toMatchObject({
+    status: ExecutionStatus.SUCCESS
+  });
+});
+```
+
+### Debug production problems locally in your IDE
+
+Replay problematic workflows in production locally and use your IDE's debugger to discover and fix problems.
+
+![Debug Production](./debug-1.gif)
+
+```
+eventual replay execution <execution-id> --entry ./src/index.ts
+```
+
+### Integrate with Cloud Resources and Services
+
+```ts
+import { Slack, SlackCredentials } from "@eventual/integrations-slack";
+import { AWSSecret } from "@eventual/aws-client";
+
+const slack = new Slack("my-slack-connection", {
+  credentials: new JsonSecret<SlackCredentials>(
+    new AWSSecret({
+      secretId: process.env.SLACK_SECRET_ID!,
+    })
+  ),
+});
+
+// register a webhook for a slack command
+slack.command("/ack", async (request) => {
+  await sendSignal(request.text, "ack");
+  request.ack();
+});
+
+export const task = workflow("task", async (request) => {
+  await expectSignal("ack");
+
+  // publish a message to slack from a workflow
+  await slack.client.chat.postMessage({
+    channel: request.channel,
+    text: `Complete: ${request.task}`,
+  });
+});
+```
