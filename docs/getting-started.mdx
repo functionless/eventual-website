@@ -96,10 +96,10 @@ npx eventual list services
 
 ## Get the Service's endpoints
 
-To view the API Gateway URL and Event Bus ARN for a service, use the `eventual get service` command:
+To view the API Gateway URL and Event Bus ARN for a service, use the `eventual show service` command:
 
-```ts
-npx eventual get service
+````ts
+npx eventual show service
 ```
 
 ## Make an API HTTP request
@@ -107,23 +107,27 @@ npx eventual get service
 Use a tool like `curl` to make an HTTP request to the API Gateway endpoint for the `/work` API. This will trigger a workflow execution:
 
 ```
-> curl -X POST https://<uuid>.execute-api.us-west-2.amazonaws.com/work\
-  -d '["item1", "item2"]'\
-  -H 'Content-Type: application/json'
+curl -X POST <api-endpoint>/hello -d "sam"
 ```
 
 This will return a JSON object containing the execution ID for the triggered workflow execution.
 
 ```json
 { "executionId": "<execution-id>" }
+````
+
+## Get the status of the Workflow execution
+
+```
+npx eventual get execution
 ```
 
-## Get the logs for the execution
+## View the logs for the execution
 
 To view the logs for the workflow execution we just started, use the `eventual get logs` command followed by the `--execution` flag and the execution ID:
 
 ```
-> npx eventual get logs --execution <execution-id>
+npx eventual get logs --execution <execution-id>
 ```
 
 ## Next Steps
