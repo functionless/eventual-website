@@ -40,7 +40,7 @@ For example, you can route events between services, making it easy to separate c
 ```ts
 import { orderEvent } from "@my-company/order-service";
 
-invoiceService.subscribeTo({
+invoiceService.subscribe({
   service: orderService,
   events: [orderEvent],
 });
@@ -95,9 +95,9 @@ await orderEvent.publishEvents({
 ... and routed between Services:
 
 ```ts
-invoiceService.subscribeTo({
+invoiceService.subscribe({
   service: orderService,
-  events: [orderEvent],
+  events: ["OrderEvent"],
 });
 ```
 
