@@ -35,27 +35,31 @@ To create a new Eventual project, run:
   </TabItem>
 </Tabs>
 
-## Choose your preferred IaC platform
+## Choose a name for your Project
 
-Eventual currently supports two IaC platforms: AWS CDK and AWS SST. You'll be prompted to choose between them when you create a new project. Select [`aws-cdk`](https://docs.aws.amazon.com/cdk/v2/guide/home.html) or [`aws-sst`](https://docs.sst.dev) as appropriate.
+You will be prompted for name of your project, e.g. `my-project`.
 
-<Tabs groupId="platform">
-  <TabItem value="aws-cdk" label="aws-cdk" default>
-    <CodeBlock>
-      {`? target: (Use arrow keys)
-❯ aws-cdk
-  aws-sst
-`}
-    </CodeBlock>
-  </TabItem>
-  <TabItem value="sst" label="sst">
-    <CodeBlock>
-      {`? target: (Use arrow keys)
-  aws-cdk
-❯ aws-sst`}
-    </CodeBlock>
-  </TabItem>
-</Tabs>
+```
+project name: my-project
+```
+
+:::tip
+Choose a name that represents an organization, team or product - Eventual is mono-repo based and can contain multiple services all deployed together.
+
+For example, you may want to choose the name of your GitHub repository name: `my-awesome-product`.
+:::
+
+## Choose the name of your _first_ Service
+
+You will then be prompted for the name of your first service, e.g. `my-service`.
+
+```
+service name: my-service
+```
+
+:::info
+The service name determines the name of your first service which is a NPM package in the `apps/` folder, e.g. `apps/my-service`. You can create more services within the same repository later!
+:::
 
 ## Deploy the application
 
