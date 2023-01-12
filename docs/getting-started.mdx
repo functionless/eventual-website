@@ -57,6 +57,19 @@ For example, you may want to choose the name of your GitHub repository: `my-awes
 The service name determines the name of the NPM package in the `apps/` folder containing the business logic, e.g. `apps/my-service`. You can create more services within the same repository later!
 :::
 
+## Review the created project structure
+
+The project template generates the following project structure containing 3 NPM packages:
+
+```bash
+my-project
+├──infra # an AWS CDK application that deploys the repo's infrastructure
+├──apps
+    ├──my-service # the NPM package containing the my-service business logic
+├──packages
+    ├──events # a shared NPM package containing event definitions
+```
+
 ## Deploy the application
 
 Use the `deploy` script to deploy your application to AWS.
@@ -78,29 +91,15 @@ Use the `deploy` script to deploy your application to AWS.
 After deploying, let's now list the Eventual services we just deployed to our AWS account:
 
 ```ts
-> npx eventual list services
-my-service
+npx eventual list services
 ```
 
-As you can see, we have a single service, `my-service` that was just deployed.
-
-## List workflows
-
-To list the workflows available in our new service, use the `eventual list workflows` command. For example:
-
-```ts
-> npx eventual list workflows
-myWorkflow
-```
-
-## List the endpoints
+## Get the Service's endpoints
 
 To view the API Gateway URL and Event Bus ARN for a service, use the `eventual get service` command:
 
 ```ts
-> npx eventual get service
-API Gateway: 	  https://<uuid>.execute-api.us-west-2.amazonaws.com
-Event Bus ARN:  arn:aws:events:us-west-2:<account-id>:event-bus/my-service
+npx eventual get service
 ```
 
 ## Make an API HTTP request
