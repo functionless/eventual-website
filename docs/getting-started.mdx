@@ -98,7 +98,7 @@ npx eventual list services
 
 To view the API Gateway URL and Event Bus ARN for a service, use the `eventual show service` command:
 
-````ts
+```ts
 npx eventual show service
 ```
 
@@ -114,12 +114,14 @@ This will return a JSON object containing the execution ID for the triggered wor
 
 ```json
 { "executionId": "<execution-id>" }
-````
+```
 
 ## Get the status of the Workflow execution
 
+You can get the status and result of a workflow execution using the `eventual get execution` command:
+
 ```
-npx eventual get execution
+npx eventual get execution <execution-id>
 ```
 
 ## View the logs for the execution
