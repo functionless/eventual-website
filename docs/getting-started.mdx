@@ -35,30 +35,26 @@ To create a new Eventual project, run:
   </TabItem>
 </Tabs>
 
-## Choose a name for your Project
-
-You will be prompted for name of your project, e.g. `my-project`.
+## Choose the name for your Project
 
 ```
-project name: my-project
+> project name: my-project
 ```
 
 :::tip
 Choose a name that represents an organization, team or product - Eventual is mono-repo based and can contain multiple services all deployed together.
 
-For example, you may want to choose the name of your GitHub repository name: `my-awesome-product`.
+For example, you may want to choose the name of your GitHub repository: `my-awesome-product`.
 :::
 
 ## Choose the name of your _first_ Service
 
-You will then be prompted for the name of your first service, e.g. `my-service`.
-
 ```
-service name: my-service
+> service name: my-service
 ```
 
 :::info
-The service name determines the name of your first service which is a NPM package in the `apps/` folder, e.g. `apps/my-service`. You can create more services within the same repository later!
+The service name determines the name of the NPM package in the `apps/` folder containing the business logic, e.g. `apps/my-service`. You can create more services within the same repository later!
 :::
 
 ## Deploy the application
