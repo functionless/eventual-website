@@ -50,7 +50,7 @@ Here's an example of how you can use a recursive workflow to perform tasks on a 
 
 ```ts
 const dailyWorkflow = workflow("daily", async (nextDate: string) => {
-  await sleepUntil(nextDate);
+  await time(nextDate);
 
   await stepA();
   await stepB();
@@ -143,9 +143,9 @@ cancelSignal.onSignal(() => (isCancelled = true));
 
 await Promise.race([
   // sleep while some condition is true
-  sleepWhile(() => !isCancelled),
+  condition(() => isCancelled),
   // sleep for 10s
-  sleepFor(10, "seconds"),
+  duration(10, "seconds"),
 ]);
 ```
 
@@ -157,10 +157,10 @@ let isCancelled = false;
 cancelSignal.onSignal(() => (isCancelled = true));
 
 await Promise.race([
-  // sleep while some condition is true
-  sleepWhile(() => !isCancelled),
-  // sleep until the first of january, 2013
-  sleepUntil("2013-01-01T00:00Z"),
+  // resolve once some condition is true
+  condition(() => isCancelled),
+  // resolve on first of january, 2013 at midnight
+  time("2013-01-01T00:00Z"),
 ]);
 ```
 

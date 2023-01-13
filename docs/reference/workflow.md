@@ -178,28 +178,28 @@ const mySignalHandler = mySignal.onSignal((signalPayload) => {
 mySignalHandler.dispose();
 ```
 
-## Sleep
+## Time, Durations and Conditions
 
-The `@eventual/core` library provides three methods for pausing an execution:
+The `@eventual/core` library provides methods for pausing an execution based on time or internal workflow data:
 
-### `sleepFor` X seconds
+### await `duration` of X seconds
 
-The `sleepFor` function allows you to pause the execution of a workflow for a specified number of seconds. For example:
+The `duration` function allows you to pause the execution of a workflow for a specified number of seconds. For example:
 
 ```ts
-import { sleepFor } from "@eventual/core";
+import { duration } from "@eventual/core";
 
-await sleepFor(10);
+await duration(10, "seconds");
 ```
 
-### `sleepUntil` a specific ISO timestamp
+### await a specific ISO `time`
 
-The `sleepUntil` function allows you to pause the execution of a workflow until a specific time, specified as an ISO8601 formatted string or as a `Date` object. For example:
+The `time` function allows you to pause the execution of a workflow until a specific time, specified as an ISO8601 formatted string or as a `Date` object. For example:
 
 ```ts
-await sleepUntil("2013-01-01T00:00:00.000Z");
+await time("2013-01-01T00:00:00.000Z");
 
-await sleepUntil(new Date(epochMilliseconds));
+await time(new Date(epochMilliseconds));
 ```
 
 ### `condition` a condition is true
@@ -219,6 +219,17 @@ cancelSignal.onSignal(() => (isCancelled = true));
 
 await condition(() => !isCancelled);
 // execution will proceed after the signal is received
+```
+
+### Promises
+
+`time`, `duration`, and `condition` act like Javascript promises. They can be started to be awaited later or waited on in parallel. 
+
+```ts
+const minTime = duration(10, "minutes");
+// wait for 10 minutes OR the duration of myActivity, whichever is longer.
+await Promise.all([minTime, myActivity()]);
+return "DONE";
 ```
 
 ## Patterns
