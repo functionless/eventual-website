@@ -38,37 +38,26 @@ To create a new Eventual project, run:
 ## Choose the name for your Project
 
 ```
-> project name: my-project
+> project name: my-service
 ```
-
-:::tip
-Choose a name that represents an organization, team or product - Eventual is mono-repo based and can contain multiple services all deployed together.
-
-For example, you may want to choose the name of your GitHub repository: `my-awesome-product`.
-:::
-
-## Choose the name of your _first_ Service
-
-```
-> service name: my-service
-```
-
-:::info
-The service name determines the name of the NPM package in the `apps/` folder containing the business logic, e.g. `apps/my-service`. You can create more services within the same repository later!
-:::
 
 ## Review the created project structure
 
 The project template generates the following project structure containing 3 NPM packages:
 
 ```bash
-my-project
+my-service
+├──README.md # a README cont
 ├──infra # an AWS CDK application that deploys the repo's infrastructure
 ├──apps
     ├──my-service # the NPM package containing the my-service business logic
 ├──packages
     ├──events # a shared NPM package containing event definitions
 ```
+
+## View the `README.md` for helpful information
+
+The generated `README.md` file in the root of your project contains useful information such as project overview, noteworthy Lambda Functions and CloudWatch Log Groups, and helpful scripts to use as a part of your developer workflow.
 
 ## Deploy the application
 
