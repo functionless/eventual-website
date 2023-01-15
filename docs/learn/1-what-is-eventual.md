@@ -250,9 +250,3 @@ Step through time and observe what actually happened, identify and fix the bug, 
 :::
 
 ![](./debug-1.gif)
-
-## CLI
-
-:::caution Documentation coming soon
-
-:::
