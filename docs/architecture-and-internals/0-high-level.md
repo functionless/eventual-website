@@ -3,7 +3,7 @@
 
 # AWS Architecture
 
-Eventual is a serverless architecture that utilizes well-defined contracts to create a complex system that has a limited set of potential [failure scenarios](./3-failure-scenarios.md) that can be reasoned about without full understanding of the system. This design allows for an operationally efficient system (similar to a fully-managed service) that can be deployed into a user's AWS account and self-managed with minimal overhead.
+Eventual is a serverless architecture that utilizes well-defined contracts to create a complex system that has a limited set of potential [failure scenarios](./1-failure-scenarios.md) that can be reasoned about without full understanding of the system. This design allows for an operationally efficient system (similar to a fully-managed service) that can be deployed into a user's AWS account and self-managed with minimal overhead.
 
 :::info
 In this section of the **Architecture & Internals** documentation, we will provide a high-level overview of the main components of the system, including their functions and interactions. Further details on each component will be covered in subsequent sections.
@@ -33,7 +33,7 @@ The API Gateway V2 is responsible for handling incoming HTTP requests from users
 
 ### Internal API Routes for Eventual APIs
 
-Eventual Services deploy with an internal API available on the API Gateway. These APIs provide access to the internals of the service, such as starting a workflow execution. For more information on the API design, refer to the [Eventual REST API](./eventual-rest-api.md) documentation. The internal routes have their own separate Lambda function to ensure that the logic and security measures for internal requests do not affect the performance of user-defined routes. These routes are protected by AWS IAM authorization and can only be accessed by users or roles with the appropriate permissions.
+Eventual Services deploy with an internal API available on the API Gateway. These APIs provide access to the internals of the service, such as starting a workflow execution. For more information on the API design, refer to the [Eventual REST API](./5-eventual-rest-api.md) documentation. The internal routes have their own separate Lambda function to ensure that the logic and security measures for internal requests do not affect the performance of user-defined routes. These routes are protected by AWS IAM authorization and can only be accessed by users or roles with the appropriate permissions.
 
 ### Event Bridge Bus with Lambda Function Handler
 
@@ -42,7 +42,7 @@ Event Bridge is a crucial component of Eventual's architecture, responsible for 
 To handle these events, an Event Bridge [Rule](https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-rules.html) is created for each subscription registered using the [`onEvent`](../reference/event.md#subscribe-to-an-event) function in `@eventual/core`. This allows for the ability to subscribe to specific events and react to them accordingly.
 
 :::info
-Subscriptions are detected using what we call ["Infrastructure Inference"](./infrastructure-inference.md) - at build-time, we run the user's code in a sandbox to detect the subscriptions.
+Subscriptions are detected using what we call ["Infrastructure Inference"](./4-infrastructure-inference.md) - at build-time, we run the user's code in a sandbox to detect the subscriptions.
 :::
 
 :::caution
@@ -53,12 +53,12 @@ Events can be routed between Services using Bus-to-Bus subscriptions. This funct
 
 ### Workflow Orchestrator Lambda Function
 
-The Workflow Orchestrator is a Lambda function that is triggered by the [Event Loop Queue](#workflow-execution-event-loop---sqs-fifo-queue) to manage the execution of a workflow. The function is responsible for processing a batch of events, interpreting them using the [Eventual Interpreter](./1-interpreter.md), and generating a list of [Commands](./1-commands.md) to be executed. These Commands are then executed or enqueued, and persisted in the event history bucket for future reference.
+The Workflow Orchestrator is a Lambda function that is triggered by the [Event Loop Queue](#workflow-execution-event-loop---sqs-fifo-queue) to manage the execution of a workflow. The function is responsible for processing a batch of events, interpreting them using the [Eventual Interpreter](./2-interpreter.md), and generating a list of [Commands](./1-commands.md) to be executed. These Commands are then executed or enqueued, and persisted in the event history bucket for future reference.
 
 In simple terms, the workflow orchestrator takes the next batch of events, plays them through the user's workflow function which then outputs the next "Commands" to invoke (for example start an activity, or schedule a timer). We call this the "event loop", similar to NodeJS's event loop, except processed in a distributed manor.
 
 :::info
-Workflows are ordinary functions that can execute over an arbitrary amount of time in a distributed serverless environment. For more information on how this is achieved, see the [Eventual Interpreter - Workflow Suspend & Resume](./1-interpreter.md#workflow-suspend--resume) documentation.
+Workflows are ordinary functions that can execute over an arbitrary amount of time in a distributed serverless environment. For more information on how this is achieved, see the [Eventual Interpreter - Workflow Suspend & Resume](./2-interpreter.md#workflow-suspend--resume) documentation.
 :::
 
 ### Workflow Execution Event Loop - SQS FIFO Queue
