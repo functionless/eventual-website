@@ -40,7 +40,7 @@ const config = {
           sidebarCollapsible: true,
         },
         googleAnalytics: {
-          trackingID: "G-JMKXGJ6HED",
+          trackingID: "G-PKPD8SM346",
         },
         blog: false,
         // blog: {
