@@ -39,8 +39,9 @@ const config = {
           sidebarCollapsed: false,
           sidebarCollapsible: true,
         },
-        googleAnalytics: {
+        gtag: {
           trackingID: "G-PKPD8SM346",
+          anonymizeIP: true,
         },
         blog: false,
         // blog: {
