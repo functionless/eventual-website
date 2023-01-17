@@ -39,6 +39,9 @@ const config = {
           sidebarCollapsed: false,
           sidebarCollapsible: true,
         },
+        googleAnalytics: {
+          trackingID: "G-JMKXGJ6HED",
+        },
         blog: false,
         // blog: {
         //   showReadingTime: true,
