@@ -50,9 +50,9 @@ invoiceService.subscribe({
 
 The business logic of a Service is built with plug-and-play primitives that are coordinated by a powerful workflow engine.
 
-### API
+### Command
 
-For example, you can register a route on your Service's REST API with the [`api`](../reference/api.md) primitive:
+For example, you can register a Command on your Service's API with the [`command`](../reference/api/command.md) primitive:
 
 ```ts
 export const sendInvoice = command("sendInvoice", async (invoice: Invoice) => {
@@ -72,7 +72,7 @@ Events are records of something that has occurred (for example a change in the s
 
 ![](/img/pub-sub.svg)
 
-They can be easily created with the [`event`](../reference/event.md) primitive:
+They can be easily created with the [`event`](../reference/messaging/event.md) primitive:
 
 ```ts
 const orderEvent = event("Order");
@@ -153,7 +153,7 @@ Workflows provide runtime guarantees that can't be ordinarily achieved within AP
 
 ### Activity
 
-An [Activity](../reference//activity.md) is a logical unit of work that can be called from a workflow. Workflows do the orchestration while Activities perform the actual work.
+An [Activity](../reference/orchestration/activity.md) is a logical unit of work that can be called from a workflow. Workflows do the orchestration while Activities perform the actual work.
 
 For example, a function to integrate with Stripe to charge Credit Cards:
 

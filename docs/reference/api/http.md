@@ -58,13 +58,13 @@ api.get("/hello/:name", async (request) => {
 
 The following intrinsic functions can be called within an API handler:
 
-- [`publishEvent`](./event.md#publish-to-an-event)
+- [`publishEvent`](../messaging/event.md#publish-to-an-event)
 
 ```ts
 await myEvent.publishEvent({ .. });
 ```
 
-- [`startExecution`](./workflow.md#start-execution)
+- [`startExecution`](../orchestration/workflow.md#start-execution)
 
 ```ts
 await myWorkflow.startExecution({
@@ -72,7 +72,7 @@ await myWorkflow.startExecution({
 })
 ```
 
-- [`sendActivitySuccess`](./activity.md#sendactivitysuccess)
+- [`sendActivitySuccess`](../orchestration/activity.md#sendactivitysuccess)
 
 ```ts
 await myActivity.sendActivitySuccess({
@@ -81,7 +81,7 @@ await myActivity.sendActivitySuccess({
 })
 ```
 
-- [`sendActivityFailure`](./activity.md#sendactivityfailure)
+- [`sendActivityFailure`](../orchestration/activity.md#sendactivityfailure)
 
 ```ts
 await myActivity.sendActivityFailure({

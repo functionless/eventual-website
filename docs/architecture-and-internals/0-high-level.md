@@ -29,7 +29,7 @@ Below is a depiction of the architecture of an Eventual Service deployed in AWS.
 
 ### API Gateway V2 with Lambda Function Handlers
 
-The API Gateway V2 is responsible for handling incoming HTTP requests from users. It is connected to a Lambda Function that contains the user's code for handling the routes defined in the API. These APIs are defined using the `api` object from `@eventual/core` (which you can read more about [here](../reference/api.md)).
+The API Gateway V2 is responsible for handling incoming HTTP requests from users. It is connected to a Lambda Function that contains the user's code for handling the routes defined in the API. These APIs are defined using the `command` object from `@eventual/core` (which you can read more about [here](../reference/api/command.md)).
 
 ### Internal API Routes for Eventual APIs
 
@@ -39,7 +39,7 @@ Eventual Services deploy with an internal API available on the API Gateway. Thes
 
 Event Bridge is a crucial component of Eventual's architecture, responsible for managing events that are received by the Service's Event Bus. All events produced internally by the Service or received from external systems pass through this Event Bus.
 
-To handle these events, an Event Bridge [Rule](https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-rules.html) is created for each subscription registered using the [`onEvent`](../reference/event.md#subscribe-to-an-event) function in `@eventual/core`. This allows for the ability to subscribe to specific events and react to them accordingly.
+To handle these events, an Event Bridge [Rule](https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-rules.html) is created for each subscription registered using the [`onEvent`](../reference/messaging/event.md#subscribe-to-an-event) function in `@eventual/core`. This allows for the ability to subscribe to specific events and react to them accordingly.
 
 :::info
 Subscriptions are detected using what we call ["Infrastructure Inference"](./4-infrastructure-inference.md) - at build-time, we run the user's code in a sandbox to detect the subscriptions.

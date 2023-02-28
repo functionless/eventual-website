@@ -192,7 +192,7 @@ try {
 
 Alongside the activity-specific intrinsics already mentioned, the following intrinsic functions can also be called within an activity handler:
 
-- [`publishEvent`](./event.md#publish-to-an-event)
+- [`publishEvent`](../messaging/event.md#publish-to-an-event)
 
 ```ts
 await myEvent.publishEvent({ .. });
