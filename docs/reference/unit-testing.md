@@ -79,7 +79,7 @@ await env.startExecution(myWorkflow, "input string");
 
 ### Get Workflow Status
 
-The `startExecution` method returns an [`ExecutionHandle`](./workflow.md#execution-handle), which is a reference to a running workflow execution. You can use the [`getStatus`](./workflow.md#get-the-status-of-an-execution) method to retrieve the current status of the execution:
+The `startExecution` method returns an [`ExecutionHandle`](./orchestration/workflow.md#execution-handle), which is a reference to a running workflow execution. You can use the [`getStatus`](./orchestration/workflow.md#get-the-status-of-an-execution) method to retrieve the current status of the execution:
 
 For example, to start a workflow, advance time and then assert the status is `FAILED`, you can run the following code:
 
@@ -95,7 +95,7 @@ expect(status).toMatchObject({
 
 ### Send Signal
 
-The `sendSignal` method sends a signal to the [`ExecutionHandle`](./workflow.md#send-a-signal-to-a-running-execution).
+The `sendSignal` method sends a signal to the [`ExecutionHandle`](./orchestration/workflow.md#send-a-signal-to-a-running-execution).
 
 For example, to start a workflow, send a signal, advance time and then assert the status is `COMPLETE`, you can run the following code:
 
@@ -196,7 +196,7 @@ The `mockActivity` provides the following utility functions that can be used to 
 
 | Resolution                                                              | Description                                           |
 | ----------------------------------------------------------------------- | ----------------------------------------------------- |
-| [`succeed`](#succeed) and [`succeedOnce`](#succeedonce)             | Activity returns a result                             |
+| [`succeed`](#succeed) and [`succeedOnce`](#succeedonce)                 | Activity returns a result                             |
 | [`fail`](#fail) and [`failOnce`](#failonce)                             | Activity fails with an error                          |
 | [`timeout`](#timeout) and [`timeoutOnce`](#timeoutonce)                 | Activity fails with a Timeout error                   |
 | [`invoke`](#invoke) and [`invokeOnce`](#invokeonce)                     | Activity will call your delegate function             |
@@ -381,7 +381,7 @@ await env.sendActivitySuccess({
 
 ## Testing Activities
 
-[Activities](./activity.md) are functions that are executed within the context of an Eventual workflow. They can be tested in the same way as regular functions, with the exception of activities that use the asyncResult and heartbeat intrinsic functions. These activities are currently not supported and can be tracked in this issue: https://github.com/functionless/eventual/issues/167.
+[Activities](./orchestration/activity.md) are functions that are executed within the context of an Eventual workflow. They can be tested in the same way as regular functions, with the exception of activities that use the asyncResult and heartbeat intrinsic functions. These activities are currently not supported and can be tracked in this issue: https://github.com/functionless/eventual/issues/167.
 
 ### Call an Activity from within a Test
 

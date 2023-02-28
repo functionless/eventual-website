@@ -108,7 +108,7 @@ try {
 
 ## Publish an Event
 
-Workflows can publish events to the Service's Event Bus by calling [`publishEvent`](./event.md#publish-an-event).
+Workflows can publish events to the Service's Event Bus by calling [`publishEvent`](../messaging/event.md#publish-an-event).
 
 ```ts
 const myEvent = event("myEvent");
@@ -223,7 +223,7 @@ await condition(() => !isCancelled);
 
 ### Promises
 
-`time`, `duration`, and `condition` act like Javascript promises. They can be started to be awaited later or waited on in parallel. 
+`time`, `duration`, and `condition` act like Javascript promises. They can be started to be awaited later or waited on in parallel.
 
 ```ts
 const minTime = duration(10, "minutes");
@@ -234,7 +234,7 @@ return "DONE";
 
 ## Patterns
 
-See the [Workflow Patterns](../cheatsheet.md) for a cheatsheet of patterns for building workflows.
+See the [Workflow Patterns](../../cheatsheet.md) for a cheatsheet of patterns for building workflows.
 
 ## Runtime Semantics
 

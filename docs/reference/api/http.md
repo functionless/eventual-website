@@ -1,30 +1,34 @@
 ---
-sidebar_position: 1
+sidebar_position: 3
 ---
 
-# REST API
+# Low-level HTTP
 
 The API for each Eventual service is a REST API that is exposed through an API Gateway. This allows external systems to interact with the service by making HTTP requests to specific endpoints. The API can be used to trigger workflows, complete async activities, and retrieve the results of succeeded workflows. In this documentation, we will explain how to use the api object provided by Eventual to register routes and handle incoming requests.
+
+:::tip
+We recommend using [Commands](./command.md) instead of low-level HTTP. Commands are a simpler and more powerful primitive. The following documentation covers the low-level HTTP interface which is a useful escape hatch,if you need it.
+:::
 
 ## Router
 
 To add routes to your service's API Gateway, you can use the api object provided in the `@eventual/core` package.
 
 ```ts
-import { api } from "@eventual/core";
+import { api, HttpResponse } from "@eventual/core";
 
 api.post("/echo", async (request) => {
-  return new Response(await request.text());
+  return new HttpResponse(await request.text());
 });
 ```
 
 ## Routes and Handlers
 
-To register a route and handler function, you can use one of the HTTP method functions provided by the `api` object, such as `api.get`, `api.post`, `api.put`, `api.delete`, etc. These functions take in a string representing the route and a handler function that accepts a `Request` object and returns a `Promise<Response>`.
+To register a route and handler function, you can use one of the HTTP method functions provided by the `api` object, such as `api.get`, `api.post`, `api.put`, `api.delete`, etc. These functions take in a string representing the route and a handler function that accepts a `Request` object and returns a `Promise<HttpResponse>`.
 
 ```ts
 api.post("/echo", async (request) => {
-  return new Response(await request.text());
+  return new HttpResponse(await request.text());
 });
 ```
 
@@ -34,7 +38,7 @@ Path parameters are registered in routes using the syntax `:paramName` and are a
 
 ```ts
 api.get("/hello/:name", async (request) => {
-  return new Response(`hello ${request.params.name}`);
+  return new HttpResponse(`hello ${request.params.name}`);
 });
 ```
 
@@ -45,7 +49,7 @@ Any HTTP headers are available on the `headers` property:
 ```ts
 api.get("/hello/:name", async (request) => {
   if (request.headers.get("Content-Type"))
-    return new Response(`hello ${request.params.name}`);
+    return new HttpResponse(`hello ${request.params.name}`);
   }
 });
 ```
@@ -54,13 +58,13 @@ api.get("/hello/:name", async (request) => {
 
 The following intrinsic functions can be called within an API handler:
 
-- [`publishEvent`](./event.md#publish-to-an-event)
+- [`publishEvent`](../messaging/event.md#publish-to-an-event)
 
 ```ts
 await myEvent.publishEvent({ .. });
 ```
 
-- [`startExecution`](./workflow.md#start-execution)
+- [`startExecution`](../orchestration/workflow.md#start-execution)
 
 ```ts
 await myWorkflow.startExecution({
@@ -68,7 +72,7 @@ await myWorkflow.startExecution({
 })
 ```
 
-- [`sendActivitySuccess`](./activity.md#sendactivitysuccess)
+- [`sendActivitySuccess`](../orchestration/activity.md#sendactivitysuccess)
 
 ```ts
 await myActivity.sendActivitySuccess({
@@ -77,7 +81,7 @@ await myActivity.sendActivitySuccess({
 })
 ```
 
-- [`sendActivityFailure`](./activity.md#sendactivityfailure)
+- [`sendActivityFailure`](../orchestration/activity.md#sendactivityfailure)
 
 ```ts
 await myActivity.sendActivityFailure({
@@ -149,19 +153,3 @@ The `patch` method registers a route that only matches a PATCH HTTP method. It i
 ```ts
 api.patch("/hello", (request) => { .. });
 ```
-
-## Node Fetch API
-
-The default router provided by Eventual is built with [`itty-router`](https://github.com/kwhitley/itty-router) and uses the Node [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)'s [Request](https://developer.mozilla.org/en-US/docs/Web/API/Request) and [Response](https://developer.mozilla.org/en-US/docs/Web/API/Response) types.
-
-Your `tsconfig.json` must contain the DOM lib or else the `Request` and `Response` types will not be available.
-
-```json
-{
-  "compilerOptions": {
-    "lib": ["DOM"]
-  }
-}
-```
-
-Unless you're using Node 18+, you will need to polyfill with [`node-fetch`](https://www.npmjs.com/package/node-fetch).

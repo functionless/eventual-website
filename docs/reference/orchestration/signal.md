@@ -6,7 +6,7 @@ sidebar_position: 5.1
 
 A Signal is a message that can be sent into a running workflow execution. The workflow can use signals to wait for input from an external system, for example waiting for another service to send a signal indicating a user has confirmed/denied a request.
 
-Signals are a point-to-point communication mechanism, which is different than an [Event](./event.md) which are broadcasted by publishers to subscribers.
+Signals are a point-to-point communication mechanism, which is different than an [Event](../messaging/event.md) which are broadcasted by publishers to subscribers.
 
 ## Create a Signal
 
@@ -39,7 +39,7 @@ await mySignal.sendSignal({
 });
 ```
 
-Also see the [ExecutionHandle.sendSignal](./workflow.md#send-a-signal-to-a-running-execution) and [EventualServiceClient.sendSignal](./service-client#sendsignal) documentation for alternative methods of sending a signal.
+Also see the [ExecutionHandle.sendSignal](./workflow.md#send-a-signal-to-a-running-execution) and [EventualClient.sendSignal](../eventual-client#sendsignal) documentation for alternative methods of sending a signal.
 
 ## Wait for a Signal in a Workflow
 

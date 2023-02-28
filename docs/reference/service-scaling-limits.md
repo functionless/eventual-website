@@ -8,7 +8,7 @@ There are various limits that you should be aware of when it comes to scaling a 
 
 ## Default limit of StartExecution <= 50 TPS
 
-Each Workflow Execution is given its own AWS CloudWatch LogStream. The [CreateLogStream](https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_CreateLogStream.html) API is limited to 50 TPS per account/region by default. This limits the [`StartWorkflow`](./workflow.md#start-execution) API to 50 TPS.
+Each Workflow Execution is given its own AWS CloudWatch LogStream. The [CreateLogStream](https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_CreateLogStream.html) API is limited to 50 TPS per account/region by default. This limits the [`StartWorkflow`](./orchestration/workflow.md#start-execution) API to 50 TPS.
 
 This account can be raised by submitting a request to AWS for the AWS account and region. See
 

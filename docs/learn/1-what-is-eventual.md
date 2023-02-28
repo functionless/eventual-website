@@ -50,13 +50,12 @@ invoiceService.subscribe({
 
 The business logic of a Service is built with plug-and-play primitives that are coordinated by a powerful workflow engine.
 
-### API
+### Command
 
-For example, you can register a route on your Service's REST API with the [`api`](../reference/api.md) primitive:
+For example, you can register a Command on your Service's API with the [`command`](../reference/api/command.md) primitive:
 
 ```ts
-api.post("/invoice", async (request) => {
-  const item = await request.json();
+export const sendInvoice = command("sendInvoice", async (invoice: Invoice) => {
   await invoiceDB.putItem(item);
 });
 ```
@@ -65,11 +64,15 @@ api.post("/invoice", async (request) => {
 Eventual analyzes your code to detect this route and automatically attach it to the API Gateway. Eventual does similar work for all primitives.
 :::
 
-### Event
+### Event (Pub/Sub)
+
+With pub/sub messaging, messages sent by the publisher are processed by different subscribers. Each consumer receives its own copy of the message for processing.
 
 Events are records of something that has occurred (for example a change in the state of data within a Service) that other components and services listen to.
 
-They can be easily created with the [`event`](../reference/event.md) primitive:
+![](/img/pub-sub.svg)
+
+They can be easily created with the [`event`](../reference/messaging/event.md) primitive:
 
 ```ts
 const orderEvent = event("Order");
@@ -150,7 +153,7 @@ Workflows provide runtime guarantees that can't be ordinarily achieved within AP
 
 ### Activity
 
-An [Activity](../reference//activity.md) is a logical unit of work that can be called from a workflow. Workflows do the orchestration while Activities perform the actual work.
+An [Activity](../reference/orchestration/activity.md) is a logical unit of work that can be called from a workflow. Workflows do the orchestration while Activities perform the actual work.
 
 For example, a function to integrate with Stripe to charge Credit Cards:
 
