@@ -1,10 +1,12 @@
 ---
-sidebar_position: 2
+sidebar_position: 1
 ---
 
-# Event
+# Event (Publish-Subscribe)
 
 The Event Bus is a component within each Eventual Service that enables the decoupling of services through the use of events. Services can publish and subscribe to events without directly interacting with each other, allowing for asynchronous processing, error isolation and recovery via replay. This decoupling also enables the easy addition of new services without making changes to existing ones, helping to evolve your system over time.
+
+![](/img/pub-sub.svg)
 
 ## Creating an Event
 
@@ -41,48 +43,20 @@ await myEvent.publishEvent(
 
 ## Subscribe to an Event
 
-You can subscribe to events by calling the `onEvent` function on the event object and passing it a callback function that will be called every time the event is published:
+You can subscribe to events by calling the `subscription` function, passing an array of `events` to listen for and a callback function for processing events:
 
 ```ts
-myEvent.onEvent(async (event) => {
-  console.log(event);
-});
-```
+import { subscription } from "@eventual/core";
 
-### Supported Intrinsic Functions
-
-The following intrinsic functions can be called within an event subscription handler:
-
-- [`publish`](./event.md#publish-to-an-event)
-
-```ts
-await myEvent.publishEvent({ .. });
-```
-
-- [`startExecution`](./workflow.md#start-execution)
-
-```ts
-await myWorkflow.startExecution({
-  input: <input payload>
-})
-```
-
-- [`sendActivitySuccess`](./activity.md#sendactivitysuccess)
-
-```ts
-await myActivity.sendActivitySuccess({
-  token: <token>,
-  result: <result>
-})
-```
-
-- [`sendActivityFailure`](./activity.md#sendactivityfailure)
-
-```ts
-await myActivity.sendActivityFailure({
-  token: <token>,
-  error: <error>
-})
+export const onMyEvent = subscription(
+  "onMyEvent",
+  {
+    events: [myEvent, ..],
+  },
+  async (event) => {
+    await processEvent(event);
+  }
+);
 ```
 
 ## Defining the type of an Event
@@ -108,14 +82,20 @@ await myEvent.publishEvent({
   prop: 123, // error, prop must be a string
 });
 
-myEvent.onEvent((event) => {
-  event.key; // error, 'key' property does not exist
-});
+export const onMyEvent = subscription(
+  "onMyEvent",
+  {
+    events: [myEvent],
+  },
+  async (event) => {
+    event.key; // error, 'key' property does not exist
+  }
+);
 ```
 
 By defining the type of an event, you can improve the safety and reliability of your application by catching errors at compile time rather than runtime, as well as self-documenting your code by clearly outlining the shape of the data that the event is expected to contain.
 
-### Publish an Event from outside Eventual
+## Publish an Event from outside Eventual
 
 To publish an event to a Service's Event Bus from outside Eventual, you will need to obtain the Event Bus's ARN. You can do this by accessing the `events.bus` property of the Service `Construct`, which is the Event Bus for the Service. For example, if you have a Service named `myService`:
 
@@ -190,7 +170,7 @@ The value of `Detail` must be a stringified JSON object with a single `prop` pro
 }
 ```
 
-### Forward Events between different Services
+## Forward Events between different Services
 
 To forward events between different services using Eventual, you will need to create a new AWS CloudWatch Events Rule. This rule will specify the source Event Bus (the one you want to send events from) and the target Event Bus (the one you want to send events to). You can then specify the `detailType` of the events you want to send, using an array of event names.
 

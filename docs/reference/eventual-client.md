@@ -2,9 +2,9 @@
 sidebar_position: 0.2
 ---
 
-# Service Client
+# Eventual Client
 
-The `EventualServiceClient` is an interface that provides a set of methods for interacting with and managing workflow executions, sending signals, publishing events, and interacting with async activities in an Eventual Service. These methods allow external systems to communicate with and control the Eventual Service.
+The `EventualClient` is an interface that provides a set of methods for interacting with and managing workflow executions, sending signals, publishing events, and interacting with async activities in an Eventual Service. These methods allow external systems to communicate with and control the Eventual Service.
 
 ## APIs
 
@@ -33,7 +33,7 @@ The `response` contains a list of all the workflow names:
 
 ### `startExecution`
 
-The `startExecution` method allows you to directly start a workflow execution in the Eventual Service. It requires the `workflow` to be executed, the `input` data, and an optional `executionName`. When called, `startExecution` returns an [`ExecutionHandle`](./workflow.md#execution-handle) object that includes the `executionId` of the newly started workflow and various methods that can be used to interact with it.
+The `startExecution` method allows you to directly start a workflow execution in the Eventual Service. It requires the `workflow` to be executed, the `input` data, and an optional `executionName`. When called, `startExecution` returns an [`ExecutionHandle`](./orchestration/workflow.md#execution-handle) object that includes the `executionId` of the newly started workflow and various methods that can be used to interact with it.
 
 ```ts
 const execution = await client.startExecution({
@@ -240,7 +240,7 @@ const history = await client.getExecutionHistory({
 
 ### `sendSignal`
 
-Use `sendSignal` to send a [Signal](./signal.md) to a running workflow execution. It requires an `execution` to send the signal to, the `signal` to send and an optional `payload`.
+Use `sendSignal` to send a [Signal](./orchestration/signal.md) to a running workflow execution. It requires an `execution` to send the signal to, the `signal` to send and an optional `payload`.
 
 Here is an example of how to use `sendSignal`:
 
@@ -265,7 +265,7 @@ await client.sendSignal({
 
 ### `publishEvents`
 
-Use `publishEvents` to publish one or more [`Events`](./event.md) to a service. It accepts a list of `events` to publish.
+Use `publishEvents` to publish one or more [`Events`](./messaging/event.md) to a service. It accepts a list of `events` to publish.
 
 ```ts
 await client.publishEvents({
@@ -285,7 +285,7 @@ await client.publishEvents({
 
 ### `sendActivitySuccess`
 
-The `sendActivitySuccess` method is used to mark an [async activity](./activity.md#async-activity) as successfully completed. This is done by providing the `activityToken` and the `result` of the activity. This method is typically called after the activity has been performed and the result has been computed.
+The `sendActivitySuccess` method is used to mark an [async activity](./orchestration/activity.md#async-activity) as successfully completed. This is done by providing the `activityToken` and the `result` of the activity. This method is typically called after the activity has been performed and the result has been computed.
 
 ```ts
 await client.sendActivitySuccess({
@@ -307,7 +307,7 @@ await client.sendActivityFailure({
 
 ### `sendActivityHeartbeat`
 
-The `sendActivityHeartbeat` method is used to send a [Heartbeat](./activity.md#heartbeat) indicating that the activity is still being actively worked on. It requires the `activityToken: string;` of the activity request that is being processed.
+The `sendActivityHeartbeat` method is used to send a [Heartbeat](./orchestration/activity.md#heartbeat) indicating that the activity is still being actively worked on. It requires the `activityToken: string;` of the activity request that is being processed.
 
 ```ts
 await client.sendActivityHeartbeat({
@@ -315,11 +315,11 @@ await client.sendActivityHeartbeat({
 });
 ```
 
-See the [Heartbeat Documentation](./activity.md#heartbeat) for more information on asynchronous activity heartbeats.
+See the [Heartbeat Documentation](./orchestration/activity.md#heartbeat) for more information on asynchronous activity heartbeats.
 
 ## Implementations
 
-There are several implementations of the `EventualServiceClient` interface that are useful in different runtime contexts:
+There are several implementations of the `EventualClient` interface that are useful in different runtime contexts:
 
 ### `HttpServiceClient`
 
@@ -380,6 +380,6 @@ const client = getServiceClient();
 
 ### `TestEnvironment`
 
-The `TestEnvironment` is a locally simulated workflow environment designed for unit testing, available in the `@eventual/testing` package. It implements a local and mockable version of the EventualServiceClient interface, allowing you to provide mock implementations of activities and workflows, manually progress time, and more.
+The `TestEnvironment` is a locally simulated workflow environment designed for unit testing, available in the `@eventual/testing` package. It implements a local and mockable version of the EventualClient interface, allowing you to provide mock implementations of activities and workflows, manually progress time, and more.
 
 See the [Unit Testing](./unit-testing.md#testenvironment) docs.
