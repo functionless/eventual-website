@@ -96,7 +96,7 @@ npx eventual show service
 Use a tool like `curl` to make an HTTP request to the API Gateway endpoint for the `/work` API. This will trigger a workflow execution:
 
 ```
-curl -X POST <api-endpoint>/hello -d "sam"
+curl -X POST <api-endpoint>/rpc/hello -d "sam"
 ```
 
 This will return a JSON object containing the execution ID for the triggered workflow execution.
