@@ -301,34 +301,3 @@ Removing one of the calls is also invalid:
 ```ts
 await baz();
 ```
-
-## Syntax Constraints
-
-Any syntax, such as if-else, while, functions, etc. are supported.
-
-### Everything must be defined inside the workflow closure
-
-Tracking: https://github.com/functionless/eventual/issues/146
-
-The only constraint is that the workflow's logic must be entirely encapsulated within the closure - you cannot call an `async function` that is defined outside of the `workflow`.
-
-```ts
-workflow("myWorkflow", async () => {
-  // not allowed
-  await foo();
-});
-
-// invalid: to call this from a workflow, it must be defined within the `workflow` closure
-async function foo() {
-  // ..
-}
-
-workflow("myWorkflow", async () => {
-  await foo();
-
-  // valid: defined inside the workflow closure
-  async function foo() {
-    // ..
-  }
-});
-```
