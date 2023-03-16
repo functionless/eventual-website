@@ -135,21 +135,19 @@ api.post("/order/:orderId/cancel", async (request) => {
 
 ### Event
 
-With pub/sub messaging, messages sent by the publisher are processed by different subscribers. Each consumer receives its own copy of the message for processing.
-
 Events are records of something that has occurred (for example a change in the state of data within a Service) that other components and services listen to.
 
 ![](/img/pub-sub.svg)
 
-They can be easily created with the [`event`](../reference/messaging/event.md) primitive:
+First, you define an "Event Schema":
 
 ```ts
-const orderEvent = event("Order");
+const orderEvent = event<{ orderId: string }>("Order");
 ```
 
 ### Publish
 
-... published to:
+Then you can publish to it.
 
 ```ts
 await orderEvent.publishEvents({
@@ -158,9 +156,13 @@ await orderEvent.publishEvents({
 });
 ```
 
+:::info
+You can publish an event from APIs, Event Handlers, Workflows and Activities, or even from outside Eventual.
+:::
+
 ### Subscription
 
-... and then subscribed to:
+Or subscribe to it:
 
 ```ts
 export const onOrderEvent = subscription(
@@ -176,7 +178,7 @@ export const onOrderEvent = subscription(
 
 ### Cross-Service Subscription
 
-... and routed between Services:
+And route them to other Services:
 
 ```ts
 invoiceService.subscribe({
@@ -184,10 +186,6 @@ invoiceService.subscribe({
   events: ["OrderEvent"],
 });
 ```
-
-:::info
-You can publish an event from APIs, Event Handlers, Workflows and Activities, or even from outside Eventual.
-:::
 
 ## Testing
 
