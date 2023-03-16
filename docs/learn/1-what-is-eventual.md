@@ -5,7 +5,7 @@ sidebar_position: 1
 
 # What is Eventual?
 
-Eventual is a code-first service and software development kit (SDK) that helps developers build serverless micro-services in AWS with Infrastructure-as-Code (IaC).
+Eventual is a Software Development Kit (SDK) that for building micro-services in AWS using pure TypeScript and modern Infrastructure-as-Code (IaC) such as the AWS CDK, SST, Pulumi and Terraform (coming soon!).
 
 :::caution Video Coming Soon
 Stay tuned for an introductory video
@@ -13,46 +13,27 @@ Stay tuned for an introductory video
 
 ## Service
 
-The top-level Concept of Eventual is a Service. Eventual provides you abstractions for defining your Service's Interface with `APIs` and `Events`, and then performing Event-Driven Orchestration & Choreography with `Workflows`, `Activities` and `Subscriptions`.
+The top-level Concept of Eventual is a Service consisting of APIs, Events, Subscriptions, Workflows and Activities.
 
 ![Service Contract](../reference/service-contract.png)
 
 ### `Service` Construct
 
-It's a totally encapsulated micro-service deployable with a simple Construct that can be instantiated in an AWS CDK or Pulumi application.
-
-For example, you can use the [`Service`](../reference/service.md) Construct to deploy a fully functional service to AWS using the AWS CDK.
+Each of these pieces are discovered and deployed with [`Service` Construct](../reference/service.md) in an AWS CDK or Pulumi application.
 
 ```ts
 new Service(this, "invoice-service", {
-  entry: require.resolve("@my-company/invoice-service"),
+  entry: require.resolve("@invoicing/service"),
 });
 ```
 
-This includes an API Gateway, Event Bus and Workflow engine, all running within your own account.
+## Primitives
 
-### Composing and Evolving Services
-
-Services are designed to be composable and evolvable.
-
-For example, you can route events between services, making it easy to separate concerns and add new Services over time.
-
-```ts
-import { orderEvent } from "@my-company/order-service";
-
-invoiceService.subscribe({
-  service: orderService,
-  events: [orderEvent],
-});
-```
-
-## Building Blocks
-
-The business logic of a Service is built with plug-and-play primitives that are coordinated by a powerful workflow engine.
+Every Service has its own API Gateway which routes requests to Lambda Functions.
 
 ### Command
 
-For example, you can register a Command on your Service's API with the [`command`](../reference/api/command.md) primitive:
+A [Command](../reference/api/command.md) is a Remote Procedure Call - a Function that can be called over HTTP.
 
 ```ts
 export const sendInvoice = command("sendInvoice", async (invoice: Invoice) => {
@@ -60,71 +41,35 @@ export const sendInvoice = command("sendInvoice", async (invoice: Invoice) => {
 });
 ```
 
-:::info How it works
-Eventual analyzes your code to detect this route and automatically attach it to the API Gateway. Eventual does similar work for all primitives.
-:::
+### HTTP
 
-### Event (Pub/Sub)
+Commands are an opinionated RPC interface that streamline the development of APIs. In some case, you need access to the raw HTTP protocol.
 
-With pub/sub messaging, messages sent by the publisher are processed by different subscribers. Each consumer receives its own copy of the message for processing.
-
-Events are records of something that has occurred (for example a change in the state of data within a Service) that other components and services listen to.
-
-![](/img/pub-sub.svg)
-
-They can be easily created with the [`event`](../reference/messaging/event.md) primitive:
+For this, Eventual integrates with [`itty-router`](itty-router) to provide a bare-bones HTTP router with the Node Fetch types.
 
 ```ts
-const orderEvent = event("Order");
-```
-
-... and then subscribed to:
-
-```ts
-orderEvent.onEvent((event) => {
-  // process order
+api.get("/hello", async (request) => {
+  return new Response("OK");
 });
 ```
 
-... published to:
+### Middleware
+
+Commands can be integrated with middleware chains that perform functions such as validating requests, setting headers, authorizing and fetching user information.
+
+To create a Command with middleware, use the `api.use` utility to first create a middleware chain, and then finally created the command.
 
 ```ts
-await orderEvent.publishEvents({
-  orderId,
-  orderTime,
-});
-```
-
-... and routed between Services:
-
-```ts
-invoiceService.subscribe({
-  service: orderService,
-  events: ["OrderEvent"],
-});
+export const hello = api
+  .use(cors)
+  .use(authorized)
+  .command("hello", async (name: string, { user }) => {
+    // etc.
+  });
 ```
 
 :::info
-You can publish an event from APIs, Event Handlers, Workflows, Activities or even from outside Eventual.
-:::
-
-:::tip Designed for end-to-end type safety
-
-The schema for an Event can be defined in code to catch errors at compile time, improve IDE auto-completion and generate documentation.
-
-```ts
-interface OrderEvent {
-  orderId: string;
-  orderTime: string;
-}
-
-const orderEvent = event<OrderEvent>("Order");
-
-orderEvent.onEvent((event) => {
-  event.id; // Error!!! property 'id' does not exist on type OrderEvent
-});
-```
-
+See the [Middleware](./middleware.md) documentation for more information.
 :::
 
 ### Workflows
@@ -198,35 +143,65 @@ api.post("/order/:orderId/cancel", async (request) => {
 
 :::
 
-### Integrations
+### Event
 
-Services don't operate within a vacuum. Eventual's powerful orchestration capabilities are designed to integrate with any Cloud Resource or SaaS product.
+With pub/sub messaging, messages sent by the publisher are processed by different subscribers. Each consumer receives its own copy of the message for processing.
 
-For example, Eventual has no opinion on your choice of database - so you can use DynamoDB to store and retrieve data:
+Events are records of something that has occurred (for example a change in the state of data within a Service) that other components and services listen to.
+
+![](/img/pub-sub.svg)
+
+They can be easily created with the [`event`](../reference/messaging/event.md) primitive:
 
 ```ts
-api.post("/user", async (request) => {
-  await dynamoClient.putItem({
-    TableName: process.env.TABLE_NAME,
-    Item: await request.json(),
-  });
+const orderEvent = event("Order");
+```
+
+### Publish
+
+... published to:
+
+```ts
+await orderEvent.publishEvents({
+  orderId,
+  orderTime,
+});
+```
+
+### Subscription
+
+... and then subscribed to:
+
+```ts
+export const onOrderEvent = subscription(
+  "onOrderEvent",
+  {
+    events: [orderEvent],
+  },
+  async (event) => {
+    // process order event
+  }
+);
+```
+
+### Cross-Service Subscription
+
+... and routed between Services:
+
+```ts
+invoiceService.subscribe({
+  service: orderService,
+  events: ["OrderEvent"],
 });
 ```
 
 :::info
-Integrations go far beyond just AWS Resources - for example, perhaps you want to register a webhook in Slack:
-
-```ts
-const slack = new Slack("my-slack-connection", { credentials });
-
-slack.command("/hello", (request) => {
-  request.ack("hello world");
-});
-```
-
+You can publish an event from APIs, Event Handlers, Workflows and Activities, or even from outside Eventual.
 :::
 
-## Local Simulation and Testing
+## Testing
+
+### Unit Testing
 
 Eventual's [Unit Testing](../reference/unit-testing.md) library enables you to iterate on your application locally without wasting cycles waiting for deployments.
 
@@ -244,7 +219,17 @@ expect(await execution.getStatus()).toMatchObject({
 The `env` variable points to a [`TestEnvironment`](../reference/unit-testing.md#testenvironment) which supports mocking components of a service such as Activities and Events, as well as controlling how time progresses.
 :::
 
-## Time Machine Debugging
+### Local Simulation
+
+Eventual provides a dev server that simulates your Service locally, so you can quickly iterate on the business logic without deploying back and forth from the cloud.
+
+```
+eventual dev
+```
+
+Once started, you can observe how Commands, Workflows, Activities and Subscriptions behave within the context of a single Node Runtime for easy debugging in your IDE.
+
+### Time Machine Debugging
 
 Debugging distributed systems in the cloud is a near impossible task. Eventual's Time Machine Debugging feature allows you to replay a workflow execution that has already run (or is still running) locally within your IDE and debugger.
 
@@ -253,3 +238,82 @@ Step through time and observe what actually happened, identify and fix the bug, 
 :::
 
 ![](./debug-1.gif)
+
+## Project Structure
+
+Eventual creates a mono-repo set up.
+
+```
+├──infra/
+├──packages/
+├────service/
+├──package.json
+├──tsconfig.base.json
+├──tsconfig.json
+```
+
+These are pretty common these days because, with just an extra bit of configuration, you can maintain and develop on multiple NPM packages together. This is particularly important when building in the cloud, as you may have multiple different (but related) projects, e.g. a Next.JS frontend, 1 or more Services and a CDK/Pulumi application for your infrastructure.
+
+### Drop-in
+
+Eventual can be dropped into existing applications. For example, [SST 2.0](https://sst.dev/) also adopts a mono-repo setup, making it straightforward to integrate Eventual into SST.
+
+## Eventual CLI
+
+The Eventual CLI provides tools for local development and interacting with live Services.
+
+You can perform tasks such as start workflows, check their status, get a service's endpoints, etc.
+
+:::note
+See the [Eventual CLI](../reference/cli.md) docs for more information.
+:::
+
+## End to End Type-Safety
+
+Eventual really goes the extra mile when it comes to “end-to-end type safety”.
+
+#### `ServiceClient` (frontend → backend)
+
+The `ServiceClient` provides a type-safe client for your Service without any code generation. Simply import the types of your backend code and instantiate the client.
+
+```ts
+import type * as Invoicing from "@@invoicing/service";
+
+const client = new ServiceClient<typeof Invoicing>({
+  serviceUrl: process.env.SERVICE_URL!,
+});
+
+await client.sendInvoice({ .. });
+```
+
+#### `Service` (backend → infrastructure)
+
+The same goes for when you’re configuring infrastructure.
+
+```ts
+import type * as MyService from "@my/service";
+
+const service = new Service<typeof MyService>(this, "Service", {
+  commands: {
+    // safely configure any of the commands
+    hello: {
+      environment: { .. }
+    }
+  },
+  activities: ..
+  subscriptions: ..
+});
+```
+
+## Composing and Evolving Services
+
+Services are designed to be composable and evolvable. For example, you can route events between services, making it easy to separate concerns and add new Services over time.
+
+```ts
+import { orderEvent } from "@my-company/order-service";
+
+invoiceService.subscribe({
+  service: orderService,
+  events: [orderEvent],
+});
+```

@@ -43,11 +43,12 @@ const config = {
           trackingID: "G-JMKXGJ6HED",
           anonymizeIP: true,
         },
-        blog: {
-          showReadingTime: true,
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-        },
+        blog: false,
+        // blog: {
+        //   showReadingTime: true,
+        //   // Please change this to your repo.
+        //   // Remove this to remove the "edit this page" links.
+        // },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
         },
