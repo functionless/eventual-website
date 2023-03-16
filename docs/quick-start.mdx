@@ -90,12 +90,18 @@ Use the `deploy` script to deploy your Service to AWS with the AWS Cloud Develop
 You can find the CDK application in `infra/src/app.ts`. This is where you configure infrastructure.
 :::
 
-## 4. Invoke a Command
-
-Execute the `hello` command and pass in your name.
+## 4. Show Service URL
 
 ```
-npx eventual invoke hello "my name"
+eventual show service
+```
+
+## 4. Invoke a Command
+
+Execute the `hello` command.
+
+```
+npx eventual invoke hello --input "my name"
 ```
 
 This will trigger a workflow and return its execution ID.
