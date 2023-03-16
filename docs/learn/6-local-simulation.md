@@ -1,7 +1,7 @@
 ---
 ---
 
-# REST and RPC
+# Local Simulation
 
 :::caution Documentation Coming Soon
 :::

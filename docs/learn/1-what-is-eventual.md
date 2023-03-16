@@ -5,7 +5,7 @@ sidebar_position: 1
 
 # What is Eventual?
 
-Eventual is a code-first service and software development kit (SDK) that helps developers build event-driven systems using modern infrastructure-as-code (IaC).
+Eventual is a code-first service and software development kit (SDK) that helps developers build serverless micro-services in AWS with Infrastructure-as-Code (IaC).
 
 :::caution Video Coming Soon
 Stay tuned for an introductory video
@@ -13,15 +13,13 @@ Stay tuned for an introductory video
 
 ## Service
 
-Eventual is all about building and connecting microservices that expose useful capabilities as APIs and Event streams - all orchestrated by a durable Workflow engine.
+The top-level Concept of Eventual is a Service. Eventual provides you abstractions for defining your Service's Interface with `APIs` and `Events`, and then performing Event-Driven Orchestration & Choreography with `Workflows`, `Activities` and `Subscriptions`.
 
 ![Service Contract](../reference/service-contract.png)
 
-### Infrastructure
+### `Service` Construct
 
-An Eventual Service is distributed as Infrastructure-as-Code and deploys to your own infrastructure.
-
-### Service Construct
+It's a totally encapsulated micro-service deployable with a simple Construct that can be instantiated in an AWS CDK or Pulumi application.
 
 For example, you can use the [`Service`](../reference/service.md) Construct to deploy a fully functional service to AWS using the AWS CDK.
 

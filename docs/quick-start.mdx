@@ -9,26 +9,15 @@ import CodeBlock from "@theme/CodeBlock";
 
 # Quick Start
 
-Eventual is a set of NPM packages and a CDK Construct that helps you build microservices and provision corresponding AWS resources.
+This guide will help you set up a project, deploy, make a change, test it, and then tear down the project.
 
-## Before you begin
+## 0. Setup
 
-### Install Node and set up AWS
-
-Eventual is built with NodeJS and uses a mono-repo set up. You'll need to make sure your system has the following installed:
-
-- [Node JS 16+](https://nodejs.org/en/)
+- [Node JS 18+](https://nodejs.org/en/)
 - NPM 7+ or Yarn 1+ or PNPM
+- Create an [AWS Account](https://aws.amazon.com/) and set up your [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html):
 
-An easy way to install Node is using [Node Version Manager (NVM)](https://github.com/nvm-sh/nvm)
-
-### Set up AWS
-
-You'll need to create an [AWS Account](https://aws.amazon.com/)
-
-https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
-
-## Create a new project
+## 1. Create a new project
 
 To create a new Eventual project, run:
 
@@ -44,11 +33,19 @@ To create a new Eventual project, run:
   </TabItem>
 </Tabs>
 
-### Choose the name for your Project
+### Install Dependenices
 
-```
-> project name: my-service
-```
+<Tabs groupId="npm">
+  <TabItem value="npm" label="npm" default>
+    <CodeBlock>{"cd my-project\nnpm i"}</CodeBlock>
+  </TabItem>
+  <TabItem value="yarn" label="yarn">
+    <CodeBlock>{"cd my-project\nyarn"}</CodeBlock>
+  </TabItem>
+  <TabItem value="pnpm" label="pnpm">
+    <CodeBlock>{"cd my-project\npnpm i"}</CodeBlock>
+  </TabItem>
+</Tabs>
 
 ### Review the created project structure
 
@@ -56,19 +53,31 @@ The project template generates the following project structure containing 3 NPM 
 
 ```bash
 my-service
-├──README.md # a README cont
+├──README.md # a README with some helpful tips
 ├──infra # an AWS CDK application that deploys the repo's infrastructure
 ├──packages
     ├──service # the NPM package containing the @my-service/service business logic
 ```
 
-### View the `README.md` for helpful information
+## 2. Add a Command
 
-The generated `README.md` file in the root of your project contains useful information such as project overview, noteworthy Lambda Functions and CloudWatch Log Groups, and helpful scripts to use as a part of your developer workflow.
+Let's add a Command to the Service and then test it.
 
-##
+Add a command to the `packages/service/src/hello.ts`:
 
-## Deploy the application
+```ts
+export const echo = command("echo", async (message) => {
+  return message;
+});
+```
+
+### Send a request
+
+```
+npx eventual echo "hello eventual"
+```
+
+## 3. Deploy the application
 
 Use the `deploy` script to deploy your application to AWS.
 
@@ -85,14 +94,6 @@ Use the `deploy` script to deploy your application to AWS.
 </Tabs>
 
 This will deploy to AWS using the AWS Cloud Development Kit.
-
-## List services in your AWS account
-
-After deploying, let's now list the Eventual services we just deployed to our AWS account:
-
-```ts
-npx eventual list services
-```
 
 ## Get the Service's endpoints
 
