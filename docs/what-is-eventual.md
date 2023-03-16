@@ -15,11 +15,11 @@ Stay tuned for an introductory video
 
 The top-level Concept of Eventual is a Service consisting of APIs, Events, Subscriptions, Workflows and Activities.
 
-![Service Contract](../reference/service-contract.png)
+![Service Contract](./reference/service-contract.png)
 
 ### Construct
 
-Each of these pieces are discovered and deployed with [`Service` Construct](../reference/service.md) in an AWS CDK or Pulumi application.
+Each of these pieces are discovered and deployed with [`Service` Construct](./reference/service.md) in an AWS CDK or Pulumi application.
 
 ```ts
 new Service(this, "invoice-service", {
@@ -29,7 +29,7 @@ new Service(this, "invoice-service", {
 
 ### Command (RPC)
 
-A [Command](../reference/api/command.md) is a Remote Procedure Call - a Function that can be called over HTTP.
+A [Command](./reference/api/command.md) is a Remote Procedure Call - a Function that can be called over HTTP.
 
 ```ts
 export const sendInvoice = command("sendInvoice", async (invoice: Invoice) => {
@@ -88,7 +88,7 @@ Workflows provide runtime guarantees that can't be ordinarily achieved within AP
 
 ### Activity
 
-An [Activity](../reference/orchestration/activity.md) is a logical unit of work that can be called from a workflow. Workflows do the orchestration while Activities perform the actual work.
+An [Activity](./reference/orchestration/activity.md) is a logical unit of work that can be called from a workflow. Workflows do the orchestration while Activities perform the actual work.
 
 For example, a function to integrate with Stripe to charge Credit Cards:
 
@@ -191,7 +191,7 @@ invoiceService.subscribe({
 
 ### Unit Testing
 
-Eventual's [Unit Testing](../reference/unit-testing.md) library includes a `TestEnvironment` utility that gives fine-grained control over time and the underlying system, so that you can target tests towards edge cases typically difficult to reproduce consistently in integration tests.
+Eventual's [Unit Testing](./reference/unit-testing.md) library includes a `TestEnvironment` utility that gives fine-grained control over time and the underlying system, so that you can target tests towards edge cases typically difficult to reproduce consistently in integration tests.
 
 ```ts
 // advance the simulation's time
@@ -286,5 +286,5 @@ The Eventual CLI provides tools for local development and interacting with live 
 You can perform tasks such as start workflows, check their status, get a service's endpoints, etc.
 
 :::note
-See the [Eventual CLI](../reference/cli.md) docs for more information.
+See the [Eventual CLI](./reference/cli.md) docs for more information.
 :::

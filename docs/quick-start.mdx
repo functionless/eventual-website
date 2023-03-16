@@ -98,14 +98,14 @@ Execute the `hello` command.
 npx eventual invoke hello --input "my name"
 ```
 
-This will trigger a workflow and return its execution ID.
+The `hello` command in the template triggers a workflow and returns its execution ID.
 
 ```json
 { "executionId": "<execution-id>" }
 ```
 
 :::tip
-If you're not sure how, take a look at `hello` in `packages/service/src/hello.ts`.
+To see how, take a look at `hello` in `packages/service/src/hello.ts`.
 :::
 
 ## 5. Check the status of a Workflow Execution

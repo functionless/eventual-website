@@ -1,7 +1,8 @@
 ---
+sidebar_position: 5
 ---
 
-# Local Simulation
+# Operate a Service
 
 :::caution Documentation Coming Soon
 :::
