@@ -191,7 +191,7 @@ invoiceService.subscribe({
 
 ### Unit Testing
 
-Eventual's [Unit Testing](../reference/unit-testing.md) library enables you to iterate on your application locally without wasting cycles waiting for deployments.
+Eventual's [Unit Testing](../reference/unit-testing.md) library includes a `TestEnvironment` utility that gives fine-grained control over time and the underlying system, so that you can target tests towards edge cases typically difficult to reproduce consistently in integration tests.
 
 ```ts
 // advance the simulation's time
@@ -203,13 +203,9 @@ expect(await execution.getStatus()).toMatchObject({
 });
 ```
 
-:::info
-The `env` variable points to a [`TestEnvironment`](../reference/unit-testing.md#testenvironment) which supports mocking components of a service such as Activities and Events, as well as controlling how time progresses.
-:::
-
 ### Local Simulation
 
-Eventual provides a dev server that simulates your Service locally, so you can quickly iterate on the business logic without deploying back and forth from the cloud.
+Eventual's dev server simulates your Service locally, so you can quickly iterate on the business logic without deploying back and forth from the cloud.
 
 ```
 eventual dev
