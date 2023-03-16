@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# Queue (Point-to-Point)
+# Queue
 
 ![](/img/point-to-point.svg)
 

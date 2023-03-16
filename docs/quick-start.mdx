@@ -59,27 +59,20 @@ my-service
     ├──service # the NPM package containing the @my-service/service business logic
 ```
 
-## 2. Add a Command
+## 2. Make a Change
 
-Let's add a Command to the Service and then test it.
-
-Add a command to the `packages/service/src/hello.ts`:
+Let's make a small change to the `formatMessage` activity in `packages/service/src/hello.ts` so we can trace through
 
 ```ts
-export const echo = command("echo", async (message) => {
-  return message;
+export const formatMessage = activity("formatName", async (name: string) => {
+  // return `hello ${name}`;
+  return `goodbye ${name}`;
 });
 ```
 
-### Send a request
+## 3. Deploy the Service
 
-```
-npx eventual echo "hello eventual"
-```
-
-## 3. Deploy the application
-
-Use the `deploy` script to deploy your application to AWS.
+Use the `deploy` script to deploy your Service to AWS with the AWS Cloud Development Kit.
 
 <Tabs groupId="npm">
   <TabItem value="npm" label="npm" default>
@@ -93,39 +86,37 @@ Use the `deploy` script to deploy your application to AWS.
   </TabItem>
 </Tabs>
 
-This will deploy to AWS using the AWS Cloud Development Kit.
+:::tip
+You can find the CDK application in `infra/src/app.ts`. This is where you configure infrastructure.
+:::
 
-## Get the Service's endpoints
+## 4. Invoke a Command
 
-To view the API Gateway URL and Event Bus ARN for a service, use the `eventual show service` command:
-
-```ts
-npx eventual show service
-```
-
-## Make an API HTTP request
-
-Use a tool like `curl` to make an HTTP request to the API Gateway endpoint for the `/work` API. This will trigger a workflow execution:
+Execute the `hello` command and pass in your name.
 
 ```
-curl -X POST <api-endpoint>/hello -d "sam"
+npx eventual hello "my name"
 ```
 
-This will return a JSON object containing the execution ID for the triggered workflow execution.
+This will trigger a workflow and return its execution ID.
 
 ```json
 { "executionId": "<execution-id>" }
 ```
 
-## Get the status of the Workflow execution
+:::tip
+If you're not sure how, take a look at `hello` in `packages/service/src/hello.ts`.
+:::
 
-You can get the status and result of a workflow execution using the `eventual get execution` command:
+## 5. Check the status of a Workflow Execution
+
+Use the `eventual` CLI to get the status of the workflow we just started.
 
 ```
 npx eventual get execution <execution-id>
 ```
 
-## View the logs for the execution
+## 6. View the logs
 
 To view the logs for the workflow execution we just started, use the `eventual get logs` command followed by the `--execution` flag and the execution ID:
 
