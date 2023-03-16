@@ -4,7 +4,13 @@ sidebar_position: 4
 
 # Workflow
 
-Workflows are programs that coordinate complex business processes, including calling APIs, coordinating time-based actions, and interacting with humans. They are designed to be reliable and durable, allowing them to execute over long periods of time and recover from failures. Workflows are particularly useful for orchestrating the interactions between various systems and components, serving as the "glue" that holds everything together.
+Workflows are programs that coordinate complex business processes, including calling Activities, coordinating time-based actions, and interacting with humans. They are designed to be reliable and durable, allowing them to execute over long periods of time and recover from failures. Workflows are particularly useful for orchestrating the interactions between various systems and components, serving as the "glue" that holds everything together.
+
+:::caution
+A Workflow is purely for decision-making. It must not have side effects in and of itself. To have side effects, you must either: 1) [call an Activity](./activity.md#call-an-activity-from-within-a-workflow), or 2) [publish an Event](../messaging/event.md#publish-an-event).
+
+See [Runtime Semantics](#runtime-semantics) and [Deterministic Constraints](#deterministic-constraints) for more information.
+:::
 
 ## Create a `workflow`
 

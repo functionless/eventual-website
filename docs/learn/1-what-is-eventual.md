@@ -15,6 +15,8 @@ Stay tuned for an introductory video
 
 Eventual is all about building and connecting microservices that expose useful capabilities as APIs and Event streams - all orchestrated by a durable Workflow engine.
 
+![Service Contract](../reference/service-contract.png)
+
 ### Infrastructure
 
 An Eventual Service is distributed as Infrastructure-as-Code and deploys to your own infrastructure.

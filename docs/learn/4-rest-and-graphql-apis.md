@@ -1,7 +1,7 @@
 ---
 ---
 
-# REST and GraphQL APIs
+# REST and RPC
 
 :::caution Documentation Coming Soon
 :::

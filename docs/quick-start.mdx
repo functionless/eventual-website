@@ -11,13 +11,22 @@ import CodeBlock from "@theme/CodeBlock";
 
 Eventual is a set of NPM packages and a CDK Construct that helps you build microservices and provision corresponding AWS resources.
 
-## Install Node and set up AWS
+## Before you begin
 
-Before getting started with Eventual, you'll need:
+### Install Node and set up AWS
+
+Eventual is built with NodeJS and uses a mono-repo set up. You'll need to make sure your system has the following installed:
 
 - [Node JS 16+](https://nodejs.org/en/)
 - NPM 7+ or Yarn 1+ or PNPM
-- An [AWS Account](https://aws.amazon.com/)
+
+An easy way to install Node is using [Node Version Manager (NVM)](https://github.com/nvm-sh/nvm)
+
+### Set up AWS
+
+You'll need to create an [AWS Account](https://aws.amazon.com/)
+
+https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
 
 ## Create a new project
 
@@ -35,13 +44,13 @@ To create a new Eventual project, run:
   </TabItem>
 </Tabs>
 
-## Choose the name for your Project
+### Choose the name for your Project
 
 ```
 > project name: my-service
 ```
 
-## Review the created project structure
+### Review the created project structure
 
 The project template generates the following project structure containing 3 NPM packages:
 
@@ -53,9 +62,11 @@ my-service
     ├──service # the NPM package containing the @my-service/service business logic
 ```
 
-## View the `README.md` for helpful information
+### View the `README.md` for helpful information
 
 The generated `README.md` file in the root of your project contains useful information such as project overview, noteworthy Lambda Functions and CloudWatch Log Groups, and helpful scripts to use as a part of your developer workflow.
+
+##
 
 ## Deploy the application
 
@@ -72,6 +83,8 @@ Use the `deploy` script to deploy your application to AWS.
     <CodeBlock>pnpm run deploy</CodeBlock>
   </TabItem>
 </Tabs>
+
+This will deploy to AWS using the AWS Cloud Development Kit.
 
 ## List services in your AWS account
 

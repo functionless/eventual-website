@@ -43,14 +43,11 @@ const config = {
           trackingID: "G-JMKXGJ6HED",
           anonymizeIP: true,
         },
-        blog: false,
-        // blog: {
-        //   showReadingTime: true,
-        //   // Please change this to your repo.
-        //   // Remove this to remove the "edit this page" links.
-        //   editUrl:
-        //     "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
-        // },
+        blog: {
+          showReadingTime: true,
+          // Please change this to your repo.
+          // Remove this to remove the "edit this page" links.
+        },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
         },
@@ -77,6 +74,11 @@ const config = {
           {
             href: "/",
             label: "Home",
+            position: "left",
+          },
+          {
+            to: "blog",
+            label: "Blog",
             position: "left",
           },
           {
