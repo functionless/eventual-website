@@ -45,7 +45,7 @@ export const sendInvoice = command("sendInvoice", async (invoice: Invoice) => {
 
 Commands are an opinionated RPC interface that streamline the development of APIs. In some case, you need access to the raw HTTP protocol.
 
-For this, Eventual integrates with [`itty-router`](itty-router) to provide a bare-bones HTTP router with the Node Fetch types.
+For this, Eventual integrates with [`itty-router`](https://github.com/kwhitley/itty-router) to provide a bare-bones HTTP router with the Node Fetch types.
 
 ```ts
 api.get("/hello", async (request) => {
@@ -55,9 +55,7 @@ api.get("/hello", async (request) => {
 
 ### Middleware
 
-Commands can be integrated with middleware chains that perform functions such as validating requests, setting headers, authorizing and fetching user information.
-
-To create a Command with middleware, use the `api.use` utility to first create a middleware chain, and then finally created the command.
+Middleware chains perform functions such as validating requests, setting headers, authorizing and fetching user information for Commands and HTTP routes.
 
 ```ts
 export const hello = api
@@ -67,10 +65,6 @@ export const hello = api
     // etc.
   });
 ```
-
-:::info
-See the [Middleware](./middleware.md) documentation for more information.
-:::
 
 ### Workflows
 

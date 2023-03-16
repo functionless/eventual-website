@@ -43,12 +43,11 @@ const config = {
           trackingID: "G-JMKXGJ6HED",
           anonymizeIP: true,
         },
-        blog: false,
-        // blog: {
-        //   showReadingTime: true,
-        //   // Please change this to your repo.
-        //   // Remove this to remove the "edit this page" links.
-        // },
+        blog: {
+          showReadingTime: true,
+          // Please change this to your repo.
+          // Remove this to remove the "edit this page" links.
+        },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
         },
@@ -77,11 +76,11 @@ const config = {
             label: "Home",
             position: "left",
           },
-          {
-            to: "blog",
-            label: "Blog",
-            position: "left",
-          },
+          // {
+          //   to: "blog",
+          //   label: "Blog",
+          //   position: "left",
+          // },
           {
             href: "https://github.com/functionless/eventual",
             label: "GitHub",
