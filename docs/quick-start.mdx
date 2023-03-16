@@ -116,6 +116,17 @@ Use the `eventual` CLI to get the status of the workflow we just started.
 npx eventual get execution <execution-id>
 ```
 
+It should output:
+
+```
+Result:
+goodbye my name
+```
+
+:::info
+Note the "goodbye" in the output. We made a change to an Activity that was then invoked by a Workflow Execution. The data returned by that Workflow Execution is what we see here.
+:::
+
 ## 6. View the logs
 
 To view the logs for the workflow execution we just started, use the `eventual get logs` command followed by the `--execution` flag and the execution ID:
