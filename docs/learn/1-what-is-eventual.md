@@ -17,7 +17,7 @@ The top-level Concept of Eventual is a Service consisting of APIs, Events, Subsc
 
 ![Service Contract](../reference/service-contract.png)
 
-### `Service` Construct
+### Construct
 
 Each of these pieces are discovered and deployed with [`Service` Construct](../reference/service.md) in an AWS CDK or Pulumi application.
 
@@ -27,11 +27,7 @@ new Service(this, "invoice-service", {
 });
 ```
 
-## Primitives
-
-Every Service has its own API Gateway which routes requests to Lambda Functions.
-
-### Command
+### Command (RPC)
 
 A [Command](../reference/api/command.md) is a Remote Procedure Call - a Function that can be called over HTTP.
 
@@ -87,7 +83,7 @@ This may look like a typical function but it's actually a workflow that can span
 :::
 
 :::tip
-Workflows provide runtime guarantees that can't be ordinarily achieved within APIs, Event Handlers or Activities. They are the glue that coordinates time, connects services and makes them reliable.
+Workflows provide runtime guarantees that can't be ordinarily achieved within APIs, Event Handlers or Activities. They are the glue that coordinates time, people and services in a reliable, predictable manor.
 :::
 
 ### Activity
@@ -252,16 +248,6 @@ These are pretty common these days because, with just an extra bit of configurat
 
 Eventual can be dropped into existing applications. For example, [SST 2.0](https://sst.dev/) also adopts a mono-repo setup, making it straightforward to integrate Eventual into SST.
 
-## Eventual CLI
-
-The Eventual CLI provides tools for local development and interacting with live Services.
-
-You can perform tasks such as start workflows, check their status, get a service's endpoints, etc.
-
-:::note
-See the [Eventual CLI](../reference/cli.md) docs for more information.
-:::
-
 ## End to End Type-Safety
 
 Eventual really goes the extra mile when it comes to “end-to-end type safety”.
@@ -299,15 +285,12 @@ const service = new Service<typeof MyService>(this, "Service", {
 });
 ```
 
-## Composing and Evolving Services
+## Eventual CLI
 
-Services are designed to be composable and evolvable. For example, you can route events between services, making it easy to separate concerns and add new Services over time.
+The Eventual CLI provides tools for local development and interacting with live Services.
 
-```ts
-import { orderEvent } from "@my-company/order-service";
+You can perform tasks such as start workflows, check their status, get a service's endpoints, etc.
 
-invoiceService.subscribe({
-  service: orderService,
-  events: [orderEvent],
-});
-```
+:::note
+See the [Eventual CLI](../reference/cli.md) docs for more information.
+:::
