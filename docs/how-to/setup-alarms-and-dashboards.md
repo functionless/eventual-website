@@ -2,7 +2,7 @@
 sidebar_position: 5.1
 ---
 
-# Connect Services
+# Set up Alarms and Dashboards
 
 :::caution Documentation Coming Soon
 :::
