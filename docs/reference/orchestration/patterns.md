@@ -1,8 +1,8 @@
 ---
-sidebar_position: 5.2
+sidebar_position: 10
 ---
 
-# Cheatsheet
+# Patterns
 
 This documentation contains a set of techniques and strategies for structuring workflows in Eventual. These patterns provide best practices and established solutions for common problems to help you build effective applications.
 
