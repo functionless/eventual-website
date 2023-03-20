@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# Create a Command for submitting tasks
+# Create Command
 
 Now it's time to start building. The first thing we'll do is create a Command for submitting tasks.
 

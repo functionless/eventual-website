@@ -1,0 +1,36 @@
+---
+sidebar_position: 1
+slug: /tutorial
+---
+
+# Create Project
+
+:::caution
+TODO: Video
+:::
+
+## What we're building
+
+This tutorial will walk through, end-to-end, the process of building a Service that supports submitting tasks, waiting for a person to approve the task, and then completing the task. It will demonstrate how to build APIs, a human-in-the-loop workflow and publish events.
+
+## Set Up
+
+First, create a new project.
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
+
+<Tabs groupId="npm">
+  <TabItem value="npm" label="npm" default>
+    <CodeBlock>npm create eventual@latest</CodeBlock>
+  </TabItem>
+  <TabItem value="yarn" label="yarn">
+    <CodeBlock>yarn create eventual@latest</CodeBlock>
+  </TabItem>
+  <TabItem value="pnpm" label="pnpm">
+    <CodeBlock>pnpm create eventual@latest</CodeBlock>
+  </TabItem>
+</Tabs>
+
+Then, delete the sample code that comes with the template `packages/service/src/hello.ts` and `packages/service/test/hello.test.ts`
