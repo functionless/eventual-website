@@ -1,54 +1,12 @@
 ---
-title: Preface
+sidebar_position: 0
+slug: /tutorial
 ---
 
-# Eventual Tutorial
+# Tutorial
 
 :::caution
 TODO: Video
-:::
-
-## What we're building
-
-This tutorial will walk through, end-to-end, the process of building a Service that supports submitting tasks, waiting for a person to approve the task, and then completing the task. It will demonstrate how to build APIs, a human-in-the-loop workflow and publish events.
-
-## Set up
-
-To get set up, follow the [Quick Start](../quick-start.mdx) guide so that you have a fresh project to work with.
-
-## Delete the sample code
-
-Let's first delete the sample code that comes with the template `packages/service/src/hello.ts` and `packages/service/test/hello.test.ts`
-
-## Create a Command for submitting tasks
-
-Now it's time to start building. The first thing we'll do is create a Command for submitting tasks.
-
-Create `packages/service/src/submit-task.ts`.
-
-Import `command` from the `@eventual/core` library.
-
-```ts
-import { command } from "@eventual/core";
-```
-
-Then, export and create a command for submitting a task.
-
-```ts
-export const submitTask = command("submitTask", async (description: string) => {
-  // for now, just return the input back
-  return description;
-});
-```
-
-Go back to `packages/service/src/index.ts` and export the file we just created.
-
-```ts
-export * from "./submit-task.js";
-```
-
-:::tip
-For more information on why we re-export everything from the `index.ts`, see the [End-to-End Types and Schemas](../concepts/end-to-end-safety.md) documentation.
 :::
 
 ## Test invoking the Command
@@ -306,7 +264,7 @@ if (response.Item === undefined) {
 ```
 
 :::info
-See the [HttpError](../reference/api/command.md#httperror) documentation.
+See the [HttpError](/reference/api/command#httperror) documentation.
 :::
 
 Finally, call `sendActivitySuccess` on the `waitForApproval` activity to complete the async activity.
@@ -320,7 +278,7 @@ await waitForApproval.sendActivitySuccess({
 ```
 
 :::info
-See the [Async Activity](../reference/orchestration/activity.md#async-activity) documentation.
+See the [Async Activity](/reference/orchestration/activity#async-activity) documentation.
 :::
 
 ## Scratch

@@ -8,7 +8,8 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: "eventual",
-  tagline: "Dinosaurs are cool",
+  tagline:
+    "Build scalable and durable services with APIs, Messaging and Workflows",
   url: "https://docs.eventual.net",
   baseUrl: "/",
   onBrokenLinks: "throw",
@@ -77,9 +78,10 @@ const config = {
             position: "left",
           },
           {
-            href: "/tutorial",
-            label: "Tutorial",
+            type: "docSidebar", // docSidebar
             position: "left",
+            sidebarId: "tutorial", // foldername
+            label: "Tutorial", // navbar title
           },
           // {
           //   to: "blog",
@@ -119,7 +121,7 @@ const config = {
               },
               {
                 label: "Twitter",
-                href: "https://twitter.com/_functionless",
+                href: "https://twitter.com/EventualCloud",
               },
             ],
           },
