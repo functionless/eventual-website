@@ -4,9 +4,9 @@ sidebar_position: 0
 
 # Service
 
-An Eventual Service is a composable and evolvable building block that is fundamentally asynchronous and event-driven. It consists of an API Gateway, an Event Bus, and Workflows. The API Gateway is responsible for exposing your business logic through an HTTP REST API, while the Event Bus enables the decoupling of services through the publication and subscription of events. The Workflows execute your business logic and can be triggered by events or API requests. Together, these components enable you to build and deploy scalable, maintainable, and resilient distributed systems in the cloud.
+An Eventual Service is a composable and evolvable building block that is fundamentally asynchronous and event-driven. It consists of an API Gateway, an Event Bus, and Workflows.
 
-![Service Contract](../service-contract.png)
+![Service Contract](../../assets/service-contract.png)
 
 ## Service Construct
 
@@ -171,4 +171,4 @@ table.grantReadWriteData(service.commands.myCommand);
 
 An Eventual Service provisions a fully serverless architecture that includes an API Gateway, an Event Bus, and a Workflow Engine made up of a SQS FIFO Queue, an S3 Bucket, a DynamoDB Table, and a Scheduler API. These components are connected and managed by Lambda Functions that contain your business logic and are bundled with the `@eventual/aws-runtime` library, which controls execution and provides services to your code. These Lambda Functions use managed event source subscriptions to trigger and orchestrate the various pieces of the architecture, making it easy to maintain and operate.
 
-![Service Architecture](./service.png)
+![Service Architecture](../../assets/service.png)

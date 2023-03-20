@@ -15,7 +15,7 @@ Stay tuned for an introductory video
 
 The top-level Concept of Eventual is a Service consisting of APIs, Events, Subscriptions, Workflows and Activities.
 
-![Service Contract](./service-contract.png)
+![Service Contract](../assets/service-contract.png)
 
 ### Construct
 

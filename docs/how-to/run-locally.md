@@ -20,6 +20,13 @@ This will start up a local server running the service located at `./packages/ser
 Local Server running on http://localhost:4000
 ```
 
+### Local relies on an initial deployment
+
+When running `eventual local`, an initial deployment to the cloud is still necessary before you can get started. This is for two reasons:
+
+1. Eventual only runs the "control" parts of your service locally - any databases like DynamoDB or S3, still need to be deployed.
+2. The local code needs to assume an IAM Role to access these resources. This Role is deployed when you deploy the service.
+
 ## Interact with the Local Server
 
 The server is just a plain HTTP server, so you can use any tool you'd like to make HTTP requests to your server. For example, cURL or Postman.

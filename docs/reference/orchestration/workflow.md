@@ -262,7 +262,7 @@ return "DONE";
 
 ## Patterns
 
-See the [Workflow Patterns](../../cheatsheet.md) for a cheatsheet of patterns for building workflows.
+See the [Workflow Patterns](./patterns.md) for a cheat-sheet of patterns for building workflows.
 
 ## Runtime Semantics
 

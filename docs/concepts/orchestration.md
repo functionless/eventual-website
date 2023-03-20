@@ -4,15 +4,21 @@ sidebar_position: 1
 
 # Orchestration
 
-Workflows simplify how developers orchestrate long-running, durable and stateful workflows in their service. Workflows are challenging because they can span long periods of time and have to deal with distributed systems problems such as race conditions. Eventual enables you to express these types of orchestrations using traditional programming techniques such as functions, if-else, loops, etc.
+Orchestration is the automated coordination and management of multiple services to work together to perform a specific task or achieve a common goal.
 
-:::caution
+Eventual provides `workflow`, `activity` and `signal` primitives that enable you to express complex coordination logic using traditional programming techniques, such as functions, if-else, loops, etc.
+
+:::info
+See the [Workflow](../reference/orchestration/workflow.md), [Activity](../reference/orchestration/activity.md) and [Signal](../reference/orchestration//signal.md) reference documentation for more information on how to implement orchestration into your Service.
+:::
+
+:::caution TODO
 Video
 :::
 
 ## Workflows are the decision makers
 
-The `workflow` is the "decider". It chooses what to do and when. It does not perform actual work - instead, work is done by activities. Workflows call activities - aka. orchestrate the work.
+The `workflow` is the "decider". It chooses what to do and when. It does not perform actual work - instead, work is done by activities. Workflows choose when to call activities - i.e. orchestrate the work.
 
 For example, to implement a workflow that will send a reminder email indefinitely on a daily schedule.
 
@@ -58,8 +64,29 @@ Workflows and Activities can configure timeouts, retry policies and failure cana
 
 ## Workflows control concurrency
 
-## More Information
+As the orchestrator, workflows can decide to run multiple tasks in parallel and control concurrency using Promises.
 
-See the [Workflow](../reference/orchestration/workflow.md), [Activity](../reference/orchestration/activity.md) and [Signal](../reference/orchestration//signal.md) reference documentation for how to create and work with these concepts.
+For example, to run many tasks in parallel and then wait for them all to complete, use `Promise.all`:
 
-[View the Logs](../how-to/view-logs.md)
+```ts
+const [a, b] = await Promise.all([taskA(), taskB()]);
+```
+
+Or to wait for one of many tasks to complete and take the first one to resolve, use `Promise.race`:
+
+```ts
+const isCanceled = await Promise.race([
+  duration(5, "minutes"),
+  cancelSignal.expectSignal(),
+]);
+
+if (isCanceled) {
+  // do something
+}
+```
+
+:::info
+See the [Mozilla docs on Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) to understand Promises on a deeper level.
+
+Also see the [Workflow](../reference/orchestration/workflow.md) and [Workflow Patterns](../reference/orchestration/patterns.md) for more information on how to perform orchestration in Eventual.
+:::

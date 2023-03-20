@@ -28,13 +28,13 @@ Eventual is an open source TypeScript framework that offers "core abstractions" 
 
 Each Service can be thought of as exposing a Service Interface, consisting of `APIs` and `Events`, and then then performing Event-Driven Orchestration & Choreography with `Workflows`, `Activities` and `Subscriptions`.
 
-![Service Contract](./service-contract.png)
+![Service Contract](../assets/service-contract.png)
 
 These can then be adopted iteratively, and seamlessly integrate and interact with any external or existing system, whether it be a database or another service. In our opinion, having confidence in (and relying on) these consistent patterns can 10x productivity from a reliability, productivity, maintainability and agility standpoint.
 
 Everything can be written and tested in a single TypeScript code-base. You can run your massively scalable distributed cloud system LOCALLY before you even deploy 🤯. Run, test and iterate locally, then deploy only when it’s working. And here's the kicker - you can even debug production locally. That's right - debug your production system on your local machine.
 
-import devCycle from "./dev-cycle.png";
+import devCycle from "../assets/dev-cycle.png";
 
 <div style={{ textAlign: "center" }}>
   <img src={devCycle} alt="Developer Iteration Cycle" />
