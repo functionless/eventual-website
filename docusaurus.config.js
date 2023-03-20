@@ -76,6 +76,11 @@ const config = {
             label: "Home",
             position: "left",
           },
+          {
+            href: "/tutorial",
+            label: "Tutorial",
+            position: "left",
+          },
           // {
           //   to: "blog",
           //   label: "Blog",

@@ -7,8 +7,8 @@ sidebar_position: 4
 Eventual is designed to provide a light-weight and fast developer lifecycle. In general, the process looks like as follows:
 
 1. Build - start writing code, create Commands, Workflows, Activities, etc.
-2. Test - write unit tests and mock out parts of your service
-3. Simulate - run the service locally for instant feedback
+2. Run - start a server running the service locally for instant feedback
+3. Test - write unit tests and mock out parts of your service
 4. Deploy - deploy the service to production
 5. Replay - debug broken workflows by replaying them locally in your IDE
 6. ... repeat
@@ -19,20 +19,20 @@ Eventual is designed to provide a light-weight and fast developer lifecycle. In 
 
 Start writing code. Add Commands, Workflows, Activities, Subscriptions, configure Infrastructure, etc.
 
+## Run
+
+Run your Service locally to test it as a whole. Follow a tracer-bullet feature end-to-end. Observe how they interact with each other. Set breakpoints and follow execution across all of these pieces.
+
+:::info
+See [How to run locally](../how-to/run-locally.md) for more information.
+:::
+
 ## Test
 
 Add unit tests for individual pieces. Mock out different parts of your application to test in isolation.
 
 :::info
 See [How to unit test](../how-to/unit-test.md) for more information.
-:::
-
-## Simulate
-
-Run your Service locally to test it as a whole. Test how Commands, Subscriptions, Workflows and Activities interact with each other. Set breakpoints and follow execution across all of these pieces.
-
-:::info
-See [How to run locally](../how-to/run-locally.md) for more information.
 :::
 
 ## Deploy

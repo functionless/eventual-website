@@ -2,15 +2,19 @@
 sidebar_position: 2
 ---
 
-# Choreography
+# Messaging
 
-Choreography is a design pattern for communication between services, where each service is responsible for its own behavior and coordination is achieved through message-passing.
+Eventual provides primitives for Messaging within a Service, including a broadcast publish/subscribe mechanism, and (coming soon) point-to-point Queues and Streams, and Actors.
+
+## aka. Choreography
+
+Messaging can be used to apply a technique known as "choreography". Choreography is a design pattern for communication between services, where each service is responsible for its own behavior and coordination is achieved through asynchronous message-passing.
 
 :::info
 See the [Event](../reference/messaging/event.md) and [Subscription](../reference/messaging/subscription.md) documentation or more information on how to implement choreography into your Service.
 :::
 
-## Difference between Choregraphy and Orchestration
+### Difference between Choregraphy and Orchestration
 
 The main difference between orchestration and choreography is that orchestration has a centralized controller that manages the interaction and flow of communication between services, while choreography relies on the autonomous and decentralized behavior of each service to achieve the coordination of the system.
 
