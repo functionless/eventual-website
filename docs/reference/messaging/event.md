@@ -2,13 +2,11 @@
 sidebar_position: 1
 ---
 
-# Event (Publish-Subscribe)
+# Event
 
-The Event Bus is a component within each Eventual Service that enables the decoupling of services through the use of events. Services can publish and subscribe to events without directly interacting with each other, allowing for asynchronous processing, error isolation and recovery via replay. This decoupling also enables the easy addition of new services without making changes to existing ones, helping to evolve your system over time.
+An `Event` is a named schema for a message that can be published to a Service's [Bus](./bus.md) and then routed to a Service's [Subscriptions](./subscription.md) or [to other Services](./service-to-service.md).
 
-![](/img/pub-sub.svg)
-
-## Creating an Event
+## Create an Event
 
 You can create an event by importing the `event` function from `@eventual/core` and passing it a name for the event:
 
@@ -43,21 +41,7 @@ await myEvent.publishEvent(
 
 ## Subscribe to an Event
 
-You can subscribe to events by calling the `subscription` function, passing an array of `events` to listen for and a callback function for processing events:
-
-```ts
-import { subscription } from "@eventual/core";
-
-export const onMyEvent = subscription(
-  "onMyEvent",
-  {
-    events: [myEvent, ..],
-  },
-  async (event) => {
-    await processEvent(event);
-  }
-);
-```
+See the [Subscription](./subscription.md) page.
 
 ## Defining the type of an Event
 
@@ -169,31 +153,3 @@ The value of `Detail` must be a stringified JSON object with a single `prop` pro
   "prop": "value"
 }
 ```
-
-## Forward Events between different Services
-
-To forward events between different services using Eventual, you will need to create a new AWS CloudWatch Events Rule. This rule will specify the source Event Bus (the one you want to send events from) and the target Event Bus (the one you want to send events to). You can then specify the `detailType` of the events you want to send, using an array of event names.
-
-```ts
-import { aws_events, aws_events_targets } from "aws-cdk-lib";
-
-const A = new Service(..);
-const B = new Service(..);
-
-new aws_events.Rule(stack, "Rule", {
-  // send from service A
-  eventBus: A.events.bus,
-  eventPattern: {
-    // select all events with the name "MyEvent"
-    detailType: ["MyEvent"]
-  },
-  targets: [
-    // send to service B
-    new aws_events_targets.EventBus(B.events.bus)
-  ]
-})
-```
-
-In the example above, all events with the name `"MyEvent"` will be sent from the source Event Bus of service `A` to the target Event Bus of service `B`. This allows you to easily route events between different services in your application, using the power and flexibility of AWS Event Bridge.
-
-For more information on how to use AWS's bus-to-bus routing feature, check out this [blog post](https://aws.amazon.com/blogs/compute/using-bus-to-bus-event-routing-with-amazon-eventbridge/).

@@ -54,42 +54,6 @@ api.get("/hello/:name", async (request) => {
 });
 ```
 
-### Supported Intrinsic Functions
-
-The following intrinsic functions can be called within an API handler:
-
-- [`publishEvent`](../messaging/event.md#publish-to-an-event)
-
-```ts
-await myEvent.publishEvent({ .. });
-```
-
-- [`startExecution`](../orchestration/workflow.md#start-execution)
-
-```ts
-await myWorkflow.startExecution({
-  input: <input payload>
-})
-```
-
-- [`sendActivitySuccess`](../orchestration/activity.md#sendactivitysuccess)
-
-```ts
-await myActivity.sendActivitySuccess({
-  token: <token>,
-  result: <result>
-})
-```
-
-- [`sendActivityFailure`](../orchestration/activity.md#sendactivityfailure)
-
-```ts
-await myActivity.sendActivityFailure({
-  token: <token>,
-  error: <error>
-})
-```
-
 ## Order of precedence
 
 Routes are evaluated in the order in which they are registered and the first route that matches will be evaluated.
@@ -152,4 +116,40 @@ The `patch` method registers a route that only matches a PATCH HTTP method. It i
 
 ```ts
 api.patch("/hello", (request) => { .. });
+```
+
+## Supported Intrinsic Functions
+
+The following intrinsic functions can be called within an API handler:
+
+- [`publishEvent`](../messaging/event.md#publish-to-an-event)
+
+```ts
+await myEvent.publishEvent({ .. });
+```
+
+- [`startExecution`](../orchestration/workflow.md#start-execution)
+
+```ts
+await myWorkflow.startExecution({
+  input: <input payload>
+})
+```
+
+- [`sendActivitySuccess`](../orchestration/activity.md#sendactivitysuccess)
+
+```ts
+await myActivity.sendActivitySuccess({
+  token: <token>,
+  result: <result>
+})
+```
+
+- [`sendActivityFailure`](../orchestration/activity.md#sendactivityfailure)
+
+```ts
+await myActivity.sendActivityFailure({
+  token: <token>,
+  error: <error>
+})
 ```

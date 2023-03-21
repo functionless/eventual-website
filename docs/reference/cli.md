@@ -152,7 +152,7 @@ To use the `replay` command:
 Example:
 
 ```sh
-eventual replay execution myExecutionId --entry ./src/my-service.ts
+eventual replay execution --execution myExecutionId --entry ./src/my-service.ts
 ```
 
 ### `send signal`

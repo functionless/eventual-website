@@ -53,13 +53,9 @@ Events can be routed between Services using Bus-to-Bus subscriptions. This funct
 
 ### Workflow Orchestrator Lambda Function
 
-The Workflow Orchestrator is a Lambda function that is triggered by the [Event Loop Queue](#workflow-execution-event-loop---sqs-fifo-queue) to manage the execution of a workflow. The function is responsible for processing a batch of events, interpreting them using the [Eventual Interpreter](./2-interpreter.md), and generating a list of [Commands](./1-commands.md) to be executed. These Commands are then executed or enqueued, and persisted in the event history bucket for future reference.
+The Workflow Orchestrator is a Lambda function that is triggered by the [Event Loop Queue](#workflow-execution-event-loop---sqs-fifo-queue) to manage the execution of a workflow. The function is responsible for processing a batch of events, processing them, and generating a list of [Commands](./1-commands.md) to be executed. These Commands are then executed or enqueued, and persisted in the event history bucket for future reference.
 
 In simple terms, the workflow orchestrator takes the next batch of events, plays them through the user's workflow function which then outputs the next "Commands" to invoke (for example start an activity, or schedule a timer). We call this the "event loop", similar to NodeJS's event loop, except processed in a distributed manor.
-
-:::info
-Workflows are ordinary functions that can execute over an arbitrary amount of time in a distributed serverless environment. For more information on how this is achieved, see the [Eventual Interpreter - Workflow Suspend & Resume](./2-interpreter.md#workflow-suspend--resume) documentation.
-:::
 
 ### Workflow Execution Event Loop - SQS FIFO Queue
 

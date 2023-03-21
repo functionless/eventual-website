@@ -8,7 +8,8 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: "eventual",
-  tagline: "Dinosaurs are cool",
+  tagline:
+    "Build scalable and durable services with APIs, Messaging and Workflows",
   url: "https://docs.eventual.net",
   baseUrl: "/",
   onBrokenLinks: "throw",
@@ -43,14 +44,11 @@ const config = {
           trackingID: "G-JMKXGJ6HED",
           anonymizeIP: true,
         },
-        blog: false,
-        // blog: {
-        //   showReadingTime: true,
-        //   // Please change this to your repo.
-        //   // Remove this to remove the "edit this page" links.
-        //   editUrl:
-        //     "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
-        // },
+        blog: {
+          showReadingTime: true,
+          // Please change this to your repo.
+          // Remove this to remove the "edit this page" links.
+        },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
         },
@@ -79,6 +77,17 @@ const config = {
             label: "Home",
             position: "left",
           },
+          {
+            type: "docSidebar", // docSidebar
+            position: "left",
+            sidebarId: "tutorial", // foldername
+            label: "Tutorial", // navbar title
+          },
+          // {
+          //   to: "blog",
+          //   label: "Blog",
+          //   position: "left",
+          // },
           {
             href: "https://github.com/functionless/eventual",
             label: "GitHub",
@@ -112,7 +121,7 @@ const config = {
               },
               {
                 label: "Twitter",
-                href: "https://twitter.com/_functionless",
+                href: "https://twitter.com/EventualCloud",
               },
             ],
           },

@@ -1,0 +1,45 @@
+---
+sidebar_position: 3
+---
+
+# Deploy a Service
+
+A Service is deployed to AWS using Infrastructure-as-Code.
+
+## Deploy Script
+
+If you followed the [Quick Start](../quick-start.mdx) guide, then you'll be able to deploy from the root with the following script:
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
+
+<Tabs groupId="npm">
+  <TabItem value="npm" label="npm" default>
+    <CodeBlock>npm run deploy</CodeBlock>
+  </TabItem>
+  <TabItem value="yarn" label="yarn">
+    <CodeBlock>yarn deploy</CodeBlock>
+  </TabItem>
+  <TabItem value="pnpm" label="pnpm">
+    <CodeBlock>pnpm run deploy</CodeBlock>
+  </TabItem>
+</Tabs>
+
+## Manually deploy with CDK
+
+This will run `cdk deploy` from within the `infra/` folder. If you prefer, you can run the script yourself:
+
+<Tabs groupId="npm">
+  <TabItem value="npm" label="npm" default>
+    <CodeBlock>{"cd infra\nnpx cdk deploy"}</CodeBlock>
+  </TabItem>
+  <TabItem value="yarn" label="yarn">
+    <CodeBlock>{"cd infra\nnpx cdk deploy"}</CodeBlock>
+  </TabItem>
+  <TabItem value="pnpm" label="pnpm">
+    <CodeBlock>{"cd infra\npnpm cdk deploy"}</CodeBlock>
+  </TabItem>
+</Tabs>
+
+##

@@ -97,6 +97,19 @@ export const hello = api
 See the [Middleware](./middleware.md) documentation for more information.
 :::
 
+## `HttpError`
+
+The `HttpError` class in `@eventual/core` can be thrown from a Command to fail the request with a status `code`, `message` and optional `data` property.
+
+Ex. to fail a request with `404` - Not Found:
+
+```ts
+throw new HttpError({
+  code: 404,
+  message: "Item was not found",
+});
+```
+
 ## Remote Procedure Call (RPC) API Route
 
 All commands attach a RPC route to your Service's API Gateway with the following format:

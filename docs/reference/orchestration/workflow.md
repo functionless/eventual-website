@@ -4,7 +4,13 @@ sidebar_position: 4
 
 # Workflow
 
-Workflows are programs that coordinate complex business processes, including calling APIs, coordinating time-based actions, and interacting with humans. They are designed to be reliable and durable, allowing them to execute over long periods of time and recover from failures. Workflows are particularly useful for orchestrating the interactions between various systems and components, serving as the "glue" that holds everything together.
+Workflows are programs that coordinate complex business processes, including calling Activities, coordinating time-based actions, and interacting with people. They are designed to be reliable and durable, allowing them to execute over long periods of time and recover from failures. Workflows are particularly useful for orchestrating the interactions between various systems and components, serving as the "glue" that holds everything together.
+
+:::caution
+A Workflow is purely for decision-making. It must not have side effects in and of itself. To have side effects, you must either: 1) [call an Activity](./activity.md#call-an-activity-from-within-a-workflow), or 2) [publish an Event](../messaging/event.md#publish-an-event).
+
+See [Runtime Semantics](#runtime-semantics) and [Deterministic Constraints](#deterministic-constraints) for more information.
+:::
 
 ## Create a `workflow`
 
@@ -27,6 +33,24 @@ To start an execution of a workflow, you can call the `startExecution` method on
 ```ts
 const execution = await myWorkflow.startExecution(input);
 ```
+
+## Suspend Execution
+
+:::caution
+Coming Soon.
+:::
+
+## Resume Execution
+
+:::caution
+Coming Soon.
+:::
+
+## Cancel Execution
+
+:::caution
+Coming Soon.
+:::
 
 ## Execution Handle
 
@@ -72,6 +96,10 @@ const myActivity = activity("myActivity", async () => {
 In this example, the workflow calls the `myActivity` function and waits for the result before continuing. The `myActivity` function, in turn, performs some work and returns a value to the workflow.
 
 Activities are a key component of workflows, as they allow the workflow to perform complex tasks and interact with external systems. When you want a workflow to perform specific work, you can define an activity to handle that work and call it from within the workflow.
+
+:::info
+See the [Activity Reference](./activity.md) for more information.
+:::
 
 ## Call another Workflow
 
@@ -234,7 +262,7 @@ return "DONE";
 
 ## Patterns
 
-See the [Workflow Patterns](../../cheatsheet.md) for a cheatsheet of patterns for building workflows.
+See the [Workflow Patterns](./patterns.md) for a cheat-sheet of patterns for building workflows.
 
 ## Runtime Semantics
 
