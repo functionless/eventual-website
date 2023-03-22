@@ -14,5 +14,5 @@
 - [Eventual Client](../reference/eventual-client.md) - a client for interacting with an Eventual Service, such as listing and starting workflows, viewing logs, etc.
 - [CLI Guide](../reference/cli.md) - the Eventual command-line interface (CLI) provides tools for interacting with your service from the terminal.
 - [Unit Testing](../reference/unit-testing.md) - API reference, guidelines and best practices for writing unit tests for your Eventual service.
-- [Workflow Patterns](./orchestration/patterns.md) - a list of helpful patterns for solving common problems with Workflows
+- [Workflow Patterns](./orchestration/patterns/index.md) - a list of helpful patterns for solving common problems with Workflows
 - [Service Limits](../reference/service-scaling-limits.md) - the AWS Limits and Quotas to be aware of when scaling a Service.

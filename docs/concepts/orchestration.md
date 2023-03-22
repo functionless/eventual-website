@@ -88,5 +88,5 @@ if (isCanceled) {
 :::info
 See the [Mozilla docs on Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) to understand Promises on a deeper level.
 
-Also see the [Workflow](../reference/orchestration/workflow.md) and [Workflow Patterns](../reference/orchestration/patterns.md) for more information on how to perform orchestration in Eventual.
+Also see the [Workflow](../reference/orchestration/workflow.md) and [Workflow Patterns](../reference/orchestration/patterns/index.md) for more information on how to perform orchestration in Eventual.
 :::
