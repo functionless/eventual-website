@@ -45,7 +45,10 @@ const users = await userData.list();
 Composite keys can be used to create multiple groupings of data in an entity. This is done by providing an object with multiple properties as the key:
 
 ```ts
-await userData.set({ namespace: "admin", key: "john" }, { name: "John", age: 30 });
+await userData.set(
+  { namespace: "admin", key: "john" },
+  { name: "John", age: 30 }
+);
 ```
 
 This can then be used to list all the users in a particular group:
@@ -74,24 +77,53 @@ If any of the operations fail, no updated will be made.
 
 ```ts
 await Entity.transactWrite([
-    // update an entity
-    {
-        entity: userData,
-        operation: { operation: "set", id: "user1", value: { schedule: "userSchedule1" } }
+  // update an entity
+  {
+    entity: userData,
+    operation: {
+      operation: "set",
+      id: "user1",
+      value: { schedule: "userSchedule1" },
     },
-    // update a second entity
-    {
-        entity: userSchedules,
-        operation: { operation: "set", id: "userSchedule1", value: { days: ["M", "W", "F"] } }
+  },
+  // update a second entity
+  {
+    entity: userSchedules,
+    operation: {
+      operation: "set",
+      id: "userSchedule1",
+      value: { days: ["M", "W", "F"] },
     },
-    // only update if this entity has the expected version of 10 and all of the other operations succeed
-    {
-        entity: someOtherEntity,
-        operation: { operation: "condition", id: "someId", version: 10 }
-    }
-])
+  },
+  // only update if this entity has the expected version of 10 and all of the other operations succeed
+  {
+    entity: someOtherEntity,
+    operation: { operation: "condition", id: "someId", version: 10 },
+  },
+]);
 ```
 
 :::info
 For more complex scenarios use the [`transaction`](./transaction.md) resource instead.
 :::
+
+## Streams
+
+Entity streams allow developers to listen for changes to entities. These streams allow developers to listen for changes on entities, which include inserts, modifications, or deletions. Events are delivered in order per entity, unless namespaces are being used, in which case they are delivered in order per entity and namespace. In case of an error or false response, the stream will automatically retry
+
+Developers can also filter the events based on the event type or namespace. To get the the old value, set `includeOld` to true in the options.
+
+:::caution
+Each entity can only have two streams.
+:::
+
+```ts
+const users = new entity("users");
+
+export const newEntities = myEntity.stream(
+  { operations: ["insert"] },
+  async (item) => {
+    // ... do something with the item ...
+  }
+);
+```
