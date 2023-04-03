@@ -10,7 +10,7 @@ const config = {
   title: "eventual",
   tagline:
     "Build scalable and durable services with APIs, Messaging and Workflows",
-  url: "https://docs.eventual.net",
+  url: "https://docs.eventual.ai",
   baseUrl: "/",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
@@ -68,7 +68,7 @@ const config = {
         logo: {
           alt: "eventual",
           src: "img/logo.svg",
-          href: "https://eventual.net",
+          href: "https://eventual.ai",
           target: "_self",
         },
         items: [

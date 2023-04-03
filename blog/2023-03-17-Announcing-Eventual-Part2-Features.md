@@ -246,7 +246,7 @@ userEmailChanged.onSignal(async (newAddress) => {
 
 Signals are a powerful tool for building capabilities around workflows, for example human-in-the-loop systems where a UI or CLI can send data into a workflow to influence it.
 
-This is barely scratching the surface of workflow orchestration - to learn more visit [eventual.net](http://eventual.net/).
+This is barely scratching the surface of workflow orchestration - to learn more visit [eventual.ai](http://eventual.ai/).
 
 ## Testing
 
@@ -342,6 +342,6 @@ service.subscriptions.onHelloEvent.deadLetterQueue
 
 ## Conclusion
 
-That does it for now. To learn more, visit eventual.net, star us on GitHub, follow us on twitter, and please, come chat to us on Discord. We’d love to hear from you
+That does it for now. To learn more, visit eventual.ai, star us on GitHub, follow us on twitter, and please, come chat to us on Discord. We’d love to hear from you
 
 We want to help you build scalable cloud services. And we want it to be fast and we want it to be fun .
