@@ -55,7 +55,7 @@ Events can be routed between Services using Bus-to-Bus subscriptions. This funct
 
 The Workflow Orchestrator is a Lambda function that is triggered by the [Event Loop Queue](#workflow-execution-event-loop---sqs-fifo-queue) to manage the execution of a workflow. The function is responsible for processing a batch of events, processing them, and generating a list of [Commands](./1-commands.md) to be executed. These Commands are then executed or enqueued, and persisted in the event history bucket for future reference.
 
-In simple terms, the workflow orchestrator takes the next batch of events, plays them through the user's workflow function which then outputs the next "Commands" to invoke (for example start an task, or schedule a timer). We call this the "event loop", similar to NodeJS's event loop, except processed in a distributed manor.
+In simple terms, the workflow orchestrator takes the next batch of events, plays them through the user's workflow function which then outputs the next "Commands" to invoke (for example start a task, or schedule a timer). We call this the "event loop", similar to NodeJS's event loop, except processed in a distributed manor.
 
 ### Workflow Execution Event Loop - SQS FIFO Queue
 
@@ -83,11 +83,11 @@ Task handlers are responsible for executing specific tasks as part of a workflow
 
 To ensure that tasks are executed durably, these handlers are invoked asynchronously using the ["EVENT"](https://docs.aws.amazon.com/lambda/latest/dg/invocation-async.html) invoke type. This effectively means a message in enqueued by the Orchestrator Lambda Function and processed later by the Task lambda Function. This allows for the ability to retry failed executions, ensuring that tasks are completed even in the presence of transient errors.
 
-When an Task completes, it sends a message back to the Workflow Orchestrator's SQS FIFO Queue with the result (success or failure). This message will wake the workflow back up which will process the result and advance the execution to the next step.
+When a task completes, it sends a message back to the Workflow Orchestrator's SQS FIFO Queue with the result (success or failure). This message will wake the workflow back up which will process the result and advance the execution to the next step.
 
 ### Task Lock DynamoDB Table
 
-To ensure that tasks are executed exactly once, Eventual utilizes a DynamoDB table for task locks. When a request is received by an task handler, it performs a pessimistic lock on a value in the DynamoDB table. This guarantees that only one request for the same task is successfully executed, preventing duplicates caused by upstream retries or re-drives.
+To ensure that tasks are executed exactly once, Eventual utilizes a DynamoDB table for task locks. When a request is received by a task handler, it performs a pessimistic lock on a value in the DynamoDB table. This guarantees that only one request for the same task is successfully executed, preventing duplicates caused by upstream retries or re-drives.
 
 This is achieved by using a strongly consistent write to the DynamoDB table when acquiring the lock. This ensures that any duplicate requests are filtered out and that the lock is in place before the task is executed, providing exactly-once semantics.
 

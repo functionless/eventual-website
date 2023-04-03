@@ -192,7 +192,7 @@ With Eventual, your code can run forever, even sleep forever. We achieve this fe
 
 Workflows are not where you do actual work, such as interacting with a database. They are purely for deciding what to do and when. Instead, you separate out side-effects into what are called **Tasks**.
 
-An Task is a function that runs in its own AWS Lambda Function and can be invoked by a Workflow with exactly-once guarantees.
+A task is a function that runs in its own AWS Lambda Function and can be invoked by a Workflow with exactly-once guarantees.
 
 ```ts
 export const getUser = task("getUser", async (userId: string) => {
@@ -203,7 +203,7 @@ export const getUser = task("getUser", async (userId: string) => {
 });
 ```
 
-If you call an Task, you can be sure it will run exactly once, which enables you to safely control when you interact and change resources such as database records.
+If you call a task, you can be sure it will run exactly once, which enables you to safely control when you interact and change resources such as database records.
 
 You can also configure things like a retry policy that the platform will enforce, as well as protections such as heartbeats.
 

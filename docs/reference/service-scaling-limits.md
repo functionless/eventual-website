@@ -19,4 +19,4 @@ For more information, see:
 
 ## Task Response must be <= 256KB
 
-Size of the response from an Task has a hard limit of <= 256KB because of its dependency on SQS SendMessage to communicate the response.
+Size of the response from a task has a hard limit of <= 256KB because of its dependency on SQS SendMessage to communicate the response.

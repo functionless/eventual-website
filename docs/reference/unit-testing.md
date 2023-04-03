@@ -182,11 +182,11 @@ await env.tickUntil("2023-01-01T01:00Z"); // advance time to  01:00
 
 ## Mocking Tasks
 
-While testing workflows, it is often necessary to mock the behavior of an task.
+While testing workflows, it is often necessary to mock the behavior of a task.
 
 ### `mockTask`
 
-The `mockTask` function on `TestEnvironment` allows you to create a mock of an task. This mock object can be used to control the result of an task from the perspective of a workflow.
+The `mockTask` function on `TestEnvironment` allows you to create a mock of a task. This mock object can be used to control the result of a task from the perspective of a workflow.
 
 ```ts
 const mockedTask = env.mockTask(myTask);
@@ -383,9 +383,9 @@ await env.sendTaskSuccess({
 
 [Tasks](./orchestration/task.md) are functions that are executed within the context of an Eventual workflow. They can be tested in the same way as regular functions, with the exception of tasks that use the asyncResult and heartbeat intrinsic functions. These tasks are currently not supported and can be tracked in this issue: https://github.com/functionless/eventual/issues/167.
 
-### Call an Task from within a Test
+### Call a task from within a Test
 
-To test an task, you can import it from your source code and call it with the desired input arguments, just like any other function. Then, you can make assertions about the output or the side effects of the task. For example:
+To test a task, you can import it from your source code and call it with the desired input arguments, just like any other function. Then, you can make assertions about the output or the side effects of the task. For example:
 
 ```ts
 import { myTask } from "../src/index.js";
@@ -394,11 +394,11 @@ const result = await myTask("input value");
 expect(result).toEqual("expected output");
 ```
 
-### Mock an Task's dependencies
+### Mock a task's dependencies
 
 To test the interactions of the myTask task with external dependencies, such as APIs or databases, you can use mocking libraries like Jest.
 
-For example, given an task, `myTask`, that imports and calls a function, `sendRequest`:
+For example, given a task, `myTask`, that imports and calls a function, `sendRequest`:
 
 ```ts
 import { sendRequest } from "./my-api";

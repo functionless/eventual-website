@@ -4,17 +4,17 @@ sidebar_position: 5
 
 # Task
 
-An Task is a function that can be called from within a [Workflow](./workflow.md). Its purpose is to encapsulate integration logic such as database calls, API calls, or waiting for humans/other long-running operations to complete from within a workflow. Tasks provide a way to abstract away the implementation details of these integrations and allow them to be reused across different workflows.
+A task is a function that can be called from within a [Workflow](./workflow.md). Its purpose is to encapsulate integration logic such as database calls, API calls, or waiting for humans/other long-running operations to complete from within a workflow. Tasks provide a way to abstract away the implementation details of these integrations and allow them to be reused across different workflows.
 
-## Create an Task
+## Create a task
 
-To create an task, you will need to import the `task` function from the `@eventual/core` library:
+To create a task, you will need to import the `task` function from the `@eventual/core` library:
 
 ```ts
 import { task } from "@eventual/core";
 ```
 
-Then, you can define an task by providing a unique name and its implementation as an asynchronous function:
+Then, you can define a task by providing a unique name and its implementation as an asynchronous function:
 
 ```ts
 const sendEmail = task("sendEmail", async (to: string, body: string) => {
@@ -22,9 +22,9 @@ const sendEmail = task("sendEmail", async (to: string, body: string) => {
 });
 ```
 
-## Call an Task from within a Workflow
+## Call a task from within a Workflow
 
-To call an task from within a workflow, you can simply await the task function like you would any other asynchronous function:
+To call a task from within a workflow, you can simply await the task function like you would any other asynchronous function:
 
 ```ts
 workflow("send-email-workflow", async (input: { to: string; body: string }) => {
@@ -108,7 +108,7 @@ await myTask.sendTaskSuccess({
 
 If you do not specify the return type of an async task, it will be inferred as `any`. This means that the return type of the task function will be `Promise<any>`, and there will be no type checking when calling complete. It is generally a good idea to specify the return type of an async task to ensure type safety and avoid potential runtime errors.
 
-### Succeed an Task from outside Eventual
+### Succeed a task from outside Eventual
 
 TODO
 
@@ -116,7 +116,7 @@ Tracking: https://github.com/functionless/eventual/issues/137
 
 ## Timeout
 
-An Task can be configured to fail if it does not succeed within a specified time frame. To do this, use the `timeoutSeconds` property when defining the task.
+A task can be configured to fail if it does not succeed within a specified time frame. To do this, use the `timeoutSeconds` property when defining the task.
 
 For example, the following task will fail if it does not succeed within 100 seconds:
 
@@ -144,11 +144,11 @@ try {
 
 ## Heartbeat
 
-The Heartbeat feature in Eventual allows you to configure an Task to report its progress at regular intervals while it is executing. This can be useful in cases where an Task is performing a long-running task and you want to ensure that it is still making progress and has not gotten stuck.
+The Heartbeat feature in Eventual allows you to configure a task to report its progress at regular intervals while it is executing. This can be useful in cases where a task is performing a long-running task and you want to ensure that it is still making progress and has not gotten stuck.
 
 To use the Heartbeat feature, you can specify the `heartbeatSeconds` property when defining your Task. This property specifies the interval, in seconds, at which the Task is required to report a heartbeat. If the Task does not report a heartbeat within this interval, it will be considered failed and a `HeartbeatTimeout` exception will be thrown.
 
-Here is an example of how to define an Task with a heartbeat interval of 10 seconds:
+Here is an example of how to define a task with a heartbeat interval of 10 seconds:
 
 ```ts
 const taskWithHeartbeat = task(
@@ -176,7 +176,7 @@ import { heartbeat } from "@eventual/core";
 await heartbeat();
 ```
 
-When calling an Task with the Heartbeat feature from within a Workflow, you can catch the `HeartbeatTimeout` exception to handle cases where the Task has failed due to a heartbeat timeout:
+When calling a task with the Heartbeat feature from within a Workflow, you can catch the `HeartbeatTimeout` exception to handle cases where the Task has failed due to a heartbeat timeout:
 
 ```ts
 try {
@@ -190,7 +190,7 @@ try {
 
 ## Supported Intrinsic Functions
 
-Alongside the task-specific intrinsics already mentioned, the following intrinsic functions can also be called within an task handler:
+Alongside the task-specific intrinsics already mentioned, the following intrinsic functions can also be called within a task handler:
 
 - [`publishEvent`](../messaging/event.md#publish-to-an-event)
 

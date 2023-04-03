@@ -54,7 +54,7 @@ Go see 1) 2) 3)
 
 ## Workflows have _exactly-once_ semantics
 
-When a Workflow calls performs a side-effect, such as calling an Task, publishing an Event or starting a Timer, it is guaranteed to run exactly once. These semantics allow you to safely control when a side-effect is applied to an external system without worrying about race conditions or intermittent failures.
+When a Workflow calls performs a side-effect, such as calling a task, publishing an Event or starting a Timer, it is guaranteed to run exactly once. These semantics allow you to safely control when a side-effect is applied to an external system without worrying about race conditions or intermittent failures.
 
 ![](./side-effects.png)
 
