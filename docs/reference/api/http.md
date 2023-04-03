@@ -4,7 +4,7 @@ sidebar_position: 3
 
 # Low-level HTTP
 
-The API for each Eventual service is a REST API that is exposed through an API Gateway. This allows external systems to interact with the service by making HTTP requests to specific endpoints. The API can be used to trigger workflows, complete async activities, and retrieve the results of succeeded workflows. In this documentation, we will explain how to use the api object provided by Eventual to register routes and handle incoming requests.
+The API for each Eventual service is a REST API that is exposed through an API Gateway. This allows external systems to interact with the service by making HTTP requests to specific endpoints. The API can be used to trigger workflows, complete async tasks, and retrieve the results of succeeded workflows. In this documentation, we will explain how to use the api object provided by Eventual to register routes and handle incoming requests.
 
 :::tip
 We recommend using [Commands](./command.md) instead of low-level HTTP. Commands are a simpler and more powerful primitive. The following documentation covers the low-level HTTP interface which is a useful escape hatch,if you need it.
@@ -136,19 +136,19 @@ await myWorkflow.startExecution({
 })
 ```
 
-- [`sendActivitySuccess`](../orchestration/activity.md#sendactivitysuccess)
+- [`sendTaskSuccess`](../orchestration/task.md#sendtasksuccess)
 
 ```ts
-await myActivity.sendActivitySuccess({
+await myTask.sendTaskSuccess({
   token: <token>,
   result: <result>
 })
 ```
 
-- [`sendActivityFailure`](../orchestration/activity.md#sendactivityfailure)
+- [`sendTaskFailure`](../orchestration/task.md#sendtaskfailure)
 
 ```ts
-await myActivity.sendActivityFailure({
+await myTask.sendTaskFailure({
   token: <token>,
   error: <error>
 })

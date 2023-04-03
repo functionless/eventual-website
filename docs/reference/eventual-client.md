@@ -4,7 +4,7 @@ sidebar_position: 0.2
 
 # Eventual Client
 
-The `EventualClient` is an interface that provides a set of methods for interacting with and managing workflow executions, sending signals, publishing events, and interacting with async activities in an Eventual Service. These methods allow external systems to communicate with and control the Eventual Service.
+The `EventualClient` is an interface that provides a set of methods for interacting with and managing workflow executions, sending signals, publishing events, and interacting with async tasks in an Eventual Service. These methods allow external systems to communicate with and control the Eventual Service.
 
 ## APIs
 
@@ -214,11 +214,11 @@ const history = await client.getExecutionHistory({
 
 ### `WorkflowEvent`
 
-- `ActivitySucceeded`
-- `ActivityFailed`
-- `ActivityHeartbeatTimedOut`
-- `ActivityScheduled`
-- `ActivityTimedOut`
+- `TaskSucceeded`
+- `TaskFailed`
+- `TaskHeartbeatTimedOut`
+- `TaskScheduled`
+- `TaskTimedOut`
 - `ChildWorkflowSucceeded`
 - `ChildWorkflowFailed`
 - `ChildWorkflowScheduled`
@@ -283,39 +283,39 @@ await client.publishEvents({
 });
 ```
 
-### `sendActivitySuccess`
+### `sendTaskSuccess`
 
-The `sendActivitySuccess` method is used to mark an [async activity](./orchestration/activity.md#async-activity) as successfully completed. This is done by providing the `activityToken` and the `result` of the activity. This method is typically called after the activity has been performed and the result has been computed.
+The `sendTaskSuccess` method is used to mark an [async task](./orchestration/task.md#async-task) as successfully completed. This is done by providing the `taskToken` and the `result` of the task. This method is typically called after the task has been performed and the result has been computed.
 
 ```ts
-await client.sendActivitySuccess({
-  activityToken: "my-token",
+await client.sendTaskSuccess({
+  taskToken: "my-token",
   result: "result payload",
 });
 ```
 
-### `sendActivityFailure`
+### `sendTaskFailure`
 
-The `sendActivityFailure` method is used to mark an asynchronous activity as failed. This is done by providing the `activityToken` and the `error` that caused the failure. This method is typically called when an error occurs during the performance of the activity.
+The `sendTaskFailure` method is used to mark an asynchronous task as failed. This is done by providing the `taskToken` and the `error` that caused the failure. This method is typically called when an error occurs during the performance of the task.
 
 ```ts
-await client.sendActivityFailure({
-  activityToken: token,
+await client.sendTaskFailure({
+  taskToken: token,
   error: new Error("failure"),
 });
 ```
 
-### `sendActivityHeartbeat`
+### `sendTaskHeartbeat`
 
-The `sendActivityHeartbeat` method is used to send a [Heartbeat](./orchestration/activity.md#heartbeat) indicating that the activity is still being actively worked on. It requires the `activityToken: string;` of the activity request that is being processed.
+The `sendTaskHeartbeat` method is used to send a [Heartbeat](./orchestration/task.md#heartbeat) indicating that the task is still being actively worked on. It requires the `taskToken: string;` of the task request that is being processed.
 
 ```ts
-await client.sendActivityHeartbeat({
-  activityToken: "<activity-token>",
+await client.sendTaskHeartbeat({
+  taskToken: "<task-token>",
 });
 ```
 
-See the [Heartbeat Documentation](./orchestration/activity.md#heartbeat) for more information on asynchronous activity heartbeats.
+See the [Heartbeat Documentation](./orchestration/task.md#heartbeat) for more information on asynchronous task heartbeats.
 
 ## Implementations
 
@@ -368,9 +368,9 @@ const client = new AwsHttpServiceClient({
 
 ### `RuntimeServiceClient`
 
-The `RuntimeServiceClient` available in `@eventual/core` is an implementation that uses the Eventual runtime clients. It is intended to be used when there is direct access to the internals of an Eventual Service - this is true only when inside API, event or activity handler functions. This client has the advantaged of being more performant by avoiding the hop over HTTP but requires privileged access to service internals.
+The `RuntimeServiceClient` available in `@eventual/core` is an implementation that uses the Eventual runtime clients. It is intended to be used when there is direct access to the internals of an Eventual Service - this is true only when inside API, event or task handler functions. This client has the advantaged of being more performant by avoiding the hop over HTTP but requires privileged access to service internals.
 
-To get an instance of this client, call the global `getServiceClient` from `@eventual/core` when within an API, event or activity handler function.
+To get an instance of this client, call the global `getServiceClient` from `@eventual/core` when within an API, event or task handler function.
 
 ```ts
 import { getServiceClient } from "@eventual/core";
@@ -380,6 +380,6 @@ const client = getServiceClient();
 
 ### `TestEnvironment`
 
-The `TestEnvironment` is a locally simulated workflow environment designed for unit testing, available in the `@eventual/testing` package. It implements a local and mockable version of the EventualClient interface, allowing you to provide mock implementations of activities and workflows, manually progress time, and more.
+The `TestEnvironment` is a locally simulated workflow environment designed for unit testing, available in the `@eventual/testing` package. It implements a local and mockable version of the EventualClient interface, allowing you to provide mock implementations of tasks and workflows, manually progress time, and more.
 
 See the [Unit Testing](./unit-testing.md#testenvironment) docs.

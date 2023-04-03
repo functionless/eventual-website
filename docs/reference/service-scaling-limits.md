@@ -17,6 +17,6 @@ For more information, see:
 - [AWS Service Quotas](https://docs.aws.amazon.com/servicequotas/latest/userguide/intro.html)
 - [AWS CloudWatch Logs Service Limits](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/cloudwatch_limits_cwl.html)
 
-## Activity Response must be <= 256KB
+## Task Response must be <= 256KB
 
-Size of the response from an Activity has a hard limit of <= 256KB because of its dependency on SQS SendMessage to communicate the response.
+Size of the response from an Task has a hard limit of <= 256KB because of its dependency on SQS SendMessage to communicate the response.

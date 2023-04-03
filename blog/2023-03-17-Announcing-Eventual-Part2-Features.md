@@ -30,7 +30,7 @@ const myService = new Service(this, "Service", {
 
 Each Service has its own API Gateway, Event Bus and Workflow engine. And, because it’s all just Infrastructure-as-Code, it can be customized to your heart’s content.
 
-The business logic of the Service is automatically discovered by analyzing the `entry` point of your code. In there are `Commands`, `Events`, `Subscriptions`, `Workflows`, `Activities` and `Signals`.
+The business logic of the Service is automatically discovered by analyzing the `entry` point of your code. In there are `Commands`, `Events`, `Subscriptions`, `Workflows`, `Tasks` and `Signals`.
 
 ## APIs
 
@@ -188,14 +188,14 @@ export const emailDaily = workflow("emailDaily", async (email: string) => {
 
 With Eventual, your code can run forever, even sleep forever. We achieve this feat using serverless primitives behind the scene to allow you to program distributed systems with the mental model of a local machine.
 
-### Activity
+### Task
 
-Workflows are not where you do actual work, such as interacting with a database. They are purely for deciding what to do and when. Instead, you separate out side-effects into what are called **Activities**.
+Workflows are not where you do actual work, such as interacting with a database. They are purely for deciding what to do and when. Instead, you separate out side-effects into what are called **Tasks**.
 
-An Activity is a function that runs in its own AWS Lambda Function and can be invoked by a Workflow with exactly-once guarantees.
+An Task is a function that runs in its own AWS Lambda Function and can be invoked by a Workflow with exactly-once guarantees.
 
 ```ts
-export const getUser = activity("getUser", async (userId: string) => {
+export const getUser = task("getUser", async (userId: string) => {
   return client.getItem({
     TableName: process.env.TABLE_NAME,
     Key: { userId },
@@ -203,12 +203,12 @@ export const getUser = activity("getUser", async (userId: string) => {
 });
 ```
 
-If you call an Activity, you can be sure it will run exactly once, which enables you to safely control when you interact and change resources such as database records.
+If you call an Task, you can be sure it will run exactly once, which enables you to safely control when you interact and change resources such as database records.
 
 You can also configure things like a retry policy that the platform will enforce, as well as protections such as heartbeats.
 
 ```ts
-activity(
+task(
   "getUser",
   {
     // require a heartbeat every 30s
@@ -297,7 +297,7 @@ Simply take the workflow execution ID and run the `eventual replay` CLI command.
 eventual replay --execution-id <execution-id>
 ```
 
-This will download the workflow’s history and run everything locally. You can then attach your debugger, for example with VS Code, and step through everything that happened as if it’s happening in real-time. Inspect variables, look at the returned values of activities, identity and fix the bug.
+This will download the workflow’s history and run everything locally. You can then attach your debugger, for example with VS Code, and step through everything that happened as if it’s happening in real-time. Inspect variables, look at the returned values of tasks, identity and fix the bug.
 
 ## A note on end-to-end Type Safety
 

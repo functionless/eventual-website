@@ -6,15 +6,15 @@ sidebar_position: 5
 
 There are two aspects of logging to be aware of in Eventual: 1) traditional Lambda Function logs, and 2) workflow "executor" logs.
 
-1. Each Command, Subscription and Activity are bundled into their own Lambda Function. You can find logs for each of those Functions in the AWS console.
-2. When you start a Workflow, all of the logs emitted by the Workflow code and any Activities it calls are stored in the executor Log Group within a single Log Stream dedicated to that execution.
+1. Each Command, Subscription and Task are bundled into their own Lambda Function. You can find logs for each of those Functions in the AWS console.
+2. When you start a Workflow, all of the logs emitted by the Workflow code and any Tasks it calls are stored in the executor Log Group within a single Log Stream dedicated to that execution.
 
 ## Function Logs
 
-Lambda Functions for Commands, Activities and Subscriptions have the following naming convention.
+Lambda Functions for Commands, Tasks and Subscriptions have the following naming convention.
 
 - Command - `<service-name>-<command-name>-command`
-- Activity - `<service-name>-<command-name>-command`
+- Task - `<service-name>-<command-name>-command`
 - Subscription - `<service-name>-<command-name>-command`
 
 :::tip
@@ -22,12 +22,12 @@ You can discover these logs in the AWS Console by searching for their name or by
 :::
 
 :::caution
-The Activity's logs won't include logs you emit from your activity code because we re-direct them to the [Executor Logs](#executor-logs) so that they are co-located within the context of a single workflow execution.
+The Task's logs won't include logs you emit from your task code because we re-direct them to the [Executor Logs](#executor-logs) so that they are co-located within the context of a single workflow execution.
 :::
 
 ## Executor Logs
 
-Workflows can run for long periods of time and call many Activities. To avoid spreading these logs out across many Log Groups and Log Streams, we re-direct them to the "Workflow Executor Log Group".
+Workflows can run for long periods of time and call many Tasks. To avoid spreading these logs out across many Log Groups and Log Streams, we re-direct them to the "Workflow Executor Log Group".
 
 ### Log Group in AWS Console
 

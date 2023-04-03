@@ -10,7 +10,7 @@ We recommend separating out pieces of your business logic into individual functi
 
 ## Test Environment
 
-Then, to write tests for the distributed parts of your service, such as Workflows and Activities, you can use the [TestEnvironment](../reference/unit-testing.md#testenvironment) in your tests to mock time. This makes it easy to write individual test cases that set up pre and post conditions based on time.
+Then, to write tests for the distributed parts of your service, such as Workflows and Tasks, you can use the [TestEnvironment](../reference/unit-testing.md#testenvironment) in your tests to mock time. This makes it easy to write individual test cases that set up pre and post conditions based on time.
 
 Let's look at an example. First, use a `beforeAll` (or equivalent) hook to set up an isolated `TestEnvironment` for each test. In Jest, this looks like so:
 

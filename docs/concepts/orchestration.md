@@ -6,10 +6,10 @@ sidebar_position: 1
 
 Orchestration is the automated coordination and management of multiple services to work together to perform a specific task or achieve a common goal.
 
-Eventual provides `workflow`, `activity` and `signal` primitives that enable you to express complex coordination logic using traditional programming techniques, such as functions, if-else, loops, etc.
+Eventual provides `workflow`, `task` and `signal` primitives that enable you to express complex coordination logic using traditional programming techniques, such as functions, if-else, loops, etc.
 
 :::info
-See the [Workflow](../reference/orchestration/workflow.md), [Activity](../reference/orchestration/activity.md) and [Signal](../reference/orchestration//signal.md) reference documentation for more information on how to implement orchestration into your Service.
+See the [Workflow](../reference/orchestration/workflow.md), [Task](../reference/orchestration/task.md) and [Signal](../reference/orchestration//signal.md) reference documentation for more information on how to implement orchestration into your Service.
 :::
 
 :::caution TODO
@@ -18,7 +18,7 @@ Video
 
 ## Workflows are the decision makers
 
-The `workflow` is the "decider". It chooses what to do and when. It does not perform actual work - instead, work is done by activities. Workflows choose when to call activities - i.e. orchestrate the work.
+The `workflow` is the "decider". It chooses what to do and when. It does not perform actual work - instead, work is done by tasks. Workflows choose when to call tasks - i.e. orchestrate the work.
 
 For example, to implement a workflow that will send a reminder email indefinitely on a daily schedule.
 
@@ -35,7 +35,7 @@ const reminderWorkflow = workflow("reminder", async (email: string) => {
   }
 });
 
-const sendReminder = activity("sendReminder", async (email: string) => {
+const sendReminder = task("sendReminder", async (email: string) => {
   await emailClient.send(email, "reminder message");
 });
 ```
@@ -46,7 +46,7 @@ Workflows can wait for any amount of time, until a specific date and time, or un
 
 ## Workflows co-ordinate People, Time and Services
 
-Activities and Signals provide a mechanism for communication between external systems and a running workflow execution.
+Tasks and Signals provide a mechanism for communication between external systems and a running workflow execution.
 
 :::tip
 Go see 1) 2) 3)
@@ -54,13 +54,13 @@ Go see 1) 2) 3)
 
 ## Workflows have _exactly-once_ semantics
 
-When a Workflow calls performs a side-effect, such as calling an Activity, publishing an Event or starting a Timer, it is guaranteed to run exactly once. These semantics allow you to safely control when a side-effect is applied to an external system without worrying about race conditions or intermittent failures.
+When a Workflow calls performs a side-effect, such as calling an Task, publishing an Event or starting a Timer, it is guaranteed to run exactly once. These semantics allow you to safely control when a side-effect is applied to an external system without worrying about race conditions or intermittent failures.
 
 ![](./side-effects.png)
 
 ## Workflows enable fault tolerance
 
-Workflows and Activities can configure timeouts, retry policies and failure canaries (aka. "heartbeats"). These are then enforced by the platform, enabling you to put predictable boundaries on long-running tasks and limit the blast radius of errors reliably without hand-rolling your own coordination logic.
+Workflows and Tasks can configure timeouts, retry policies and failure canaries (aka. "heartbeats"). These are then enforced by the platform, enabling you to put predictable boundaries on long-running tasks and limit the blast radius of errors reliably without hand-rolling your own coordination logic.
 
 ## Workflows control concurrency
 

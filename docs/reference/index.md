@@ -2,11 +2,11 @@
 
 ## Building Blocks
 
-- [Service](../reference/service.md) - a collection of APIs, Events, Workflows, and Activities that represent a business domain or capability. Can be composed with other services via APIs and Event subscriptions.
+- [Service](../reference/service.md) - a collection of APIs, Events, Workflows, and Tasks that represent a business domain or capability. Can be composed with other services via APIs and Event subscriptions.
 - [Command](../reference/api/command.md) - create and your own APIs and serve them over HTTPS via a managed API Gateway.
 - [Event](../reference/messaging/event.md) - publish and subscribe Events to your Service's Event Bus. Process events internally or route them to other Services.
-- [Workflow](../reference/orchestration/workflow.md) - a set of orchestrated Activities that implements business logic with asynchronous, durable long-running processes.
-- [Activity](../reference/orchestration/activity.md) - functions that encapsulate a single unit of work in a workflow. Integrate with cloud resources and SaaS.
+- [Workflow](../reference/orchestration/workflow.md) - a set of orchestrated Tasks that implements business logic with asynchronous, durable long-running processes.
+- [Task](../reference/orchestration/task.md) - functions that encapsulate a single unit of work in a workflow. Integrate with cloud resources and SaaS.
 - [Signal](../reference/orchestration/signal.md) - a message that can be sent to a workflow execution. Workflows can wait for external input as a Signal and modify its behavior. Signals are communicated point-to-point in contrast to Events which are broadcast to all subscribers.
 
 ## Helpful Resources

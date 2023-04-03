@@ -49,4 +49,4 @@ Then, run the CLI in the new terminal:
 
 ![](./debug-terminal-local.png)
 
-You can now set breakpoints anywhere in your code and explore all of your Commands, Workflows, Activities and Subscriptions in the context of a single runtime.
+You can now set breakpoints anywhere in your code and explore all of your Commands, Workflows, Tasks and Subscriptions in the context of a single runtime.

@@ -58,7 +58,7 @@ new Service(this, "Service", {
 ```
 
 :::tip
-These layers of business logic and infrastructure code also apply to [Commands](../api/command.md) and [Activities](../orchestration/activity.md).
+These layers of business logic and infrastructure code also apply to [Commands](../api/command.md) and [Tasks](../orchestration/task.md).
 :::
 
 ## Dead Letter Queue

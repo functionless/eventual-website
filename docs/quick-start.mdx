@@ -61,10 +61,10 @@ my-service
 
 ## 2. Make a Change
 
-Let's make a small change to the `formatMessage` activity in `packages/service/src/hello.ts` so we can trace through
+Let's make a small change to the `formatMessage` task in `packages/service/src/hello.ts` so we can trace through
 
 ```ts
-export const formatMessage = activity("formatName", async (name: string) => {
+export const formatMessage = task("formatName", async (name: string) => {
   // return `hello ${name}`;
   return `goodbye ${name}`;
 });
@@ -124,7 +124,7 @@ goodbye my name
 ```
 
 :::info
-Note the "goodbye" in the output. We made a change to an Activity that was then invoked by a Workflow Execution. The data returned by that Workflow Execution is what we see here.
+Note the "goodbye" in the output. We made a change to an Task that was then invoked by a Workflow Execution. The data returned by that Workflow Execution is what we see here.
 :::
 
 ## 6. View the logs

@@ -21,9 +21,9 @@ Each Service exposes an Interface consisting of a Synchronous and Asynchronous c
 
 ## Implementation
 
-Internally, a Service has Workflows, Activities and Subscriptions that implement business processes and flows. These can be broken down into two categories:
+Internally, a Service has Workflows, Tasks and Subscriptions that implement business processes and flows. These can be broken down into two categories:
 
-1. **Orchestration** - Workflows coordinate how services work together by invoking Activities, starting timers, publishing Events or waiting for Signals.
+1. **Orchestration** - Workflows coordinate how services work together by invoking Tasks, starting timers, publishing Events or waiting for Signals.
 2. **Choreography** - a collection of Events and Subscriptions passing messages with no centralized controller.
 
 :::info
