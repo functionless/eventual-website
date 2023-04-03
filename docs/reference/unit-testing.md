@@ -428,17 +428,17 @@ expect(result).toEqual("mocked response");
 
 ## Testing Events
 
-### `publishEvent`s into an environment
+### `emit`s into an environment
 
-To simulate an event being published to a Service, use the `publishEvent` method. It accepts two arguments: a reference to the event to publish and its data. For example:
+To simulate an event being emitted to a Service, use the `emit` method. It accepts two arguments: a reference to the event to emit and its data. For example:
 
 ```ts
-await env.publishEvent(myEvent, {
+await env.emit(myEvent, {
   prop: "value",
 });
 ```
 
-Note: calling `publishEvent` will progress time by one until, identically to calling `await env.tick()`.
+Note: calling `emit` will progress time by one until, identically to calling `await env.tick()`.
 
 Here is a more advanced example that tests an event handler that sends a signal to a workflow execution by its ID:
 
@@ -460,8 +460,8 @@ To test this complex flow:
 // start the workflow execution
 const execution = await env.startExecution(myWorkflow);
 
-// publish an event into the test environment
-await env.publishEvent(myEvent, {
+// emit an event into the test environment
+await env.emit(myEvent, {
   executionId: execution.executionId,
 });
 
@@ -473,13 +473,13 @@ expect(await execution.getStatus()).toMatchObject({
 
 ### `onEvent` - listen to events in a TestEnvironment
 
-The `onEvent` method can be used to subscribe a test handler to an event within a `TestEnvironment` so that you can capture events published by your application and make assertions.
+The `onEvent` method can be used to subscribe a test handler to an event within a `TestEnvironment` so that you can capture events emitted by your application and make assertions.
 
-For example, imagine you want to test that the below workflow publishes to `myEvent`:
+For example, imagine you want to test that the below workflow emits to `myEvent`:
 
 ```ts
 const myWorkflow = workflow("myWorkflow", async () => {
-  await myEvent.publishEvent({ .. });
+  await myEvent.emit({ .. });
 })
 ```
 

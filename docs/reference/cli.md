@@ -34,7 +34,7 @@ eventual list     List executions, workflows, or services.
 eventual get      Get or show an execution, service, timeline, history, logs,
                     or the cli configuration.                    [aliases: show]
 eventual send     Send signals
-eventual publish  Publish events
+eventual emit     Emit events
 eventual replay   Replay executions
 eventual start    Start a workflow
 ```
@@ -122,21 +122,21 @@ eventual get logs --workflow myWorkflow
 eventual get logs --execution myExecutionId
 ```
 
-### `publish events`
+### `emit events`
 
-The `publish events` command allows you to publish events to the service. You can pass the event ID as the 3rd argument flag and specify the event payload as a string or file with the `--payload` flag or `--payloadFile` flag. Alternatively, you can pipe STDIN with the `<<<` operator.
+The `emit events` command allows you to emit events to the service. You can pass the event ID as the 3rd argument flag and specify the event payload as a string or file with the `--payload` flag or `--payloadFile` flag. Alternatively, you can pipe STDIN with the `<<<` operator.
 
 Examples:
 
 ```sh
-# Publish an event with JSON payload specified in the command line
-eventual publish events <eventId> --payload '{ someJson: "value" }'
+# Emit an event with JSON payload specified in the command line
+eventual emit events <eventId> --payload '{ someJson: "value" }'
 
-# Publish an event with JSON payload from a file
-eventual publish events <eventId> --payloadFile "path/to/file.json"
+# Emit an event with JSON payload from a file
+eventual emit events <eventId> --payloadFile "path/to/file.json"
 
-# Publish an event with JSON payload from stdin
-eventual publish events <eventId>  <<< cat "path/to/file.json"
+# Emit an event with JSON payload from stdin
+eventual emit events <eventId>  <<< cat "path/to/file.json"
 ```
 
 ### `replay execution`

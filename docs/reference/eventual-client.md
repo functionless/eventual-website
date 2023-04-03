@@ -4,7 +4,7 @@ sidebar_position: 0.2
 
 # Eventual Client
 
-The `EventualClient` is an interface that provides a set of methods for interacting with and managing workflow executions, sending signals, publishing events, and interacting with async tasks in an Eventual Service. These methods allow external systems to communicate with and control the Eventual Service.
+The `EventualClient` is an interface that provides a set of methods for interacting with and managing workflow executions, sending signals, emitting events, and interacting with async tasks in an Eventual Service. These methods allow external systems to communicate with and control the Eventual Service.
 
 ## APIs
 
@@ -224,13 +224,19 @@ const history = await client.getExecutionHistory({
 - `ChildWorkflowScheduled`
 - `ConditionStarted`
 - `ConditionTimedOut`
-- `EventsPublished`
+- `EventsEmitted`
 - `ExpectSignalStarted`
 - `ExpectSignalTimedOut`
+- `EntityRequest`
+- `EntityRequestFailed`
+- `EntityRequestSucceeded`
 - `SignalReceived`
 - `SignalSent`
 - `SleepCompleted`
 - `SleepScheduled`
+- `TransactionRequest`
+- `TransactionRequestFailed`
+- `TransactionRequestSucceeded`
 - `WorkflowSucceeded`
 - `WorkflowFailed`
 - `WorkflowStarted`
@@ -263,12 +269,12 @@ await client.sendSignal({
 });
 ```
 
-### `publishEvents`
+### `emitEvents`
 
-Use `publishEvents` to publish one or more [`Events`](./messaging/event.md) to a service. It accepts a list of `events` to publish.
+Use `emitEvents` to emit one or more [`Events`](./messaging/event.md) to a service. It accepts a list of `events` to emit.
 
 ```ts
-await client.publishEvents({
+await client.emit({
   events: [
     {
       // the unique name of the event type

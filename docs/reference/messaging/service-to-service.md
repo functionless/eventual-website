@@ -51,7 +51,7 @@ new aws_events.Rule(stack, "Rule", {
 })
 ```
 
-The `detail-type` of Events published in an Eventual Service will be the name of the event type.
+The `detail-type` of Events emitted in an Eventual Service will be the name of the event type.
 
 ```ts
 export const myEvent = event("myEvent");

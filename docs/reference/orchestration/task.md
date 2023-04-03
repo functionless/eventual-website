@@ -192,10 +192,10 @@ try {
 
 Alongside the task-specific intrinsics already mentioned, the following intrinsic functions can also be called within a task handler:
 
-- [`publishEvent`](../messaging/event.md#publish-to-an-event)
+- [`emit`](../messaging/event.md#emit-to-an-event)
 
 ```ts
-await myEvent.publishEvent({ .. });
+await myEvent.emit({ .. });
 ```
 
 - [`startExecution`](./workflow.md#start-execution)

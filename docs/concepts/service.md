@@ -15,7 +15,7 @@ See the [Service](../reference/service.md) reference documentation for usage det
 Each Service exposes an Interface consisting of a Synchronous and Asynchronous component:
 
 1. **Synchronous** - APIs that can be invoked.
-2. **Asynchronous** - Events that can be published and subscribed.
+2. **Asynchronous** - Events that can be emitted and subscribed.
 
 ![](../../assets/service-contract.png)
 
@@ -23,7 +23,7 @@ Each Service exposes an Interface consisting of a Synchronous and Asynchronous c
 
 Internally, a Service has Workflows, Tasks and Subscriptions that implement business processes and flows. These can be broken down into two categories:
 
-1. **Orchestration** - Workflows coordinate how services work together by invoking Tasks, starting timers, publishing Events or waiting for Signals.
+1. **Orchestration** - Workflows coordinate how services work together by invoking Tasks, starting timers, emitting Events or waiting for Signals.
 2. **Choreography** - a collection of Events and Subscriptions passing messages with no centralized controller.
 
 :::info

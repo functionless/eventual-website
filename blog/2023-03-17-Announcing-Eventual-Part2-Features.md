@@ -109,9 +109,9 @@ export const hello = api
 
 The next aspect of an event-driven micro-service is Messaging. In Eventual, we provide Events and Subscriptions for passing messages around within and outside a Service.
 
-When something happens in a service, it’s often a good idea to record it as an “event” and publish it to an Event Bus so other parts of your system can react to it. They’re also useful for logging and analytical use-cases, among many others. This is known as “Choreography”
+When something happens in a service, it’s often a good idea to record it as an “event” and emit it to an Event Bus so other parts of your system can react to it. They’re also useful for logging and analytical use-cases, among many others. This is known as “Choreography”
 
-Subscriptions have the benefit of decoupling the publisher of an event from the subscriber. This simplifies how you evolve your system over time as you can always add more subscribers without disrupting other parts of your service.
+Subscriptions have the benefit of decoupling the emitter of an event from the subscriber. This simplifies how you evolve your system over time as you can always add more subscribers without disrupting other parts of your service.
 
 ### Event
 
@@ -121,10 +121,10 @@ In Eventual, you declare **Event** types:
 export const HelloEvent = event("HelloEvent");
 ```
 
-You can then publish an event from anywhere using the `publishEvents` function:
+You can then emit an event from anywhere using the `emit` function:
 
 ```
-await HelloEvent.publishEvents({ key: "value"});
+await HelloEvent.emit({ key: "value"});
 ```
 
 Sticking with our theme of TypeScript and type-safety, Eventual supports declaring a type for each event - and we highly encourage you to do so. There’s nothing worse than un-typed code.
@@ -281,7 +281,7 @@ eventual dev
 
 Set breakpoints in your code and step-through any part of your application.
 
-Even parts that span multiple cloud services, such as APIs publishing Events, that trigger Subscriptions, that then trigger Workflows, and so on.
+Even parts that span multiple cloud services, such as APIs emitting Events, that trigger Subscriptions, that then trigger Workflows, and so on.
 
 The entire control flow can be walked through within the context of a single NodeJS runtime.
 

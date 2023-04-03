@@ -7,7 +7,7 @@ sidebar_position: 4
 Workflows are programs that coordinate complex business processes, including calling Tasks, coordinating time-based actions, and interacting with people. They are designed to be reliable and durable, allowing them to execute over long periods of time and recover from failures. Workflows are particularly useful for orchestrating the interactions between various systems and components, serving as the "glue" that holds everything together.
 
 :::caution
-A Workflow is purely for decision-making. It must not have side effects in and of itself. To have side effects, you must either: 1) [call a task](./task.md#call-an-task-from-within-a-workflow), or 2) [publish an Event](../messaging/event.md#publish-an-event).
+A Workflow is purely for decision-making. It must not have side effects in and of itself. To have side effects, you must either: 1) [call a task](./task.md#call-an-task-from-within-a-workflow), or 2) [emit an Event](../messaging/event.md#emit-an-event).
 
 See [Runtime Semantics](#runtime-semantics) and [Deterministic Constraints](#deterministic-constraints) for more information.
 :::
@@ -134,28 +134,28 @@ try {
 }
 ```
 
-## Publish an Event
+## Emit an Event
 
-Workflows can publish events to the Service's Event Bus by calling [`publishEvent`](../messaging/event.md#publish-an-event).
+Workflows can emit events to the Service's Event Bus by calling [`emit`](../messaging/event.md#emit-an-event).
 
 ```ts
 const myEvent = event("myEvent");
 
 const myWorkflow = workflow("myWorkflow", async () => {
-  await myEvent.publishEvent({
+  await myEvent.emit({
     key: "value",
   });
 });
 ```
 
-Keep in mind that the publish method returns a `Promise` that resolves once the event has been published. You can use the `await` keyword to wait for the event to be published before continuing with the rest of the workflow's execution - or leave it as dangling as an optimization:
+Keep in mind that the emit method returns a `Promise` that resolves once the event has been emitted. You can use the `await` keyword to wait for the event to be emitted before continuing with the rest of the workflow's execution - or leave it as dangling as an optimization:
 
 ```ts
 // pause execution until the event has been sent
-await myEvent.publishEvent( .. )
+await myEvent.emit( .. )
 
-// publish but don't wait
-myEvent.publishEvent( .. )
+// emit but don't wait
+myEvent.emit( .. )
 ```
 
 ## Wait for a `signal`
@@ -284,7 +284,7 @@ Event sourcing involves recording every action taken within a workflow as an eve
 
 ![Replay Idempotency](./workflow-idempotent-replay.png)
 
-This ensures that each action taken by the workflow is performed exactly once, even in the face of intermittent failures. By using event sourcing and re-entrancy, a workflow function is able to provide strong runtime guarantees and execute in a reliable manner, making it suitable for long-running and failure-sensitive processes. Actions that are recorded in the event log include executing a task or another workflow, waiting for a signal, publishing events, etc.
+This ensures that each action taken by the workflow is performed exactly once, even in the face of intermittent failures. By using event sourcing and re-entrancy, a workflow function is able to provide strong runtime guarantees and execute in a reliable manner, making it suitable for long-running and failure-sensitive processes. Actions that are recorded in the event log include executing a task or another workflow, waiting for a signal, emitting events, etc.
 
 ## Deterministic Constraints
 

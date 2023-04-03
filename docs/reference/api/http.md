@@ -122,10 +122,10 @@ api.patch("/hello", (request) => { .. });
 
 The following intrinsic functions can be called within an API handler:
 
-- [`publishEvent`](../messaging/event.md#publish-to-an-event)
+- [`emit`](../messaging/event.md#emit-to-an-event)
 
 ```ts
-await myEvent.publishEvent({ .. });
+await myEvent.emit({ .. });
 ```
 
 - [`startExecution`](../orchestration/workflow.md#start-execution)

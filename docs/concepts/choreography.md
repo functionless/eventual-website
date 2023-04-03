@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Messaging
 
-Eventual provides primitives for Messaging within a Service, including a broadcast publish/subscribe mechanism, and (coming soon) point-to-point Queues and Streams, and Actors.
+Eventual provides primitives for Messaging within a Service, including a broadcast emit/subscribe mechanism, and (coming soon) point-to-point Queues and Streams, and Actors.
 
 ## aka. Choreography
 
@@ -22,9 +22,9 @@ The main difference between orchestration and choreography is that orchestration
 See the [Orchestration](./orchestration.md) concept page or the [Workflow](../reference/orchestration/workflow.md) documentation for more information on Orchestration.
 :::
 
-## Publish and Subscribe
+## Emit and Subscribe
 
-Eventual provides [Event Schemas](../reference/messaging/event.md) and [Subscriptions](../reference/messaging/subscription.md) for publishing and subscribing events. Events are published to a Service's Event Bus and then routed to Subscriptions.
+Eventual provides [Event Schemas](../reference/messaging/event.md) and [Subscriptions](../reference/messaging/subscription.md) for emitting and subscribing events. Events are emitted to a Service's Event Bus and then routed to Subscriptions.
 
 ![](../../assets/pub-sub.png)
 

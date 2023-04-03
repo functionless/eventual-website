@@ -145,19 +145,19 @@ First, you define an "Event Schema":
 const orderEvent = event<{ orderId: string }>("Order");
 ```
 
-### Publish
+### Emit
 
-Then you can publish to it.
+Then you can emit to it.
 
 ```ts
-await orderEvent.publishEvents({
+await orderEvent.emit({
   orderId,
   orderTime,
 });
 ```
 
 :::info
-You can publish an event from APIs, Event Handlers, Workflows and Tasks, or even from outside Eventual.
+You can emit an event from APIs, Event Handlers, Workflows and Tasks, or even from outside Eventual.
 :::
 
 ### Subscription

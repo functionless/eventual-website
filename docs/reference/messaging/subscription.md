@@ -107,7 +107,7 @@ If you go to your deployed Stack in CloudFormation, you can see a list of all Su
 
 ### Un-Ordered
 
-It is not guaranteed that events will be processed in the order they are published.
+It is not guaranteed that events will be processed in the order they are emitted.
 
 ### One at a Time
 
