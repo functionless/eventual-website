@@ -1,3 +1,7 @@
+---
+sidebar_position: 5.1
+---
+
 # Entity
 
 An Entity is a data store that can be used to store and retrieve data from in an eventual service. It provides a way to persist data across multiple workflow executions, tasks, commands and can be used to store data such as user information, configuration settings, or any other data that needs to be persisted.
