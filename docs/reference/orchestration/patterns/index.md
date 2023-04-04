@@ -108,10 +108,10 @@ The [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Referenc
 
 Here are some examples of how you can use these functions in your workflow to:
 
-### Run two activities in parallel and wait for both to succeed
+### Run two tasks in parallel and wait for both to succeed
 
 ```ts
-const [a, b] = await Promise.all([activityA(), activityB()]);
+const [a, b] = await Promise.all([taskA(), taskB()]);
 ```
 
 ### Run two sub-procedures in parallel and wait for both to succeed

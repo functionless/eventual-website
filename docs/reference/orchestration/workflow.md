@@ -4,10 +4,10 @@ sidebar_position: 4
 
 # Workflow
 
-Workflows are programs that coordinate complex business processes, including calling Activities, coordinating time-based actions, and interacting with people. They are designed to be reliable and durable, allowing them to execute over long periods of time and recover from failures. Workflows are particularly useful for orchestrating the interactions between various systems and components, serving as the "glue" that holds everything together.
+Workflows are programs that coordinate complex business processes, including calling Tasks, coordinating time-based actions, and interacting with people. They are designed to be reliable and durable, allowing them to execute over long periods of time and recover from failures. Workflows are particularly useful for orchestrating the interactions between various systems and components, serving as the "glue" that holds everything together.
 
 :::caution
-A Workflow is purely for decision-making. It must not have side effects in and of itself. To have side effects, you must either: 1) [call an Activity](./activity.md#call-an-activity-from-within-a-workflow), or 2) [publish an Event](../messaging/event.md#publish-an-event).
+A Workflow is purely for decision-making. It must not have side effects in and of itself. To have side effects, you must either: 1) [call a task](./task.md#call-an-task-from-within-a-workflow), or 2) [emit an Event](../messaging/event.md#emit-an-event).
 
 See [Runtime Semantics](#runtime-semantics) and [Deterministic Constraints](#deterministic-constraints) for more information.
 :::
@@ -76,29 +76,29 @@ await execution.sendSignal("mySignal", "data");
 await execution.sendSignal(mySignal, "data");
 ```
 
-## Call an Activity
+## Call a task
 
-A workflow can perform work by calling activities, which are functions that perform specific tasks such as calling APIs, interacting with databases, or executing complex computations. To call an activity from within a workflow, you can simply invoke the activity function as you would any other function.
+A workflow can perform work by calling tasks, which are functions that perform specific tasks such as calling APIs, interacting with databases, or executing complex computations. To call a task from within a workflow, you can simply invoke the task function as you would any other function.
 
-Here is an example of a workflow that calls an activity:
+Here is an example of a workflow that calls a task:
 
 ```ts
 const myWorkflow = workflow("myWorkflow", async (input: any) => {
-  const message = await myActivity();
+  const message = await myTask();
   return message;
 });
 
-const myActivity = activity("myActivity", async () => {
+const myTask = task("myTask", async () => {
   return "hello world";
 });
 ```
 
-In this example, the workflow calls the `myActivity` function and waits for the result before continuing. The `myActivity` function, in turn, performs some work and returns a value to the workflow.
+In this example, the workflow calls the `myTask` function and waits for the result before continuing. The `myTask` function, in turn, performs some work and returns a value to the workflow.
 
-Activities are a key component of workflows, as they allow the workflow to perform complex tasks and interact with external systems. When you want a workflow to perform specific work, you can define an activity to handle that work and call it from within the workflow.
+Tasks are a key component of workflows, as they allow the workflow to perform complex tasks and interact with external systems. When you want a workflow to perform specific work, you can define a task to handle that work and call it from within the workflow.
 
 :::info
-See the [Activity Reference](./activity.md) for more information.
+See the [Task Reference](./task.md) for more information.
 :::
 
 ## Call another Workflow
@@ -114,7 +114,7 @@ const workflowA = workflow("workflowA", async () => {
 });
 
 const workflowB = workflow("workflowB", async (items: string[]) => {
-  return Promise.all(items.map(myActivity));
+  return Promise.all(items.map(myTask));
 });
 ```
 
@@ -134,28 +134,28 @@ try {
 }
 ```
 
-## Publish an Event
+## Emit an Event
 
-Workflows can publish events to the Service's Event Bus by calling [`publishEvent`](../messaging/event.md#publish-an-event).
+Workflows can emit events to the Service's Event Bus by calling [`emit`](../messaging/event.md#emit-an-event).
 
 ```ts
 const myEvent = event("myEvent");
 
 const myWorkflow = workflow("myWorkflow", async () => {
-  await myEvent.publishEvent({
+  await myEvent.emit({
     key: "value",
   });
 });
 ```
 
-Keep in mind that the publish method returns a `Promise` that resolves once the event has been published. You can use the `await` keyword to wait for the event to be published before continuing with the rest of the workflow's execution - or leave it as dangling as an optimization:
+Keep in mind that the emit method returns a `Promise` that resolves once the event has been emitted. You can use the `await` keyword to wait for the event to be emitted before continuing with the rest of the workflow's execution - or leave it as dangling as an optimization:
 
 ```ts
 // pause execution until the event has been sent
-await myEvent.publishEvent( .. )
+await myEvent.emit( .. )
 
-// publish but don't wait
-myEvent.publishEvent( .. )
+// emit but don't wait
+myEvent.emit( .. )
 ```
 
 ## Wait for a `signal`
@@ -255,8 +255,8 @@ await condition(() => !isCancelled);
 
 ```ts
 const minTime = duration(10, "minutes");
-// wait for 10 minutes OR the duration of myActivity, whichever is longer.
-await Promise.all([minTime, myActivity()]);
+// wait for 10 minutes OR the duration of myTask, whichever is longer.
+await Promise.all([minTime, myTask()]);
 return "DONE";
 ```
 
@@ -266,11 +266,11 @@ See the [Workflow Patterns](./patterns/index.md) for a cheat-sheet of patterns f
 
 ## Runtime Semantics
 
-A workflow function is a program that executes in a durable, long-running manner. It differs from API/event/activity handlers, which are invoked for a single execution and do not have the same runtime guarantees.
+A workflow function is a program that executes in a durable, long-running manner. It differs from API/event/task handlers, which are invoked for a single execution and do not have the same runtime guarantees.
 
-To carry out an activity, the workflow function enqueues a message on an internal message bus. A worker listening to that queue then performs the activity and sends a message back to the workflow function with the result. This process allows the workflow to execute operations in a reliable manner, as each operation is guaranteed to be executed exactly once, even in the event of intermittent failures.
+To carry out a task, the workflow function enqueues a message on an internal message bus. A worker listening to that queue then performs the task and sends a message back to the workflow function with the result. This process allows the workflow to execute operations in a reliable manner, as each operation is guaranteed to be executed exactly once, even in the event of intermittent failures.
 
-![Activity Queue](./workflow-arch.png)
+![Task Queue](./workflow-arch.png)
 
 The use of an internal message bus and worker process helps to eliminate the risk of failure inherent in single-invocation runtimes such as Lambda functions or containers, which can crash, timeout, or reboot at any time. By contrast, a workflow function is able to continue executing and resuming even in the face of such failures, making it a more durable and reliable runtime for long-running or business-critical processes.
 
@@ -284,13 +284,13 @@ Event sourcing involves recording every action taken within a workflow as an eve
 
 ![Replay Idempotency](./workflow-idempotent-replay.png)
 
-This ensures that each action taken by the workflow is performed exactly once, even in the face of intermittent failures. By using event sourcing and re-entrancy, a workflow function is able to provide strong runtime guarantees and execute in a reliable manner, making it suitable for long-running and failure-sensitive processes. Actions that are recorded in the event log include executing an activity or another workflow, waiting for a signal, publishing events, etc.
+This ensures that each action taken by the workflow is performed exactly once, even in the face of intermittent failures. By using event sourcing and re-entrancy, a workflow function is able to provide strong runtime guarantees and execute in a reliable manner, making it suitable for long-running and failure-sensitive processes. Actions that are recorded in the event log include executing a task or another workflow, waiting for a signal, emitting events, etc.
 
 ## Deterministic Constraints
 
 A consequence of the event sourcing and re-entrant techniques is that a workflow function's logic must be deterministic and backwards compatible.
 
-This means that any operation that could produce different results each time it is called, such as generating a UUID or random number, accessing a database, or getting the system time, must be performed via an activity rather than being called directly within the workflow.
+This means that any operation that could produce different results each time it is called, such as generating a UUID or random number, accessing a database, or getting the system time, must be performed via a task rather than being called directly within the workflow.
 
 ```ts
 workflow("foo", async () => {
@@ -302,7 +302,7 @@ workflow("foo", async () => {
 
 When making changes to a workflow function and redeploying it, it is important to ensure that those changes are backwards compatible with already-running executions. This means that the order of operations should not be changed and no operations should be removed.
 
-For example, imagine a workflow that calls two activities in sequence, `bar` and then `baz`:
+For example, imagine a workflow that calls two tasks in sequence, `bar` and then `baz`:
 
 ```ts
 workflow("foo", async () => {

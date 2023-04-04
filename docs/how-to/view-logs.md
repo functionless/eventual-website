@@ -6,23 +6,24 @@ sidebar_position: 5
 
 There are two aspects of logging to be aware of in Eventual: 1) traditional Lambda Function logs, and 2) workflow "executor" logs.
 
-1. Each Command, Subscription and Activity are bundled into their own Lambda Function. You can find logs for each of those Functions in the AWS console.
+1. Each Command, Subscription and Task are bundled into their own Lambda Function. You can find logs for each of those Functions in the AWS console.
 2. When you start a Workflow, all of the logs emitted by the Workflow code and any Activities it calls are stored in the executor Log Group within a single Log Stream dedicated to that execution.
 
 ## Function Logs
 
 Lambda Functions for Commands, Activities and Subscriptions have the following naming convention.
 
-- Command - `<service-name>-<command-name>-command`
-- Activity - `<service-name>-<command-name>-command`
-- Subscription - `<service-name>-<command-name>-command`
+- Command - `<service-name>-command-<command-name>`
+- Task - `<service-name>-task-<task-name>`
+- Subscription - `<service-name>-subscription-<subscription-name>`
+- EntityStream - `<service-name>-entity-stream-<entity-stream-name>`
 
 :::tip
 You can discover these logs in the AWS Console by searching for their name or by browsing the CloudFormation UI for your Service's Stack ([see below](#browse-your-stack-in-the-cloudformation-ui))
 :::
 
 :::caution
-The Activity's logs won't include logs you emit from your activity code because we re-direct them to the [Executor Logs](#executor-logs) so that they are co-located within the context of a single workflow execution.
+The Task's logs won't include logs you emit from your task code because we re-direct them to the [Executor Logs](#executor-logs) so that they are co-located within the context of a single workflow execution.
 :::
 
 ## Executor Logs

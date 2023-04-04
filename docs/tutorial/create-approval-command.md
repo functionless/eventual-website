@@ -47,16 +47,16 @@ if (response.Item === undefined) {
 See the [HttpError](/reference/api/command#httperror) documentation.
 :::
 
-Finally, call `sendActivitySuccess` on the `waitForApproval` activity to complete the async activity.
+Finally, call `sendTaskSuccess` on the `waitForApproval` task to complete the async task.
 
 ```ts
-// send the result for the activity
-await waitForApproval.sendActivitySuccess({
-  activityToken: response.Item.token,
+// send the result for the task
+await waitForApproval.sendTaskSuccess({
+  taskToken: response.Item.token,
   result: input.approved,
 });
 ```
 
 :::info
-See the [Async Activity](/reference/orchestration/activity#async-activity) documentation.
+See the [Async Task](/reference/orchestration/task#async-task) documentation.
 :::

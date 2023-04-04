@@ -25,7 +25,7 @@ The `entry` property points to the entrypoint `.ts` or `.js` file that contains 
 1. [Commands](./api/command.md)
 2. [Events and Subscriptions](./messaging/event.md)
 3. [Workflows](./orchestration/workflow.md)
-4. [Activity](./orchestration/activity.md)
+4. [Task](./orchestration/task.md)
 
 ## Scaling Limits
 
@@ -62,7 +62,7 @@ For more information on how to use the CLI, see the [docs](./cli.md).
 
 ## Generated Lambda Functions
 
-Each Command, Subscription and Activity will create its own AWS Resources, for example an AWS Lambda Function and (only for a Subscription) a Dead Letter SQS Queue.
+Each Command, Subscription and Task will create its own AWS Resources, for example an AWS Lambda Function and (only for a Subscription) a Dead Letter SQS Queue.
 
 The name of each generated Lambda Function and Dead Letter Queue is determined by the Service Name and the type of the entity. For example, a Command named `"myCommand"` created within a Service named `"my-service"` will be named `my-service-command-myCommand`. Consistently named Functions makes it easier to search and browse Resources with the AWS Console.
 
@@ -76,7 +76,7 @@ import type * as MyService from "@my/service";
 const service = new Service<typeof MyService>(this, "Service");
 ```
 
-Now, the `commands`, `activities` and `subscription` properties will be aware of the commands, activities and subscriptions defined within your service.
+Now, the `commands`, `tasks` and `subscription` properties will be aware of the commands, tasks and subscriptions defined within your service.
 
 ```ts
 // in your service code:
@@ -94,17 +94,17 @@ const service = new Service<typeof MyService>(this, "Service", {
 
 // same is true on the Service instance
 service.commands.myCommand; // <- the generated Lambda Function
-service.activities.myActivity;
+service.tasks.myTask;
 service.subscriptions.mySub.handler;
 service.subscriptions.mySub.deadLetterQueue; // <- the generated Dead Letter Queue
 ```
 
 :::caution
-Make sure to export all of your commands, activities and subscriptions from the service's `index.ts` or else they will not be discoverable.
+Make sure to export all of your commands, tasks and subscriptions from the service's `index.ts` or else they will not be discoverable.
 
 ```ts
 export * from "./my-command.js";
-export * from "./my-activity.js";
+export * from "./my-task.js";
 // ...
 ```
 
@@ -129,7 +129,7 @@ The `addEnvironment` function can also be called to add environment variables on
 service.addEnvironment("TABLE_NAME", table.tableArn);
 ```
 
-To override environment variables on specific handlers, use the `commands`, `activities` or `subscriptions` properties:
+To override environment variables on specific handlers, use the `commands`, `tasks` or `subscriptions` properties:
 
 ```ts
 const service = new Service<typeof MyService>(stack, "Service", {
@@ -159,7 +159,7 @@ The `Service` Construct implement `IGrantable` and can therefore be granted perm
 table.grantReadWriteData(service);
 ```
 
-The `api`, `event` and `activity` handler's IAM Roles will now have access to read/write to that DynamoDB Table.
+The `api`, `event` and `task` handler's IAM Roles will now have access to read/write to that DynamoDB Table.
 
 You can also grant permissions to specific Lambda Functions:
 

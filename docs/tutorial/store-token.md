@@ -6,7 +6,7 @@ sidebar_position: 6
 
 ## Store the Task and its Token in DynamoDB
 
-Head on back to to the `wait-for-approval.ts` activity and create a DynamoDB client.
+Head on back to to the `wait-for-approval.ts` task and create a DynamoDB client.
 
 ```ts
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
@@ -22,12 +22,12 @@ Grab the DynamoDB Table (that we just created) from the environment variables:
 const tableArn = process.env.TABLE_ARN!;
 ```
 
-Finally, update the activity to store the task and its token in DynamoDB.
+Finally, update the task to store the task and its token in DynamoDB.
 
 ```ts
-import { activity } from "@eventual/core";
+import { task } from "@eventual/core";
 
-export const waitForApproval = activity(
+export const waitForApproval = task(
   "waitForApproval",
   async (input: { taskId: string; description: string }) => {
     return asyncResult<boolean>(async (token) => {

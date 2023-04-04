@@ -132,10 +132,10 @@ await client.send(
 
 Now that our accounts have money it, we can move on to the more interesting part of this tutorial - transfers. We'll implement an API for transferring money between two accounts and we'll use a workflow to prevent corruption.
 
-Before that though, we need the ability to `debit` and `credit` accounts - let's quickly add them as a way to introduce the concept of an `activity`:
+Before that though, we need the ability to `debit` and `credit` accounts - let's quickly add them as a way to introduce the concept of an `task`:
 
 ```ts
-const debit = activity("debit", async (accountId: string, amount: number) => {
+const debit = task("debit", async (accountId: string, amount: number) => {
   await client.send(
     new UpdateCommand({
       TableName: process.env.TABLE_ARN!,
@@ -151,7 +151,7 @@ const debit = activity("debit", async (accountId: string, amount: number) => {
   );
 });
 
-const credit = activity("credit", async (accountId: string, amount: number) => {
+const credit = task("credit", async (accountId: string, amount: number) => {
   await client.send(
     new UpdateCommand({
       TableName: process.env.TABLE_ARN!,
@@ -168,7 +168,7 @@ const credit = activity("credit", async (accountId: string, amount: number) => {
 });
 ```
 
-The purpose of this wrapping is to allow the use of Eventual's `workflow` primitive to reliably orchestrate the transfer process. Since workflows cannot directly interact with databases, the activity wrapper enables the workflow to indirectly access the database through these functions.
+The purpose of this wrapping is to allow the use of Eventual's `workflow` primitive to reliably orchestrate the transfer process. Since workflows cannot directly interact with databases, the task wrapper enables the workflow to indirectly access the database through these functions.
 
 To illustrate the necessity a workflow, let's first consider what might happen if we were to implement the transfer process directly within the API handler.
 

@@ -13,7 +13,7 @@ Stay tuned for an introductory video
 
 ## Service
 
-The top-level Concept of Eventual is a Service consisting of APIs, Events, Subscriptions, Workflows and Activities.
+The top-level Concept of Eventual is a Service consisting of APIs, Events, Subscriptions, Workflows and Tasks.
 
 ![Service Contract](../assets/service-contract.png)
 
@@ -83,17 +83,17 @@ This may look like a typical function but it's actually a workflow that can span
 :::
 
 :::tip
-Workflows provide runtime guarantees that can't be ordinarily achieved within APIs, Event Handlers or Activities. They are the glue that coordinates time, people and services in a reliable, predictable manor.
+Workflows provide runtime guarantees that can't be ordinarily achieved within APIs, Event Handlers or Tasks. They are the glue that coordinates time, people and services in a reliable, predictable manor.
 :::
 
-### Activity
+### Task
 
-An [Activity](./reference/orchestration/activity.md) is a logical unit of work that can be called from a workflow. Workflows do the orchestration while Activities perform the actual work.
+An [Task](./reference/orchestration/task.md) is a logical unit of work that can be called from a workflow. Workflows do the orchestration while Tasks perform the actual work.
 
 For example, a function to integrate with Stripe to charge Credit Cards:
 
 ```ts
-const chargeCreditCard = activity(
+const chargeCreditCard = task(
   "chargeCC",
   async (source: string, amount: number) => {
     await stripe.charges.create({
@@ -145,19 +145,19 @@ First, you define an "Event Schema":
 const orderEvent = event<{ orderId: string }>("Order");
 ```
 
-### Publish
+### Emit
 
-Then you can publish to it.
+Then you can emit to it.
 
 ```ts
-await orderEvent.publishEvents({
+await orderEvent.emit({
   orderId,
   orderTime,
 });
 ```
 
 :::info
-You can publish an event from APIs, Event Handlers, Workflows and Activities, or even from outside Eventual.
+You can emit an event from APIs, Event Handlers, Workflows and Tasks, or even from outside Eventual.
 :::
 
 ### Subscription
@@ -211,7 +211,7 @@ Eventual's dev server simulates your Service locally, so you can quickly iterate
 eventual dev
 ```
 
-Once started, you can observe how Commands, Workflows, Activities and Subscriptions behave within the context of a single Node Runtime for easy debugging in your IDE.
+Once started, you can observe how Commands, Workflows, Tasks and Subscriptions behave within the context of a single Node Runtime for easy debugging in your IDE.
 
 ### Time Machine Debugging
 
@@ -274,7 +274,7 @@ const service = new Service<typeof MyService>(this, "Service", {
       environment: { .. }
     }
   },
-  activities: ..
+  tasks: ..
   subscriptions: ..
 });
 ```

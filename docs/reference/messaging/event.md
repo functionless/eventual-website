@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Event
 
-An `Event` is a named schema for a message that can be published to a Service's [Bus](./bus.md) and then routed to a Service's [Subscriptions](./subscription.md) or [to other Services](./service-to-service.md).
+An `Event` is a named schema for a message that can be emitted to a Service's [Bus](./bus.md) and then routed to a Service's [Subscriptions](./subscription.md) or [to other Services](./service-to-service.md).
 
 ## Create an Event
 
@@ -18,18 +18,18 @@ export const myEvent = event("MyEvent");
 
 This registers an event with the name `"MyEvent"` on the Event Bus.
 
-## Publish an Event
+## Emit an Event
 
-You can then publish data to this event by calling the publish function on the event object and passing it the data you want to send:
+You can then emit data to this event by calling the emit function on the event object and passing it the data you want to send:
 
 ```ts
-await myEvent.publishEvent({ message: "hello world" });
+await myEvent.emit({ message: "hello world" });
 ```
 
 The function accepts multiple arguments for batch sending events.
 
 ```ts
-await myEvent.publishEvent(
+await myEvent.emit(
   {
     prop: "value 1",
   },
@@ -55,14 +55,14 @@ export interface MyEvent {
 export const myEvent = event<MyEvent>("MyEvent");
 ```
 
-This creates an event called `"MyEvent"` with a type of `MyEvent`. This ensures that when the event is published or subscribed to, the data adheres to the `MyEvent` interface.
+This creates an event called `"MyEvent"` with a type of `MyEvent`. This ensures that when the event is emitted or subscribed to, the data adheres to the `MyEvent` interface.
 
 ```ts
-await myEvent.publishEvent({
+await myEvent.emit({
   prop: "my value", // okay
 });
 
-await myEvent.publishEvent({
+await myEvent.emit({
   prop: 123, // error, prop must be a string
 });
 
@@ -79,9 +79,9 @@ export const onMyEvent = subscription(
 
 By defining the type of an event, you can improve the safety and reliability of your application by catching errors at compile time rather than runtime, as well as self-documenting your code by clearly outlining the shape of the data that the event is expected to contain.
 
-## Publish an Event from outside Eventual
+## Emit an Event from outside Eventual
 
-To publish an event to a Service's Event Bus from outside Eventual, you will need to obtain the Event Bus's ARN. You can do this by accessing the `events.bus` property of the Service `Construct`, which is the Event Bus for the Service. For example, if you have a Service named `myService`:
+To emit an event to a Service's Event Bus from outside Eventual, you will need to obtain the Event Bus's ARN. You can do this by accessing the `events.bus` property of the Service `Construct`, which is the Event Bus for the Service. For example, if you have a Service named `myService`:
 
 ```ts
 const myService = new Service(..);
@@ -98,13 +98,13 @@ myFunction.addEnvironment(
 );
 ```
 
-Next, you will need to grant the external service permissions to publish events to the Event Bus. This can be done using the `grantPublish` method:
+Next, you will need to grant the external service permissions to emit events to the Event Bus. This can be done using the `grantEmit` method:
 
 ```ts
-myService.events.grantPublish(myFunction);
+myService.events.grantEmit(myFunction);
 ```
 
-With the necessary permissions and ARN in place, you can now use the [`PutEvents` API, provided by the AWS SDK v3 for JavaScript EventBridge Client](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-eventbridge/classes/puteventscommand.html)), to publish events to the Event Bus. For example:
+With the necessary permissions and ARN in place, you can now use the [`PutEvents` API, provided by the AWS SDK v3 for JavaScript EventBridge Client](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-eventbridge/classes/puteventscommand.html)), to emit events to the Event Bus. For example:
 
 ```ts
 import {
