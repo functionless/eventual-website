@@ -41,7 +41,7 @@ const config = {
           sidebarCollapsible: true,
         },
         gtag: {
-          trackingID: "G-JMKXGJ6HED",
+          trackingID: "G-F04RL3TTNM",
           anonymizeIP: true,
         },
         blog: {
