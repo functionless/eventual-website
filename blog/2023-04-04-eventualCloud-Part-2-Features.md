@@ -1,7 +1,7 @@
 ---
-title: Announcing Eventual Part 2 - Features
+title: eventualCloud Part 2 - Features
 description: Block
-slug: walkthrough-of-eventual-features
+slug: eventualCloud-part-2
 authors:
   - name: Sam Goodwin
     title: Co-creator of Eventual
@@ -12,7 +12,7 @@ image: https://i.imgur.com/mErPwqL.png
 hide_table_of_contents: false
 ---
 
-In the previous part, [Announcing Eventual Part 2 - Features](./2023-03-17-Announcing-Eventual-Part2-Features.md), we introduced the philosophy behind Eventual. How we envision a world where programming massively scalable, distributed systems in the cloud is as simple as writing local programs. In this second part, we'll give an overview of Eventual's features and developer experience.
+In the previous part, [Announcing Eventual Part 2 - Features](./2023-04-04-eventualCloud-Part-2-Features.md), we introduced the philosophy behind Eventual. How we envision a world where programming massively scalable, distributed systems in the cloud is as simple as writing local programs. In this second part, we'll give an overview of Eventual's features and developer experience.
 
 ## Service
 
