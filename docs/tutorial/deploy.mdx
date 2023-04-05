@@ -1,0 +1,49 @@
+---
+sidebar_position: 12
+---
+
+# Deploy to AWS
+
+We've seen that our workflow can run locally, but now we want to expose it to the internet so your customers or apps can use it. Lets deploy to AWS.
+
+Eventual uses CDK to deploy to AWS.
+
+Starting from the default template, execute the following call to deploy:
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
+
+<Tabs groupId="npm">
+  <TabItem value="npm" label="npm" default>
+    <CodeBlock>npm run deploy</CodeBlock>
+  </TabItem>
+  <TabItem value="yarn" label="yarn">
+    <CodeBlock>yarn run deploy</CodeBlock>
+  </TabItem>
+  <TabItem value="pnpm" label="pnpm">
+    <CodeBlock>pnpm run deploy</CodeBlock>
+  </TabItem>
+</Tabs>
+
+:::info
+If you are using a non-default AWS CLI Profile, provide it like:
+
+```
+AWS_PROFILE=[your profile] [your deploy command]
+```
+
+:::
+
+## Test on AWS
+
+Lets run the same test commands from [before](./review-and-test.md), but without the `--local` flag now.
+
+```shell
+npx eventual invoke submitJob "this is my job description"
+# using the job ID from above
+npx eventual get execution [job id]
+npx eventual invoke completeJob '{ "jobId": "[job id]", "approved": true }'
+npx eventual get execution [job id]
+npx eventual get history -e [job id]
+```

@@ -4,41 +4,34 @@ sidebar_position: 7
 
 # Create Approval Command
 
-Let's add another command, `completeTask`, to approve or deny the task.
+Let's add another command, `completeJob`, to approve or deny the job. Name this file something like `complete-job.ts`.
 
 ```ts
-import { waitForApproval } from "./wait-for-approval.js";
+import { command } from "@eventual/core";
 
-export const completeTask = command(
-  "completeTask",
-  async (input: { taskId: string; approved: boolean }) => {
+export const completeJob = command(
+  "completeJob",
+  async (input: { jobId: string; approved: boolean }) => {
     // todo
   }
 );
 ```
 
-This command will take a reference to the `taskId` to complete and a boolean `approved` indicating "approved" when `true` or "denied" when `false`.
+This command will take a reference to the `jobId` to complete and a boolean `approved` indicating "approved" when `true` or "denied" when `false`.
 
-First, look up the Task in DynamoDB:
+First, look up the Job in our `entity` from before:
 
 ```ts
-const response = await docClient.send(
-  new GetCommand({
-    TableName: tableArn,
-    Key: {
-      taskId: input.taskId,
-    },
-  })
-);
+const response = await approvalJobs.get(input.jobId);
 ```
 
-Then, throw a `404` error if the task doesn't exist.
+Then, throw a `404` error if the job doesn't exist.
 
 ```ts
-if (response.Item === undefined) {
+if (response === undefined) {
   throw new HttpError({
     code: 404,
-    message: `task with ${input.taskId} is not found`,
+    message: `job with ${input.jobId} is not found`,
   });
 }
 ```
@@ -52,7 +45,7 @@ Finally, call `sendTaskSuccess` on the `waitForApproval` task to complete the as
 ```ts
 // send the result for the task
 await waitForApproval.sendTaskSuccess({
-  taskToken: response.Item.token,
+  taskToken: response.taskToken,
   result: input.approved,
 });
 ```
@@ -60,3 +53,30 @@ await waitForApproval.sendTaskSuccess({
 :::info
 See the [Async Task](/reference/orchestration/task#async-task) documentation.
 :::
+
+Here is the final `completeJob` command:
+
+```ts
+import { HttpError, command } from "@eventual/core";
+import { waitForApproval } from "./wait-for-approval.js";
+import { approvalJobs } from "./approval-jobs.js";
+
+export const completeTask = command(
+  "completeJob",
+  async (input: { jobId: string; approved: boolean }) => {
+    const response = await approvalJobs.get(input.jobId);
+
+    if (response === undefined) {
+      throw new HttpError({
+        code: 404,
+        message: `job with ${input.jobId} is not found`,
+      });
+    }
+
+    await waitForApproval.sendTaskSuccess({
+      taskToken: response.taskToken,
+      result: input.approved,
+    });
+  }
+);
+```
