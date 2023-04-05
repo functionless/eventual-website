@@ -83,11 +83,11 @@ const config = {
             sidebarId: "tutorial", // foldername
             label: "Tutorial", // navbar title
           },
-          // {
-          //   to: "blog",
-          //   label: "Blog",
-          //   position: "left",
-          // },
+          {
+            to: "blog",
+            label: "Blog",
+            position: "left",
+          },
           {
             href: "https://github.com/functionless/eventual",
             label: "GitHub",
