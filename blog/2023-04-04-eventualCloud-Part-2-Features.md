@@ -8,7 +8,7 @@ authors:
     url: https://github.com/sam-goodwin
     image_url: https://avatars.githubusercontent.com/u/38672686?v=4
 tags: [hello, eventual]
-image: https://i.imgur.com/mErPwqL.png
+image: https://imgur.com/iYOSAzZ
 hide_table_of_contents: false
 ---
 
