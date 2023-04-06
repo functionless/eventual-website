@@ -2,7 +2,7 @@
 sidebar_position: 5
 ---
 
-# Create Entity and Write to it
+# Create Entity
 
 ## Add an Entity to store our task tokens
 

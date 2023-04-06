@@ -45,9 +45,9 @@ const config = {
           anonymizeIP: true,
         },
         blog: {
+          blogTitle: "Eventual Blog",
+          blogDescription: "Blog for EventualAi and EventualCloud",
           showReadingTime: true,
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
@@ -80,6 +80,7 @@ const config = {
           {
             type: "docSidebar", // docSidebar
             position: "left",
+            
             sidebarId: "tutorial", // foldername
             label: "Tutorial", // navbar title
           },
