@@ -137,6 +137,10 @@ const config = {
         ],
         copyright: `Copyright © ${new Date().getFullYear()} Functionless, Corp.`,
       },
+      metadata: [
+        { name: "keywords", content: "eventual, ai, serverless, iac" },
+      ],
+      image: "https://i.imgur.com/iYOSAzZ.png",
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,

@@ -1,13 +1,13 @@
 ---
 title: eventualCloud Part 2 - Features
-description: Block
+description: Eventual Cloud Part 2 - Features
 slug: eventualCloud-part-2
 authors:
   - name: Sam Goodwin
     title: Co-creator of Eventual
     url: https://github.com/sam-goodwin
     image_url: https://avatars.githubusercontent.com/u/38672686?v=4
-tags: [hello, eventual]
+tags: [features, eventual, ai]
 image: https://i.imgur.com/iYOSAzZ.png
 hide_table_of_contents: false
 ---
