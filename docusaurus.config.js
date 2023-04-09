@@ -80,7 +80,6 @@ const config = {
           {
             type: "docSidebar", // docSidebar
             position: "left",
-            
             sidebarId: "tutorial", // foldername
             label: "Tutorial", // navbar title
           },
@@ -122,7 +121,7 @@ const config = {
               },
               {
                 label: "Twitter",
-                href: "https://twitter.com/EventualCloud",
+                href: "https://twitter.com/EventualAI",
               },
             ],
           },
