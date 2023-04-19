@@ -138,9 +138,32 @@ const config = {
         copyright: `Copyright © ${new Date().getFullYear()} Functionless, Corp.`,
       },
       metadata: [
+        {
+          name: "description",
+          content:
+            "Use natural language and AI to explore and refine your business requirements, then generate and deploy a fully functioning service to the cloud",
+        },
+        {
+          name: "og:description",
+          content:
+            "Use natural language and AI to explore and refine your business requirements, then generate and deploy a fully functioning service to the cloud",
+        },
+        {
+          name: "twitter:description",
+          content:
+            "Use natural language and AI to explore and refine your business requirements, then generate and deploy a fully functioning service to the cloud",
+        },
+        {
+          name: "twitter:title",
+          content: "eventualAi",
+        },
+        {
+          name: "twitter:card",
+          content: "summary_large_image",
+        },
         { name: "keywords", content: "eventual, ai, serverless, iac" },
       ],
-      image: "https://i.imgur.com/iYOSAzZ.png",
+      image: "https://i.imgur.com/dVLQ8En.png",
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
