@@ -8,10 +8,10 @@ For example, if a workflow failed, you can replay its history locally and use a 
 
 ## Replay
 
-The `eventual replay` CLI supports running a workflow execution's history locally to help with debugging. All you need is the execu
+The `eventual replay` CLI supports running a workflow execution's history locally to help with debugging. All you need is the execution id.
 
 ```
-eventual replay execution --execution myExecutionId --entry ./src/my-service.ts
+eventual replay execution --execution myExecutionId
 ```
 
 :::info
