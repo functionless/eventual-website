@@ -145,14 +145,13 @@ The `replay` command allows you to replay an execution locally. This can be usef
 
 To use the `replay` command:
 
-1. Specify the `--execution` flag with the ID of the execution you want to replay.
-2. Specify the `--entry` flag with the path to your workflow code file (either a `.js` or `.ts` file).
-3. (Optional) Use the VSCode debugger terminal to set breakpoints and step through the execution. To do this, open the debugger terminal by pressing cmd/shift-P (mac) or ctrl/shift-P (windows) and selecting "debug terminal", set breakpoints in your workflow code, and run the replay command in the debugger terminal.
+1. Specify the ID of the execution you want to replay.
+2. (Optional) Use the VSCode debugger terminal to set breakpoints and step through the execution. To do this, open the debugger terminal by pressing cmd/shift-P (mac) or ctrl/shift-P (windows) and selecting "debug terminal", set breakpoints in your workflow code, and run the replay command in the debugger terminal.
 
 Example:
 
 ```sh
-eventual replay execution --execution myExecutionId --entry ./src/my-service.ts
+eventual replay execution myExecutionId
 ```
 
 ### `send signal`

@@ -11,7 +11,7 @@ Eventual ships with an `eventual local` CLI to run a service on your machine for
 Run the following command in your project:
 
 ```
-eventual local --entry ./packages/service/src/index.ts
+eventual local
 ```
 
 This will start up a local server running the service located at `./packages/service/src/index.ts` and output a `localhost` URL you can then interact with.
