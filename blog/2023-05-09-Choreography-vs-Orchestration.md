@@ -29,6 +29,8 @@ Welcome to the first blog in a series where we explore Event-Driven Architecture
 
 In this series, we'll showcase how Eventual's distributed systems primitives, APIs, Messaging, Durable Workflows (and more), simplify and standardize the implementation of event-driven architectures on AWS with TypeScript.
 
+Each of the code examples in this series will be available in the [eventual-eda-patterns](https://github.com/functionless/eventual-eda-patterns) repository.
+
 :::info
 It is inspired by the amazing [Serverless Land Event-Driven-Architecture (EDA) Visuals](https://serverlessland.com/event-driven-architecture/visuals) created by [David Boyne](https://twitter.com/boyney123).
 :::
