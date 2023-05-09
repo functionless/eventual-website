@@ -245,24 +245,32 @@ See the [Workflow docs](https://docs.eventual.ai/reference/orchestration/workflo
 A major benefit of implementing workflows with this technique is that they can be tested like any other function. This greatly simplifies maintainability and allows you to really get into the details and ensure your workflow handles all scenarios.
 
 ```ts
-const env: TestEnvironment = new TestEnvironment( .. );
+let env: TestEnvironment;
+
+// if there is pollution between tests, call reset()
+beforeAll(async () => {
+  env = new TestEnvironment();
+});
 
 test("shipOrder should not be called if processPayment throws", async () => {
   // mock the processPayment API to throw an error
   env.mockTask(processPayment).fail(new Error("failed to process payment"));
 
   // start the processOrder workflow
-  const execution = await env.startExecution(processOrder, "orderId");
+  const execution = await env.startExecution({
+    workflow: processOrder,
+    input: "orderId",
+  });
 
   // allow the simulator to advance time
   await env.tick();
 
   // get the status of the workflow
-  const status = await execution.getStatus();
+  const status = (await execution.getStatus()).status;
 
   // assert it failed
   expect(status).toEqual(ExecutionStatus.FAILED);
-})
+});
 ```
 
 :::note
