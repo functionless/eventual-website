@@ -39,6 +39,10 @@ It is inspired by the amazing [Serverless Land Event-Driven-Architecture (EDA) V
 If you're new to EDAs, we highly recommend checking out his resource and this [post](https://theburningmonk.com/2020/08/choreography-vs-orchestration-in-the-land-of-serverless/) from [Yan Cui](https://twitter.com/theburningmonk) (The Burning Monk) for further learning.
 :::
 
+# Video
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/h1UJpuN4vgc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 ## What are Choreography and Orchestration
 
 In broad strokes there are two main approaches to organizing communication and collaboration between services in event-driven systems: 1) Choreography and 2) Orchestration.
