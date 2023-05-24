@@ -4,70 +4,245 @@ sidebar_position: 5.1
 
 # Entity
 
-An Entity is a data store that can be used to store and retrieve data from in an eventual service. It provides a way to persist data across multiple workflow executions, tasks, commands and can be used to store data such as user information, configuration settings, or any other data that needs to be persisted.
+An `Entity` represents a unique data unit stored in a DynamoDB Table.
 
-## Create an Entity
+The structure of an `Entity` comprises:
 
-To create an entity, you will need to import the `entity` function from the `@eventual/core` library:
+- **Unique Name**: Identifies each `Entity` table backed by a dedicated DynamoDB Table.
+- **Attributes**: These are the attributes/properties stored with each `Entity`.
+- **Partition Attributes**: A list of attribute names that constitute the partition key and determine how data is distributed across the database.
+- **Sort Attributes**: An optional list that, if provided, determines the order of data stored within the partitions and enables efficient queries.
+
+By effectively structuring these components, you can tailor each `Entity` to fit your data storage needs optimally.
+
+## Creating an Entity
+
+To create an Entity, you define its unique name, attributes, and partition/sort key configuration using the `entity` function from `@eventual/core`.
+
+For instance, here's how you would define a `userData` Entity:
 
 ```ts
+import { z } from "zod";
 import { entity } from "@eventual/core";
+
+const userData = entity("userData", {
+  attributes: {
+    userId: z.string(),
+    userName: z.string(),
+    age: z.number(),
+  },
+  partition: ["userId"],
+});
 ```
 
-Then, you can define an entity by providing a unique name and the type of data it will store:
+Here, `userData` is an Entity table with `userId`, `userName`, and `age` as attributes. The partition key is `userId`, enabling us to lookup a user's data by their single `userId`.
+
+## Partition Key
+
+The `partition` key, also known as the "hash key", is the primary means of distributing data across various partitions.
+
+## Sort Key
+
+Contrarily, the `sort` key helps order data within each partition of an Entity and enable complex queries.
+
+Sort keys are particularly useful when it comes to modeling relationships between entities. For instance, if you need to "List all of UserXYZ's friends," you can define the `friendId` as the sort key and `userId` as the partition key.
 
 ```ts
-const userData = entity<{ name: string; age: number }>("userData");
+const friends = entity("Friend", {
+  attributes: {
+    userId: z.string(),
+    friendId: z.string(),
+  },
+  partition: ["userId"],
+  sort: ["friendId"],
+});
 ```
 
-## Get and Set Data
-
-Once an entity has been created, you can use the `get` and `set` methods to get and set data in the entity:
+Once defined, you can conduct a query using the `userId` partition key to return a list of all the user's friends.
 
 ```ts
-// set data
-await userData.set("user1", { name: "John", age: 30 });
-
-// get data
-const user = await userData.get("user1");
+const usersFriends = await friends.query({
+  userId: "userID",
+});
 ```
 
-## List Data
+:::tip
 
-The `list` method can be used to list all the data stored in an entity:
-
-```ts
-const users = await userData.list();
-```
+:::
 
 ## Composite Keys
 
-Composite keys can be used to create multiple groupings of data in an entity. This is done by providing an object with multiple properties as the key:
+Eventual allows for the use of "composite keys"—keys composed of multiple attributes.
+
+Consider a scenario where you need to model a meeting room scheduling system and wish to retrieve all meetings at a particular office on a certain date.
+
+First, define an `entity` with a composite sort key combining `date` and `roomNumber`:
+
+```ts
+const meetings = entity("meetings", {
+  attributes: {
+    location: z.string(),
+    date: z.string(),
+    roomNumber: z.string(),
+  },
+  partition: ["location"],
+  sort: ["date", "roomNumber"],
+});
+```
+
+Next, to retrieve all `roomNumbers` within a location for a specific date, use a `query`:
+
+```ts
+await meetings.query({
+  location: "Seattle",
+  date: {
+    startsWith: "2023-01-01",
+  },
+});
+```
+
+This way, composite keys enable more sophisticated queries by permitting multiple attributes within partition and sort keys.
+
+:::tip
+It is not always possible to support all query access patterns using the partition/sort key configuration on an entity. Instead, you can create an [Index](./entity-index.md) optimized for a particular query.
+:::
+
+## Get Data
+
+The `get` function retrieves an individual record by its partition and sort key values:
+
+```ts
+const user = await userData.get({
+  userId: "userId",
+});
+```
+
+## Set Data
+
+The `set` function writes an individual record to the database. You must pass an object matching the schema configured on the entity.
+
+```ts
+// set data
+await userData.set({
+  userId: "user1",
+  userName: "John",
+  age: 30,
+});
+```
+
+## Query Data
+
+An Entity with a `sort` key or an [Index](./entity-index.md) can be queried with the `query` function.
+
+To perform a query, you must specify all of the partition key attributes. Including the sort key attributes in your query is optional but can help narrow down results.
+
+For example, here's how you can query the `friends` entity to retrieve all of Sam's friends:
+
+```ts
+const friendsOfSam = await friends.query({
+  userId: "sam",
+});
+```
+
+### Querying Data with Operators
+
+In addition to providing partition and sort key attributes, you can use various operators in your queries to refine the results. These operators include `startsWith`, `between`, `lt` (less than), `gt` (greater than), `lte` (less than or equal to), and `gte` (greater than or equal to).
+
+Here are some examples using the `meetings` entity from an earlier section.
+
+To find meetings starting on a certain date:
+
+```ts
+const meetingsOnDate = await meetings.query({
+  location: "Seattle",
+  date: {
+    startsWith: "2023-01-01",
+  },
+});
+```
+
+To find meetings happening between two dates:
+
+```ts
+const meetingsInRange = await meetings.query({
+  location: "Seattle",
+  date: {
+    between: ["2023-01-01", "2023-02-01"],
+  },
+});
+```
+
+To find meetings that happened before a certain date:
+
+```ts
+const meetingsBeforeDate = await meetings.query({
+  location: "Seattle",
+  date: {
+    lt: "2023-01-01",
+  },
+});
+```
+
+To find meetings that happened after a certain date:
+
+```ts
+const meetingsAfterDate = await meetings.query({
+  location: "Seattle",
+  date: {
+    gt: "2023-01-01",
+  },
+});
+```
+
+These operators provide powerful tools for refining your queries and retrieving exactly the data you need.
+
+## Optimistic Locking
+
+Eventual provides a feature called 'optimistic locking' to handle concurrent updates to an entity. Each entity carries a version attribute, which is updated every time the entity is modified. This version can be used to assert that an entity hasn't changed since the last update.
+
+Here's how you can use optimistic locking with the `userData` entity:
+
+First, set the initial data in the entity. The set operation returns an object that includes a `version` attribute:
+
+```ts
+// set the item in the entity and receive the
+const { version } = await userData.set({
+  userId: "user1",
+  userName: "John",
+  age: 30,
+});
+```
+
+You can then perform other operations. If you need to update the user data later and want to ensure the user data hasn't changed since the last update, you can pass the `expectedVersion` in the options argument to the `set` function:
 
 ```ts
 await userData.set(
-  { namespace: "admin", key: "john" },
-  { name: "John", age: 30 }
+  { userId: "user1", userName: "John", age: 31 },
+  // ensure that the version has not changed since we last updated
+  { expectedVersion: version }
 );
 ```
 
-This can then be used to list all the users in a particular group:
+If the `user1` data was updated in-between the two `set` operations and the version has changed, the second `set` operation will throw an `UnexpectedVersion` error. This mechanism ensures data consistency in environments with concurrent operations.
+
+## Streams
+
+Entity streams are powerful tools that enable developers to observe changes to entities in real time. Changes can include insertions, modifications, or deletions. The stream delivers events in an orderly fashion per entity. When namespaces are involved, events are sorted per entity and per namespace. In case of any issues or false responses, the stream automatically attempts a retry.
+
+:::caution
+Be aware that each entity can support only two streams at a time.
+:::
+
+Here's an example of setting up a stream on the `userData` entity that triggers a function whenever a new user is inserted:
 
 ```ts
-const admins = await userData.list({ namespace: "admin" });
+export const newEntities = userData.stream(
+  { operations: ["insert"] },
+  async (item) => {
+    // ... do something with the item ...
+  }
+);
 ```
-
-## Conditional mutations
-
-Each entity value has a version which can be used to assert that an entity has not changed since the last update.
-
-```ts
-const { version } = await userData.set("user1", { name: "John", age: 30 });
-... other things
-await userData.set("user1", { name: "John", age: 31 }, { expectedVersion: version });
-```
-
-If `user1` has been updated between the first and second `set`, an `UnexpectedVersion` error will be thrown.
 
 ## Transactional Writes
 
@@ -106,24 +281,3 @@ await Entity.transactWrite([
 :::info
 For more complex scenarios use the [`transaction`](./transaction.md) resource instead.
 :::
-
-## Streams
-
-Entity streams allow developers to listen for changes to entities. These streams allow developers to listen for changes on entities, which include inserts, modifications, or deletions. Events are delivered in order per entity, unless namespaces are being used, in which case they are delivered in order per entity and namespace. In case of an error or false response, the stream will automatically retry
-
-Developers can also filter the events based on the event type or namespace. To get the the old value, set `includeOld` to true in the options.
-
-:::caution
-Each entity can only have two streams.
-:::
-
-```ts
-const users = new entity("users");
-
-export const newEntities = myEntity.stream(
-  { operations: ["insert"] },
-  async (item) => {
-    // ... do something with the item ...
-  }
-);
-```

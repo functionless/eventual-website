@@ -1,5 +1,5 @@
 ---
-sidebar_position: 5.1
+sidebar_position: 5.3
 ---
 
 # Transaction
@@ -59,7 +59,7 @@ Please note that if a specific version is explicitly provided and it differs fro
 ```ts
 const myTransaction = transaction(
   "myTransaction",
-  async (input: { id: string, version: number }) => {
+  async (input: { id: string; version: number }) => {
     const value = await myEntity.get("someKey");
     // if myEntity-input.id's version is no longer `version`, the transaction will fail.
     await myEntity.set(input.id, { value, expectedVersion: version });
