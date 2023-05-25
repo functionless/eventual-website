@@ -1,15 +1,14 @@
 ---
-title: Choreography vs Orchestration
-description: Choreography vs Orchestration
+title: "EDA Patterns: Choreography vs Orchestration"
+description: This is the first part in a series where we explain Event-Driven-Architecture concepts by building common patterns with the Eventual framework.
 slug: choreography-vs-orchestration
-authors:
-  - name: Sam Goodwin
-    title: Co-creator of Eventual
-    url: https://twitter.com/samgoodwin89
-    image_url: https://avatars.githubusercontent.com/u/38672686?v=4
+date: 2023-05-09
+author: Sam Goodwin
+author_title: CEO & Co-creator of Eventual
+author_url: https://twitter.com/samgoodwin89
+author_image_url: https://pbs.twimg.com/profile_images/1604899892152782848/GdEh01Jy_400x400.jpg
 tags:
   [
-    hello,
     eventual,
     ai,
     orchestration,
