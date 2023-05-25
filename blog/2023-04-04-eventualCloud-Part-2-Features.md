@@ -1,12 +1,12 @@
 ---
 title: eventualCloud Part 2 - Features
-description: Eventual Cloud Part 2 - Features
+description: Walk through of the eventualCloud framework demonstrating its distributed systems primitives and how it streamlines the development of cloud services on AWS.
 slug: eventualCloud-part-2
-authors:
-  - name: Sam Goodwin
-    title: Co-creator of Eventual
-    url: https://github.com/sam-goodwin
-    image_url: https://avatars.githubusercontent.com/u/38672686?v=4
+date: 2023-04-04
+author: Sam Goodwin
+author_title: CEO & Co-creator of Eventual
+author_url: https://twitter.com/samgoodwin89
+author_image_url: https://pbs.twimg.com/profile_images/1604899892152782848/GdEh01Jy_400x400.jpg
 tags: [features, eventual, ai]
 image: https://i.imgur.com/dVLQ8En.png
 hide_table_of_contents: false

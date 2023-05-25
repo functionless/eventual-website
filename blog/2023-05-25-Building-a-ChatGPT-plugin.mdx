@@ -1,0 +1,230 @@
+---
+title: Building an OpenAI Chat Plugin with Eventual Cloud
+description: This blog demonstrates how Eventual helps build a ChatGPT plugin by automating infrastructure and OpenAPI schema generation.
+slug: building-an-openai-chat-plugin-with-eventual
+author: Sam Sussman
+author_title: CTO & Co-creator of Eventual
+author_url: https://twitter.com/sussmansa
+author_image_url: https://pbs.twimg.com/profile_images/1153677368273203200/uhHMJnsS_400x400.jpg
+date: 2023-05-25
+tags: [eventual, ai, chat gpt, gpt, langchain, event driven architectures]
+hide_table_of_contents: false
+image: https://i.imgur.com/mR023Uw.png
+---
+
+# Building an OpenAI Chat Plugin with Eventual Cloud
+
+Open AI plugins are an exciting new way of exposing APIs to end consumers. For decades we’ve mostly exposed APIs programmatically or via some form of graphical UI. With the advent of AI, we now have a new form factor emerging - conversational AI. Examples include Open AI Plugins (aka. GPT Plugins) and LangChain.
+
+This new form factor uses conversation to interact with APIs. A smart agent backed by LLMs then works to serve your requests by selecting APIs from a catalog and calling them on your behalf. Instead of pointing and clicking - you just say what you need done and the bot will work to achieve your request by calling APIs step-by-step.
+
+:::tip
+You can find the example code for this blog post [here](https://github.com/functionless/eventual-examples/tree/main/examples/open-ai-chat-plugin) in our example repos.
+:::
+
+## Video
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/NrmGOAqtxX8"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  allowfullscreen
+></iframe>
+
+## Building GPT plugins requires three things:
+
+1. An API hosted somewhere on the internet
+2. An Open API specification describing the API’s operations in detail.
+3. An Open AI Plugin Manifest file served over HTTP
+
+This Open API specification part is super important - because without a well documented or spec’ed out API, the smart agents cannot reason about when or how to call your API. o dive more into details visit the [Open AI getting started guide](https://platform.openai.com/docs/plugins/getting-started).
+
+Eventual’s cloud framework makes building plugins dead simple thanks to its abstractions of AWS serverless and Open API. With just a few lines of code, you can have an API deployed on AWS and a well documented API specification available for the plugins.
+
+The rest of this blog will walk through the noteworthy steps in building a plugin with eventual. To skip straight to the code - see this [example](https://github.com/functionless/eventual-examples/tree/main/examples/open-ai-chat-plugin).
+
+First, if you haven’t already, bootstrap a new eventual project (see the Getting Started guide).
+
+```
+pnpm create eventual@latest
+```
+
+This will create you a new repository with an eventual project ready to go.
+
+Next, head on over to your service’s NPM package in `packages/service`. Here we’ll find some sample code that we can just delete.
+
+Now, the simplest GPT plugin has a single API that can be called. To create APIs with eventual, we simply import the `command` primitive and create a new API.
+
+```ts
+import { command } from "@eventual/core";
+
+export const helloWorld = command(
+  "helloWorld",
+  {
+    path: "helloWorld/:name",
+  },
+  async (request: { name: string }) => {
+    return { message: `hello ${request.name}` };
+  }
+);
+```
+
+Now, this is the simplest command possible, but it’s not yet enough for building GPT plugins because we have not defined its schema and documented it for generating the Open API spec.
+
+To do that, we import `zod` and use that to define the input/output schema of the command. This is good practice anyway, regardless of whether you’re onboarding with GPT plugins, because it is used to validate the request to ensure the data matches what you expect.
+
+```ts
+import { z } from "zod";
+
+const HelloInput = z.object({
+  name: z.string()
+});
+
+const HelloOutput = z.object({
+  message: z.string()
+});
+export const helloWorld = command("helloWorld", {
+  path: "helloWorld/:name",
+  input: HelloInput,
+  output: HelloOutput
+}, async (request) => {
+  return `hello ${request.name}`.
+});
+```
+
+We now have an API with request validation and Open API schema generation.
+
+The next step is to document the properties with information that will be read and reasoned over by the smart agents. Unfortunately, this requires that we install an external dependency on `@anatine/zod-openapi`.
+
+```
+pnpm add @anatine/zod-openapi
+```
+
+We then import the `extendApi` method from that package. This function decorates zod schemas with with metadata specifical to Open API.
+
+```ts
+const HelloInput = z.object({
+  name: extendApi(z.string(), {
+    description: "name of the person to say hello to",
+  }),
+});
+
+const HelloOutput = z.object({
+  message: extendApi(z.string(), {
+    description: "the message greeting the user",
+  }),
+});
+```
+
+Finally, we add a `summary` to our command describing the API operation. This description helps Open AI know when to call this API - so make sure to provide a useful/helpful description.
+
+```ts
+export const helloWorld = command("helloWorld", {
+  summary: "This API generates a greeting message when given a name",
+  path: "helloWorld/:name",
+  input: HelloInput,
+  output: HelloOutput
+}, async (name: string) => {
+  return `hello ${name}`.
+});
+```
+
+Now that we have our API with an Open API specification, we need to add two endpoints for Open AI:
+
+1. openai.json - a HTTP endpoint (`GET: /.well-known/openapi.json`) for getting the API spec
+2. ai-plugin.json - a HTTP (`GET: /.well-known/ai-plugin.json`) endpoint for getting the plugin manifest
+
+Both of these can be achieved with a command.
+
+Eventual provides an intrinsic `ApiSpecification` object that can be used at runtime to access the Open API specification. With that, we can simply create a command to serve the `openapi.json` file.
+
+```ts
+import { ApiSpecification } from "@eventual/core";
+import { OpenAPIObject } from "openapi3-ts";
+
+export const specificationJson = command(
+  "specificationJson",
+  {
+    method: "GET",
+    // this can be any path
+    path: "/spec/openapi.json",
+  },
+  (): OpenAPIObject => {
+    return ApiSpecification.generate();
+  }
+);
+```
+
+The `ai-plugin.json` file can be achieved similarly. It’s a simple static JSON file with some metadata required by Open AI. To see the accepted fields and options, refer to the [Open AI Plugin documentation](https://platform.openai.com/docs/plugins/getting-started/plugin-manifest).
+
+```ts
+export const aiPluginJson = command(
+  "aiPluginJson",
+  {
+    // the URL path for accessing this plugin manifest
+    // must be this specific string requried by Open AI
+    path: "/.well-known/ai-plugin.json",
+    // it must be a HTTP GET operation
+    method: "GET",
+  },
+  (_, { service: { serviceUrl } }) => {
+    return {
+      schema_version: "v1",
+      name_for_human: "TODO Plugin",
+      name_for_model: "todo",
+      description_for_human:
+        "Plugin for managing a TODO list. You can add, remove and view your TODOs.",
+      description_for_model:
+        "Plugin for managing a TODO list. You can add, remove and view your TODOs.",
+      auth: {
+        type: "none",
+      },
+      api: {
+        type: "openapi",
+        url: `${serviceUrl}/spec/openapi.json`,
+        is_user_authenticated: false,
+      },
+      contact_email: "support@example.com",
+      legal_info_url: "http://www.example.com/legal",
+    };
+  }
+);
+```
+
+We’re now done with implementation and can now move on to testing and deploying.
+
+## Testing and deploying
+
+1. Run the service locally and test with LangChain or Open AI
+2. Deploy the service to AWS and register the plugin with Open AI
+
+To run locally, run the `local` command from the root of the repository.
+
+```
+pnpm eventual local
+```
+
+This will stand up a server running on localhost that you can then interact with from LangChain or Open AI. See the [OpenAI docs](https://platform.openai.com/docs/plugins/getting-started/running-a-plugin) for a detailed how-to guide on that.
+
+:::tip
+For an example of how to test with LangChain, check out our [example repo here](https://github.com/functionless/eventual-examples/blob/main/examples/open-ai-chat-plugin/packages/chain/src/chain.py).
+:::
+
+To deploy our new service to AWS serverless, run the `deploy` command from the root of the repository.
+
+```
+pnpm run deploy
+```
+
+This will deploy a best practice architecture consisting of API Gateway (with OpenAPI spec), AWS Lambda, etc. to AWS.
+
+## Modifying and maintaining
+
+As you modify your plugin, eventual will always ensure your published schemas are up to date and reflect the latest changes, allowing you to focus on building your service.
+
+## Closing
+
+This has been a quick overview of how to build a ChatGPT plugin with eventual. It only scratches the surface on what’s possible with eventual - to learn more, such as how to build event-driven services with eventual’s distributed systems primitives, visit [https://eventual.ai](https://eventual.ai/), follow us on Twitter [@eventualAi](https://twitter.com/eventualAi) and [star us on GitHub](https://github.com/functionless/eventual).
