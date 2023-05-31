@@ -47,6 +47,57 @@ To create a new Eventual project, run:
   </TabItem>
 </Tabs>
 
+### Configure AWS CLI Profile
+
+Eventual works with AWS and relies on you having a configured AWS CLI profile.
+
+:::info
+See the [Configuring the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html) documentation.
+:::
+
+After installing the [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html), run the following command to configure your AWS CLI profile.
+
+```
+aws configure
+```
+
+### Bootstrap your AWS Account (for AWS CDK usage)
+
+In order to deploy an Eventual application, you need to first "bootstrap" the AWS account and region you wish to deploy your application to.
+
+:::info
+See the [AWS CDK Boostrap documentation](https://docs.aws.amazon.com/cdk/v2/guide/bootstrapping.html)
+:::
+
+Run the following command from the root of your new project:
+
+<Tabs groupId="npm">
+  <TabItem value="npm" label="npm" default>
+    <CodeBlock>
+      {"npx cdk bootstrap aws://(your-account-number)/(your-aws-region)"}
+    </CodeBlock>
+  </TabItem>
+  <TabItem value="yarn" label="yarn">
+    <CodeBlock>
+      {"yarn cdk bootstrap aws://(your-account-number)/(your-aws-region)"}
+    </CodeBlock>
+  </TabItem>
+  <TabItem value="pnpm" label="pnpm">
+    <CodeBlock>
+      {"pnpm cdk bootstrap aws://(your-account-number)/(your-aws-region)"}
+    </CodeBlock>
+  </TabItem>
+</Tabs>
+
+:::tip
+You will need to replace `your-account-number` and `your-aws-region` with your desired values, for example:
+
+```
+cdk bootstrap aws://123456789/us-east-1
+```
+
+:::
+
 ### Review the created project structure
 
 The project template generates the following project structure containing 3 NPM packages:
@@ -61,7 +112,9 @@ my-service
 
 ## 2. Make a Change
 
-Let's make a small change to the `formatMessage` task in `packages/service/src/hello.ts` so we can trace through
+You're now ready to make a change and deploy the application.
+
+Let's update the `formatMessage` task in `packages/service/src/hello.ts` to give you an idea of how changes make their way to AWS.
 
 ```ts
 export const formatMessage = task("formatName", async (name: string) => {

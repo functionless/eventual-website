@@ -5,7 +5,7 @@ sidebar_position: 1
 
 # What is Eventual?
 
-Eventual is a Software Development Kit (SDK) that for building micro-services in AWS using pure TypeScript and modern Infrastructure-as-Code (IaC) such as the AWS CDK, SST, Pulumi and Terraform (coming soon!).
+Eventual is a Software Development Kit (SDK) for building micro-services in AWS using pure TypeScript and modern Infrastructure-as-Code (IaC) such as the AWS CDK, SST, Pulumi and Terraform (coming soon!).
 
 :::caution Video Coming Soon
 Stay tuned for an introductory video
