@@ -66,10 +66,6 @@ const usersFriends = await friends.query({
 });
 ```
 
-:::tip
-
-:::
-
 ## Composite Keys
 
 Eventual allows for the use of "composite keys"—keys composed of multiple attributes.
@@ -96,7 +92,7 @@ Next, to retrieve all `roomNumbers` within a location for a specific date, use a
 await meetings.query({
   location: "Seattle",
   date: {
-    startsWith: "2023-01-01",
+    $beginsWith: "2023-01-01",
   },
 });
 ```
@@ -105,6 +101,64 @@ This way, composite keys enable more sophisticated queries by permitting multipl
 
 :::tip
 It is not always possible to support all query access patterns using the partition/sort key configuration on an entity. Instead, you can create an [Index](./entity-index.md) optimized for a particular query.
+:::
+
+:::caution
+
+**Numeric Multi-Attribute Fields.**
+
+When a multi-attribute key field is numeric, the number will be stored as a string rather than a number.
+This means that comparison operations like sort and between will treat the number as a string and not a number.
+
+Lets say the `roomNumber` in `meetings` was a `z.number()`.
+
+```ts
+const meetings = entity("meetings", {
+  attributes: {
+    location: z.string(),
+    date: z.string(),
+    roomNumber: z.number(),
+  },
+  partition: ["location"],
+  sort: ["date", "roomNumber"],
+});
+```
+
+If the entity contains room 10 and room 9 on the same date, room 10 will be considered less than room 9.
+
+```ts
+[
+  {
+    location: "seattle",
+    date: "2023-01-01",
+    roomNumber: 10,
+  },
+  {
+    location: "seattle",
+    date: "2023-01-01",
+    roomNumber: 9,
+  },
+];
+```
+
+If maintaining the numeric ordering within a multi-attribute key is important, one way to resolve this is to provide a padded number as a string:
+
+```ts
+// change room number to - roomNumber: z.string(),
+[
+  {
+    location: "seattle",
+    date: "2023-01-01",
+    roomNumber: "009",
+  },
+  {
+    location: "seattle",
+    date: "2023-01-01",
+    roomNumber: "010",
+  },
+];
+```
+
 :::
 
 ## Get Data
@@ -146,7 +200,7 @@ const friendsOfSam = await friends.query({
 
 ### Querying Data with Operators
 
-In addition to providing partition and sort key attributes, you can use various operators in your queries to refine the results. These operators include `startsWith`, `between`, `lt` (less than), `gt` (greater than), `lte` (less than or equal to), and `gte` (greater than or equal to).
+In addition to providing partition and sort key attributes, you can use various operators in your queries to refine the results. These operators include `beginsWith`, `between`, `lt` (less than), `gt` (greater than), `lte` (less than or equal to), and `gte` (greater than or equal to).
 
 Here are some examples using the `meetings` entity from an earlier section.
 
@@ -156,7 +210,7 @@ To find meetings starting on a certain date:
 const meetingsOnDate = await meetings.query({
   location: "Seattle",
   date: {
-    startsWith: "2023-01-01",
+    $beginsWith: "2023-01-01",
   },
 });
 ```
@@ -167,10 +221,32 @@ To find meetings happening between two dates:
 const meetingsInRange = await meetings.query({
   location: "Seattle",
   date: {
-    between: ["2023-01-01", "2023-02-01"],
+    $between: ["2023-01-01", "2023-02-01"],
   },
 });
 ```
+
+:::info
+To perform between with multiple sort key attributes, you can place it directly on the key object.
+
+This query would filter out room numbers above 400 from the final date.
+
+```ts
+const meetingsInRange = await meetings.query({
+  location: "Seattle",
+  $between: [
+    {
+      date: "2023-01-01",
+    },
+    {
+      date: "2023-02-01",
+      roomNumber: "400",
+    },
+  ],
+});
+```
+
+:::
 
 To find meetings that happened before a certain date:
 
@@ -178,7 +254,7 @@ To find meetings that happened before a certain date:
 const meetingsBeforeDate = await meetings.query({
   location: "Seattle",
   date: {
-    lt: "2023-01-01",
+    $lt: "2023-01-01",
   },
 });
 ```
@@ -189,7 +265,7 @@ To find meetings that happened after a certain date:
 const meetingsAfterDate = await meetings.query({
   location: "Seattle",
   date: {
-    gt: "2023-01-01",
+    $gt: "2023-01-01",
   },
 });
 ```
