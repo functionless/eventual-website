@@ -50,3 +50,13 @@ Then, run the CLI in the new terminal:
 ![](./debug-terminal-local.png)
 
 You can now set breakpoints anywhere in your code and explore all of your Commands, Workflows, Tasks and Subscriptions in the context of a single runtime.
+
+## EVENTUAL_LOCAL Environment Variable
+
+To detect when your code is running in a local environment, you can check for the Truthy-ness of the `EVENTUAL_LOCAL` environment variable.
+
+```ts
+if (process.env.EVENTUAL_LOCAL) {
+  // in a local environment
+}
+```
