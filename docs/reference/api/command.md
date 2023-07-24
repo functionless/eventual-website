@@ -115,7 +115,7 @@ throw new HttpError({
 All commands attach a RPC route to your Service's API Gateway with the following format:
 
 ```
-POST /_rpc/${commandName}
+POST /rpc/${commandName}
 ```
 
 It accepts a JSON payload body for the Command's input and returns the output as a JSON-encoded body.
