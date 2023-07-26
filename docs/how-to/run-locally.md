@@ -27,6 +27,24 @@ When running `eventual local`, an initial deployment to the cloud is still neces
 1. Eventual only runs the "control" parts of your service locally - any databases like DynamoDB or S3, still need to be deployed.
 2. The local code needs to assume an IAM Role to access these resources. This Role is deployed when you deploy the service.
 
+### Offline Mode: Local without Deployment
+
+The default `eventual local` command requires access to an AWS account to do the initial deployment, pull down credentials, and populate dynamic environment variables.
+
+To run eventual local without AWS, use the `--offline` flag:
+
+```
+eventual local --offline
+```
+
+In offline mode, eventual local will:
+
+1. never trigger a deployment.
+2. not have access to resources in AWS configured in the CDK app, only eventual resources.
+3. not have access to dynamic environment variables configured in the CDK app.
+
+When running in offline mode, the local service can use environment variables on the local system, including the locally configured AWS credentials.
+
 ## Interact with the Local Server
 
 The server is just a plain HTTP server, so you can use any tool you'd like to make HTTP requests to your server. For example, cURL or Postman.
