@@ -135,3 +135,9 @@ Now when we scan this new index, only members will be returned:
 ```ts
 const memberEntries = await members.scan();
 ```
+
+## Querying and Scanning
+
+`Query` and `Scan` operations on an `Index` behave the same as they do on an [`Entity`](./entity.md).
+
+See the documentation for `Entity` [`query`](./entity.md#query-data) and [`scan`](./entity.md#scan-data).

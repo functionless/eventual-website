@@ -272,6 +272,38 @@ const meetingsAfterDate = await meetings.query({
 
 These operators provide powerful tools for refining your queries and retrieving exactly the data you need.
 
+### Select Query Attributes
+
+To return a subset of attributes while querying an `Entity` or [Index](./entity-index.md), you can use the `select` option. This option accepts an array of attribute names to return.
+
+```ts
+const meetingsAfterDate = await meetings.query(
+  {
+    location: "Seattle",
+    date: {
+      $gt: "2023-01-01",
+    },
+  },
+  { select: ["location"] }
+);
+```
+
+## Scan Data
+
+To return all data within an entity, you can use the `scan` function.
+
+```ts
+const allMeetings = await meetings.scan();
+```
+
+### Select Query Attributes
+
+To return a subset of attributes while scanning an `Entity` or [Index](./entity-index.md), you can use the `select` option. This option accepts an array of attribute names to return.
+
+```ts
+const allMeetingsLocation = await meetings.scan({ select: ["location"] });
+```
+
 ## Optimistic Locking
 
 Eventual provides a feature called 'optimistic locking' to handle concurrent updates to an entity. Each entity carries a version attribute, which is updated every time the entity is modified. This version can be used to assert that an entity hasn't changed since the last update.
