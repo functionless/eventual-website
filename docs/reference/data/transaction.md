@@ -4,7 +4,7 @@ sidebar_position: 5.3
 
 # Transaction
 
-Transactions are a powerful tool for ensuring data consistency and integrity. They guarantee that any value read within the transaction will stay the same by the end of the transaction, and any mutation operations (`set`, `delete`) will not change from the time the set operation is found until it is executed.
+Transactions are a powerful tool for ensuring data consistency and integrity. They guarantee that any value read within the transaction will stay the same by the end of the transaction, and any mutation operations (`put`, `delete`) will not change from the time the set operation is found until it is executed.
 Additionally, any events will only be emitted if all other conditions succeed and they will only be emitted once (though this does not guarantee exactly-once delivery). Finally, a transaction will retry until complete, or until it reaches the maximum number of retries (default: 100).
 
 ## Create a Transaction
@@ -25,14 +25,14 @@ const myTransaction = transaction("myTransaction", async (input) => {
 
 ### Writing the Transaction
 
-A transaction can utilize Entity's `get`, `getWithMetadata`, `set`, and `delete` operations.
+A transaction can utilize Entity's `get`, `getWithMetadata`, `put`, and `delete` operations.
 
 ```ts
 const myTransaction = transaction(
   "myTransaction",
   async (input: { id: string }) => {
     const value = await myEntity.get("someKey");
-    await myEntity.set(input.id, { value });
+    await myEntity.put(input.id, { value });
   }
 );
 ```
@@ -62,7 +62,7 @@ const myTransaction = transaction(
   async (input: { id: string; version: number }) => {
     const value = await myEntity.get("someKey");
     // if myEntity-input.id's version is no longer `version`, the transaction will fail.
-    await myEntity.set(input.id, { value, expectedVersion: version });
+    await myEntity.put(input.id, { value, expectedVersion: version });
   }
 );
 ```

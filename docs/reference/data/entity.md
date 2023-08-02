@@ -173,11 +173,11 @@ const user = await userData.get({
 
 ## Set Data
 
-The `set` function writes an individual record to the database. You must pass an object matching the schema configured on the entity.
+The `put` function writes an individual record to the database. You must pass an object matching the schema configured on the entity.
 
 ```ts
 // set data
-await userData.set({
+await userData.put({
   userId: "user1",
   userName: "John",
   age: 30,
@@ -282,24 +282,24 @@ First, set the initial data in the entity. The set operation returns an object t
 
 ```ts
 // set the item in the entity and receive the
-const { version } = await userData.set({
+const { version } = await userData.put({
   userId: "user1",
   userName: "John",
   age: 30,
 });
 ```
 
-You can then perform other operations. If you need to update the user data later and want to ensure the user data hasn't changed since the last update, you can pass the `expectedVersion` in the options argument to the `set` function:
+You can then perform other operations. If you need to update the user data later and want to ensure the user data hasn't changed since the last update, you can pass the `expectedVersion` in the options argument to the `put` function:
 
 ```ts
-await userData.set(
+await userData.put(
   { userId: "user1", userName: "John", age: 31 },
   // ensure that the version has not changed since we last updated
   { expectedVersion: version }
 );
 ```
 
-If the `user1` data was updated in-between the two `set` operations and the version has changed, the second `set` operation will throw an `UnexpectedVersion` error. This mechanism ensures data consistency in environments with concurrent operations.
+If the `user1` data was updated in-between the two `put` operations and the version has changed, the second `put` operation will throw an `UnexpectedVersion` error. This mechanism ensures data consistency in environments with concurrent operations.
 
 ## Streams
 
@@ -322,7 +322,7 @@ export const newEntities = userData.stream(
 
 ## Transactional Writes
 
-If multiple `set`s or `delete`s depend on each other succeeding or the state of another entity, `Entity.transactWrite` can be used.
+If multiple `put`s or `delete`s depend on each other succeeding or the state of another entity, `Entity.transactWrite` can be used.
 
 If any of the operations fail, no updated will be made.
 
@@ -332,7 +332,7 @@ await Entity.transactWrite([
   {
     entity: userData,
     operation: {
-      operation: "set",
+      operation: "put",
       id: "user1",
       value: { schedule: "userSchedule1" },
     },
@@ -341,7 +341,7 @@ await Entity.transactWrite([
   {
     entity: userSchedules,
     operation: {
-      operation: "set",
+      operation: "put",
       id: "userSchedule1",
       value: { days: ["M", "W", "F"] },
     },
