@@ -140,7 +140,7 @@ export const setKey = command(
     }),
   },
   async (({key, value})) => {
-    await db.set(key, value)
+    await db.put(key, value)
   }
 );
 ```
@@ -170,7 +170,7 @@ export const setKey = command(
     }),
   },
   async (({key, value})) => {
-    await db.set(key, value)
+    await db.put(key, value)
   }
 );
 ```

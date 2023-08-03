@@ -19,7 +19,7 @@ export const waitForApproval = task(
   async (input: { jobId: string; description: string }) => {
     return asyncResult<boolean>(async (token) => {
       // we'll use the job ID as the unique ID
-      await approvalJobs.set(input.jobId, {
+      await approvalJobs.put(input.jobId, {
         taskToken: token,
         description: input.description,
       });

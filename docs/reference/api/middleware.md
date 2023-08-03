@@ -85,8 +85,8 @@ export async function cors<In>({
   context,
 }: MiddlewareInput<In>): Promise<MiddlewareOutput<In>> {
   const response = await next(context);
-  response.headers.set("Access-Control-Allow-Origin", "*");
-  response.headers.set("Access-Control-Allow-Headers", "Authorization");
+  response.headers.put("Access-Control-Allow-Origin", "*");
+  response.headers.put("Access-Control-Allow-Headers", "Authorization");
   return response;
 }
 ```
