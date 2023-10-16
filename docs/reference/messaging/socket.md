@@ -18,7 +18,7 @@ export const mySocket = socket("mySocket", {
   $disconnect: async ({ connectionId }) => {
     // implement logic for when a client disconnects
   },
-  $default: async ({ connectionId }, { body }) => {
+  $default: async ({ connectionId }, { data }) => {
     // handle message body
   },
 });
@@ -26,7 +26,41 @@ export const mySocket = socket("mySocket", {
 
 ## Connect from Frontend
 
-??
+You can connect to the web socket using the standard built-in [`WebSocket`](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket)
+
+```ts
+const url = process.env.SERVICE_URL;
+
+const ws = new WebSocket(url);
+```
+
+The `SERVICE_URL` can be retrieved:
+
+```sh
+eventual get service
+
+# or if you have multiple:
+eventual get service --service <your-service-name>
+```
+
+You should see a list of available endpoints:
+
+```sh
+API Gateway: https://12345678.execute-api.us-east-1.amazonaws.com
+Event Bus Arn: arn:aws:events:us-east-1:123456789019:event-bus/my-service
+Service Log Group: my-service-execution-logs
+Socket Endpoints:
+	mySocket - wss://98765432198.execute-api.us-east-1.amazonaws.com/default
+```
+
+Same when developing locally:
+
+```sh
+> eventual local
+✔ Eventual Dev Server running on http://localhost:3111.
+ Sockets are available at:
+	rtc-socket - ws://localhost:3111/__ws/rtc-socket
+```
 
 ## Attach Middleware to a Socket
 
