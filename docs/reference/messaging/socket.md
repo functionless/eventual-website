@@ -34,7 +34,7 @@ const url = process.env.SERVICE_URL;
 const ws = new WebSocket(url);
 ```
 
-The `SERVICE_URL` can be retrieved:
+The `SERVICE_URL` can be retrieved for a deployed service using `eventual get service`:
 
 ```sh
 eventual get service
@@ -43,7 +43,7 @@ eventual get service
 eventual get service --service <your-service-name>
 ```
 
-You should see a list of available endpoints:
+You should see a list of available endpoints like below. Copy the `mySocket` web socket endpoint in to your environment variables.
 
 ```sh
 API Gateway: https://12345678.execute-api.us-east-1.amazonaws.com
@@ -53,7 +53,7 @@ Socket Endpoints:
 	mySocket - wss://98765432198.execute-api.us-east-1.amazonaws.com/default
 ```
 
-Same when developing locally:
+When developing locally, the `eventual local` command shows all of the available endpoints:
 
 ```sh
 > eventual local
